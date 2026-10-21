@@ -147,6 +147,14 @@ Profile/economy randomness is intentionally unchanged.
 - [ ] Profile actual Windows frame time with diagnostics off and on, validate
       controls/audio and export with the matching engine templates; review licences.
 
+A separate persistent headless startup ran for 99 telemetry seconds. Its last sample
+shows `GATE_EXPRESS` in `SAFE_WAIT` with 39.783 seconds blocked while other services
+are driving or parking. This is a confirmed remaining traffic blockage, not a passing
+repeated-trip test. Diagnostics expose it without resetting the passenger or bus.
+The last telemetry sample is retained in `docs/validation/long-run-last-sample.json`.
+The short fixtures pass, but this natural campus congestion needs a subsequent
+reservation/exit-clearance/recovery implementation and regression before release.
+
 Static priority, lack of reservations/aging and guaranteed escape paths remain
 known constraints. No claim of universal deadlock resolution, complete road-footprint
 validation, release readiness or Windows performance is made.

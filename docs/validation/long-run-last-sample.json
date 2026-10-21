@@ -1,0 +1,102 @@
+{
+  "engine": "4.6.3-stable (official)",
+  "seconds": 99.0,
+  "services": [
+    {
+      "blocker": "",
+      "heading": 14.1371688842773,
+      "id": "WEST",
+      "passenger": false,
+      "pickup": false,
+      "position": [
+        -119.8193359375,
+        0.119999997317791,
+        -96.7475662231445
+      ],
+      "priority_index": 0,
+      "progress": 49.1592347145085,
+      "reservation": null,
+      "retreat_direction": 1,
+      "retreat_metres": 0.0,
+      "state": "DRIVING",
+      "stuck_seconds": 0.0
+    },
+    {
+      "blocker": "",
+      "heading": -1.27238943055277e-14,
+      "id": "SCIENCE",
+      "passenger": false,
+      "pickup": false,
+      "position": [
+        -2.30745697021484,
+        0.119999997317791,
+        -37.7893333435059
+      ],
+      "priority_index": 1,
+      "progress": 172.899999999998,
+      "reservation": null,
+      "retreat_direction": -1,
+      "retreat_metres": 0.0,
+      "state": "DRIVING",
+      "stuck_seconds": 0.0
+    },
+    {
+      "blocker": "",
+      "heading": -2.03185892105103,
+      "id": "GATE_EXPRESS",
+      "passenger": false,
+      "pickup": false,
+      "position": [
+        110.590408325195,
+        0.119999997317791,
+        -153.977737426758
+      ],
+      "priority_index": 2,
+      "progress": 295.735845565796,
+      "reservation": null,
+      "retreat_direction": 1,
+      "retreat_metres": 0.0,
+      "state": "SAFE_WAIT",
+      "stuck_seconds": 39.7833333333324
+    },
+    {
+      "blocker": "",
+      "heading": 1.57079648971558,
+      "id": "HOSTEL_LINK",
+      "passenger": false,
+      "pickup": false,
+      "position": [
+        -230.904739379883,
+        0.119999997317791,
+        -83.5614013671875
+      ],
+      "priority_index": 3,
+      "progress": 0.0,
+      "reservation": null,
+      "retreat_direction": -1,
+      "retreat_metres": 0.0,
+      "state": "PARKING",
+      "stuck_seconds": 0.0
+    },
+    {
+      "blocker": "",
+      "heading": -2.0318615436554,
+      "id": "CENTRAL_LINK",
+      "passenger": false,
+      "pickup": false,
+      "position": [
+        108.086708068848,
+        0.119999997317791,
+        -155.22151184082
+      ],
+      "priority_index": 4,
+      "progress": 0.0,
+      "reservation": null,
+      "retreat_direction": -1,
+      "retreat_metres": 0.0,
+      "state": "PARKING",
+      "stuck_seconds": 0.0
+    }
+  ],
+  "tick": 5940
+}
