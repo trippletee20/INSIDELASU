@@ -1,0 +1,53 @@
+INSIDE LASU v0.11 — TWO-LANE SHUTTLE / DEADLOCK CORRECTION
+========================================================
+This release starts from v0.10, the version the user confirmed loads and plays.
+No map topology, building locations, road centreline data, economy, saved profile,
+interior, gate, task, vehicle-fare or ad content changes were made.
+
+WHAT WAS WRONG
+- Each road was visually one narrow strip; every shuttle travelled on the same
+  centreline, independent of direction.
+- A circular 8.5-metre spacing test blocked opposing vehicles even when room
+  should have existed to pass. Opposing buses could wait forever.
+
+WHAT CHANGED
+- All drivable road segments are visibly TWO-WAY, usually 7.2 metres asphalt;
+  two narrow clearances beside Incomplete Hostel U2 and Love Garden are 6.2m.
+  Both widths are sufficient for two 2.35m-wide buses in adjacent lanes.
+- Right-hand travel: each moving shuttle runs approximately 1.55 metres to the
+  right of the centreline for its present direction. Oncoming buses now have
+  their own separate trajectories rather than head-on approaches.
+- Collision checking now uses the actual vehicle's oriented rectangular body,
+  including extra safety margin, not an overly large fixed-radius circle.
+- Intersections have a stable deterministic priority rule based on vehicle
+  service ordering. Lower-priority buses yield before crossing the junction.
+- Shuttle stop turnaround now includes a 4-second gradual lane transition
+  during the scheduled stop; no instant horizontal jump on direction flip.
+- A bus waiting at a route terminal reserves a safe approach space so another
+  shuttle cannot box it in while it completes its lane change.
+- Original route graph and building footprints remain untouched; paths still
+  use the approved roads, including the Sports Centre bypass.
+
+TEST THIS VERSION
+1. Extract ZIP to a NEW folder. Godot > Import > project.godot, then F5.
+2. Watch two shuttles drive TOWARD one another on a straight road.
+3. Test a junction in Central Campus while other shuttles are moving.
+4. Board a shuttle, use Ride & Watch, alight; also test Quick Travel.
+5. Inspect both stops where buses change direction. Movement should be gradual.
+6. Check that no bus cuts across the Sports Centre or through other buildings.
+
+STATIC VALIDATION
+  python tools/validate_v010_release.py
+  python tools/validate_road_safety.py
+  python tools/validate_v011_traffic.py
+These tests verify data integrity, two-lane clearance, no overlap with
+mapped protected footprints, and synthetic collision cases. They DO NOT run
+Godot 4.7 or guarantee every edge-case is deadlock-free. Runtime regression
+playtesting on the user's computer remains necessary.
+
+IMPORTANT
+- The turnaround uses a simplified 4-second lateral lane shift during the
+  bus-stop dwell, not realistic real-world turning physics. Future passes can
+  add proper end-stop turning loops where the campus geometry permits.
+- The new traffic priority system is a first stable traffic prototype, not a
+  full metropolitan traffic AI. A broader simulation test suite is recommended.

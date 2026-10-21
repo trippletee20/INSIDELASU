@@ -1,0 +1,422 @@
+{
+  "version": "0.10",
+  "currency": "NGN_IN_GAME_ONLY",
+  "notes": [
+    "One Indomie ₦600; each egg +₦300. One pack plus egg = ₦900; two packs plus egg = ₦1,500.",
+    "Eggs never sold cooked alone.",
+    "Science Shops offer snacks, stationery, noodles, bread-and-egg, and suya; no additional cooked-food categories.",
+    "Prices are fictional simulation settings, not official venue price claims."
+  ],
+  "items": [
+    {
+      "id": "gala",
+      "name": "Gala sausage roll",
+      "cost": 200,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "crackers",
+      "name": "Crackers biscuit",
+      "cost": 100,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "biscuits",
+      "name": "Standard biscuit",
+      "cost": 100,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "fab",
+      "name": "Fab biscuit",
+      "cost": 500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "choco_ring",
+      "name": "Choco Ring",
+      "cost": 200,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "happy",
+      "name": "Happy Happy chocolate biscuit",
+      "cost": 200,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "festo_choc",
+      "name": "Festo Chocolate",
+      "cost": 200,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "festo_milk",
+      "name": "Festo Milk",
+      "cost": 200,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "chupa_chups",
+      "name": "Chupa Chups lollipop",
+      "cost": 300,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "gum",
+      "name": "Chewing gum",
+      "cost": 100,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "mint_3",
+      "name": "Three mint sweets (Tom Tom / Baba Blue / Splash)",
+      "cost": 100,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "biro",
+      "name": "Ballpoint biro",
+      "cost": 100,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "jotter20",
+      "name": "20-leaf jotter",
+      "cost": 300,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "jotter40",
+      "name": "40-leaf jotter",
+      "cost": 500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "jotter60",
+      "name": "60-leaf jotter",
+      "cost": 800,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "higher_edu",
+      "name": "Higher Education notebook",
+      "cost": 1200,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "lasu12",
+      "name": "LASU 12-in-1 notebook",
+      "cost": 3500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "coke",
+      "name": "Coca-Cola",
+      "cost": 500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "fanta",
+      "name": "Fanta",
+      "cost": 500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "sprite",
+      "name": "Sprite",
+      "cost": 500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "sevenup",
+      "name": "7UP",
+      "cost": 500,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "nutrimilk",
+      "name": "Nutri-Milk",
+      "cost": 800,
+      "category": "stalls",
+      "available": "both",
+      "tags": []
+    },
+    {
+      "id": "noodles_1_0",
+      "name": "1 cooked Indomie",
+      "cost": 600,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_1_1",
+      "name": "1 cooked Indomie + 1 egg",
+      "cost": 900,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_1_2",
+      "name": "1 cooked Indomie + 2 eggs",
+      "cost": 1200,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_2_0",
+      "name": "2 cooked Indomie",
+      "cost": 1200,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_2_1",
+      "name": "2 cooked Indomie + 1 egg",
+      "cost": 1500,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_2_2",
+      "name": "2 cooked Indomie + 2 eggs",
+      "cost": 1800,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_3_0",
+      "name": "3 cooked Indomie",
+      "cost": 1800,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_3_1",
+      "name": "3 cooked Indomie + 1 egg",
+      "cost": 2100,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "noodles_3_2",
+      "name": "3 cooked Indomie + 2 eggs",
+      "cost": 2400,
+      "category": "noodles",
+      "available": "science",
+      "tags": [
+        "requires_noodles"
+      ]
+    },
+    {
+      "id": "bread_600_0",
+      "name": "Bread ₦600",
+      "cost": 600,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_600_1",
+      "name": "Bread ₦600 + 1 egg",
+      "cost": 900,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_600_2",
+      "name": "Bread ₦600 + 2 eggs",
+      "cost": 1200,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1000_0",
+      "name": "Bread ₦1,000",
+      "cost": 1000,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1000_1",
+      "name": "Bread ₦1,000 + 1 egg",
+      "cost": 1300,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1000_2",
+      "name": "Bread ₦1,000 + 2 eggs",
+      "cost": 1600,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1200_0",
+      "name": "Bread ₦1,200",
+      "cost": 1200,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1200_1",
+      "name": "Bread ₦1,200 + 1 egg",
+      "cost": 1500,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1200_2",
+      "name": "Bread ₦1,200 + 2 eggs",
+      "cost": 1800,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1500_0",
+      "name": "Bread ₦1,500",
+      "cost": 1500,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1500_1",
+      "name": "Bread ₦1,500 + 1 egg",
+      "cost": 1800,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "bread_1500_2",
+      "name": "Bread ₦1,500 + 2 eggs",
+      "cost": 2100,
+      "category": "bread",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "suya_500",
+      "name": "Suya portion ₦500",
+      "cost": 500,
+      "category": "suya",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "suya_1000",
+      "name": "Suya portion ₦1,000",
+      "cost": 1000,
+      "category": "suya",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "suya_1500",
+      "name": "Suya portion ₦1,500",
+      "cost": 1500,
+      "category": "suya",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "suya_2000",
+      "name": "Suya portion ₦2,000",
+      "cost": 2000,
+      "category": "suya",
+      "available": "science",
+      "tags": []
+    },
+    {
+      "id": "toast_1500",
+      "name": "Toast bread starting portion",
+      "cost": 1500,
+      "category": "toast",
+      "available": "aj",
+      "tags": []
+    },
+    {
+      "id": "toast_2200",
+      "name": "Toast bread deluxe portion",
+      "cost": 2200,
+      "category": "toast",
+      "available": "aj",
+      "tags": []
+    }
+  ]
+}

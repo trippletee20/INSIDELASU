@@ -1,0 +1,39 @@
+INSIDE LASU — LOCKED ECONOMY & HOSTEL RULES
+===========================================
+
+STUDENT PROFILE
+- Player enters a character name, gender, faculty, department, study mode and hostel preference.
+- Background, starting balance and academic level are assigned randomly after confirmation.
+- Full-time levels are 100, 200, 300 or 400.
+- Part-time levels are 100, 200, 300, 400 or 500.
+- 100 Level starts without a CGPA. Students above 100 Level receive a randomized CGPA on a 5.0 scale.
+
+STARTING MONEY
+- Minimum for any student: ₦50,000.
+- Wealthy Family: ₦500,000 to ₦10,000,000, with high amounts rare.
+- Supported Student: ₦200,000 to ₦2,000,000.
+- Independent Hustler: ₦50,000 to ₦250,000.
+- Scholarship Student: ₦50,000 to ₦300,000.
+
+DAILY REWARD
+- Every player is eligible for one reward per local real-world date.
+- Minimum ₦5,000; maximum ₦2,000,000.
+- Proposed weighted distribution: 75% ₦5,000–₦25,000; 20% ₦25,001–₦100,000; 4.5% ₦100,001–₦500,000; 0.5% ₦500,001–₦2,000,000.
+- The last claim date is saved so restarting the game does not reset eligibility.
+
+TRANSPORT
+- ₦150 per shuttle ride, deducted once when a destination journey is confirmed.
+- Player chooses from mapped campus destinations.
+- Bus follows an algorithmically calculated path along the existing schematic road network.
+- Player alights near the destination's nearest road approach and walks to the entrance.
+
+HOSTEL
+- All new students are assigned an eligible completed hostel.
+- Hostel rent is ₦525,000 per full academic session.
+- First session is prepaid by family/sponsor arrangement and does not reduce starting wallet.
+- Future renewals must be paid by the student or supported by eligible income/assistance; renewal timing will be tied to the academic-session system later.
+- Hostel curfew: 11:00 PM. Reminders at 10:30 PM and 10:50 PM.
+- Faculty buildings remain available for permitted night classes and future designated study/rest spaces.
+- Full interior entry, physical hostel door locking and sleep consequences will be added with the interior/task system.
+
+CURRENCY IS IN-GAME ONLY. No real-world payouts are implemented.

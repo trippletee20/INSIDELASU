@@ -1,0 +1,22 @@
+INSIDE LASU v0.8.1 — ROUTING STABILITY PATCH
+
+1. Removed the all-pairs proximity connection that allowed shuttles to take
+   diagonal shortcuts between nearby but unrelated road vertices.
+2. Built a segmented road graph that splits at geometric road intersections and
+   uses only road segments plus tiny endpoint-to-endpoint gap connectors.
+3. Replaced nearest-vertex snapping with nearest-road-segment projection for
+   route starts and destination drop-off points.
+4. Uses the connected road component for destination routing. Disconnected map
+   areas fall back to the nearest connected road and display a walking warning.
+5. Moved vehicle simulation from variable render processing to fixed physics ticks.
+6. Enabled Godot physics interpolation and smoothed shuttle heading changes.
+7. Preserved the existing service route, saved return position, and all gameplay data.
+
+VALIDATION
+- ZIP integrity tested after packaging.
+- Layout JSON and road-network JSON compared byte-for-byte with v0.8.
+- Python geometry check on the same road data: 345 authored road segments split at
+  intersections; route generation uses connected centreline edges, not arbitrary
+  point-to-point shortcuts.
+- The exact project was not executable in this environment because Godot Engine is
+  not installed here; in-engine test remains necessary.

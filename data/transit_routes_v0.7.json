@@ -1,0 +1,189 @@
+{
+  "version": "0.10",
+  "purpose": "Five active shuttles, road graph routing, cautious headway control",
+  "source": "Existing road_network_v0.4.json / amenities_v0.6.json",
+  "layout_changed": false,
+  "lines": [
+    {
+      "id": "WEST",
+      "display_name": "Main Gate / Central Shuttle",
+      "source_road_route_id": 3,
+      "stop_ids": [
+        "STOP-MAIN",
+        "STOP-CENTRAL"
+      ],
+      "points": [
+        [
+          -45.5,
+          -56.118
+        ],
+        [
+          -45.5,
+          -23.093
+        ]
+      ],
+      "speed_metres_per_second": 8.5
+    },
+    {
+      "id": "SCIENCE",
+      "display_name": "Central / Science Shuttle",
+      "source_road_route_id": 11,
+      "stop_ids": [
+        "STOP-CENTRAL",
+        "STOP-SCIENCE"
+      ],
+      "points": [
+        [
+          -41.051,
+          -20.45
+        ],
+        [
+          -44.2,
+          -20.45
+        ],
+        [
+          -44.2,
+          -7.45
+        ],
+        [
+          -9.75,
+          -7.45
+        ],
+        [
+          -9.75,
+          -20.45
+        ],
+        [
+          -9.75,
+          -15.25
+        ],
+        [
+          -8.45,
+          -13.95
+        ],
+        [
+          16.9,
+          -13.95
+        ],
+        [
+          18.85,
+          -15.9
+        ],
+        [
+          32.5,
+          -15.9
+        ],
+        [
+          32.5,
+          -13.95
+        ],
+        [
+          33.8,
+          -15.25
+        ]
+      ],
+      "speed_metres_per_second": 9.5
+    },
+    {
+      "id": "GATE_EXPRESS",
+      "display_name": "Gate Express",
+      "source_road_route_id": 3,
+      "stop_ids": [
+        "STOP-MAIN",
+        "STOP-ARCADE"
+      ],
+      "points": [
+        [
+          -45.5,
+          -56.118
+        ],
+        [
+          -45.5,
+          -23.093
+        ]
+      ],
+      "speed_metres_per_second": 7.7
+    },
+    {
+      "id": "HOSTEL_LINK",
+      "display_name": "Hostel Link",
+      "source_road_route_id": 3,
+      "stop_ids": [
+        "STOP-HOSTELS",
+        "STOP-CENTRAL"
+      ],
+      "points": [
+        [
+          -45.5,
+          -56.118
+        ],
+        [
+          -45.5,
+          -23.093
+        ]
+      ],
+      "speed_metres_per_second": 7.2
+    },
+    {
+      "id": "CENTRAL_LINK",
+      "display_name": "Central Link",
+      "source_road_route_id": 11,
+      "stop_ids": [
+        "STOP-ARCADE",
+        "STOP-SCIENCE"
+      ],
+      "points": [
+        [
+          -41.051,
+          -20.45
+        ],
+        [
+          -44.2,
+          -20.45
+        ],
+        [
+          -44.2,
+          -7.45
+        ],
+        [
+          -9.75,
+          -7.45
+        ],
+        [
+          -9.75,
+          -20.45
+        ],
+        [
+          -9.75,
+          -15.25
+        ],
+        [
+          -8.45,
+          -13.95
+        ],
+        [
+          16.9,
+          -13.95
+        ],
+        [
+          18.85,
+          -15.9
+        ],
+        [
+          32.5,
+          -15.9
+        ],
+        [
+          32.5,
+          -13.95
+        ],
+        [
+          33.8,
+          -15.25
+        ]
+      ],
+      "speed_metres_per_second": 7.5
+    }
+  ],
+  "disclaimer": "No GPS survey; paths follow the project schematic. Stops are existing shelters; vehicles follow existing road centerlines. Not a real traffic schedule."
+}

@@ -1,0 +1,10 @@
+INSIDE LASU v0.13
+- Corrected overwritten traffic-state bug that disabled recovery across three branches.
+- Eliminated obsolete 11m circular exclusion zone around stopped buses.
+- Added geometry-validated roadside staging bays, gradual parking offsets,
+  two-tone synthesized 3D shuttle horn, bus-ahead wakeup and longer safe yielding.
+- Added mapped-hostel-only personal room with door, wardrobe, clothes, pictures,
+  furniture purchases, timed resting and opt-in visitor permission.
+- Kept data/campus_layout.json and data/road_network_v0.4.json byte-identical
+  to v0.12, as well as all five shuttles, ad signboards, task economy and saved profiles.
+- Added tools/validate_v013.py and RELEASE_AUDIT_v0.13.txt.

@@ -1,0 +1,43 @@
+INSIDE LASU v0.9 — DESIGN AND STATIC-VALIDATION NOTES
+==================================================
+
+Confirmed preserved byte-for-byte vs working v0.8.4:
+- data/campus_layout.json
+- data/road_network_v0.4.json
+- data/transit_routes_v0.7.json
+- data/amenities_v0.6.json
+- scripts/transit_manager.gd
+- scripts/architecture_builder.gd
+- scenes/main.tscn
+
+DATA COVERAGE
+- 83 exact mapped feature names, each mapped to >=3 relevant activity choices.
+- 350 curated options across the site catalogue.
+- Job and event-job cash rewards are claimable only once per real-world day.
+- Task prices are nonnegative and cannot be charged when the wallet is insufficient.
+- Activity counts, receipts, daily paid-task claims and social reputation are saved.
+- User:// save path unchanged: original v0.8.4 profile should load in v0.9.
+- No remote account server, real purchases, official LASU event timetable or real documents.
+
+INTERACTION CORRECTIONS
+- F = sit / stand (no conflict with E = bus stops or building activities).
+- Existing shelter benches, garden benches and pavilion spectator seating register.
+- Large building interaction uses exterior footprint, not impossible center distances.
+- Dynamic seat detection registration is idempotent to support later interior furniture.
+
+AVATARS
+- Rounded low-poly 3D body; face, backpack, layered clothing, shoes and hair.
+- Female profile: extra braid/bun hair design and warm-colour outfit.
+- Male profile: shorter textured hairstyle, contrasting outfit.
+- Prefer-not-to-say: gender-neutral colour/style profile.
+- Same movement, physics collider and access for all avatar options.
+
+VENUE ACCESS
+- Event entry prototype schedule: Friday/Saturday 16:00–21:00 local time only.
+- Unauthorized attempts are once per real-world day and may result in being
+  escorted away / -1 fictional reputation (no gratuitous physical assault).
+
+REAL ENGINE RUN STATUS
+- Not tested with Godot binary in the build environment.
+- The ZIP, JSON, Python audit, GDScript balanced delimiters and protected files
+  passed static checks, but runtime parser and physics behaviour require Godot testing.

@@ -1,0 +1,15 @@
+INSIDE LASU v0.12 TEST STATUS
+----------------------------
+Static checks only (the Godot runtime executable is unavailable):
+- Road routes retained: 336 segments; all protected schematic sites clear
+- 334 road segments fit 10.0 m; 2 retain 6.2 m because of local map geometry
+- 83 campus feature positions remain byte-for-byte unchanged
+- 5 configured shuttles; expanded routing/yield controls and no forced teleport
+- 56 eligible completed indoor locations now have interior floor definitions
+- 782 original location task entries retained
+- 100 billboard placement slots retained
+- Scene and resource files preserved
+- UI has dynamic energy, stamina, stress progress controls
+- Build packaging and JSON parsing passed
+NOT verified: live GDScript compilation, end-to-end shuttle deadlock elimination,
+               in-engine collision behaviours, FPS on user's GPU.

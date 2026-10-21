@@ -1,0 +1,1437 @@
+{
+  "version": "0.10",
+  "world_scale": 2.6,
+  "source": "New cosmetic amenities generated against locked v0.5.3 map and v0.4 road network. No road or building centres changed.",
+  "shelters": [
+    {
+      "id": "STOP-MAIN",
+      "name": "Main Gate Shuttle Stop",
+      "position": [
+        -48.453,
+        -56.118
+      ],
+      "rotation_degrees": -90.0,
+      "width_m": 9.2,
+      "depth_m": 4.2,
+      "roadside_clearance_units": 0.75
+    },
+    {
+      "id": "STOP-HOSTELS",
+      "name": "Hostel Route Waiting Shelter",
+      "position": [
+        -92.343,
+        -32.139
+      ],
+      "rotation_degrees": -90.0,
+      "width_m": 9.2,
+      "depth_m": 4.2,
+      "roadside_clearance_units": 0.84
+    },
+    {
+      "id": "STOP-CENTRAL",
+      "name": "Central Faculty Waiting Shelter",
+      "position": [
+        -41.051,
+        -23.093
+      ],
+      "rotation_degrees": -0.0,
+      "width_m": 9.2,
+      "depth_m": 4.2,
+      "roadside_clearance_units": 0.49
+    },
+    {
+      "id": "STOP-ARCADE",
+      "name": "Arcade Road Shuttle Stop",
+      "position": [
+        50.1,
+        -55.464
+      ],
+      "rotation_degrees": -0.0,
+      "width_m": 9.2,
+      "depth_m": 4.2,
+      "roadside_clearance_units": 2.48
+    },
+    {
+      "id": "STOP-SCIENCE",
+      "name": "Science Route Waiting Shelter",
+      "position": [
+        36.36,
+        -14.22
+      ],
+      "rotation_degrees": 67.5,
+      "width_m": 9.2,
+      "depth_m": 4.2,
+      "roadside_clearance_units": 0.34
+    }
+  ],
+  "billboards": [
+    {
+      "id": "AD-001",
+      "size": "large",
+      "position": [
+        -57.457,
+        -54.704
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_001",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "large",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-002",
+      "size": "small",
+      "position": [
+        -63.0,
+        -38.0
+      ],
+      "rotation_degrees": 135.0,
+      "creative_key": "ad_002",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "small",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-003",
+      "size": "medium",
+      "position": [
+        -73.0,
+        -10.0
+      ],
+      "rotation_degrees": -180.0,
+      "creative_key": "ad_003",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "medium",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-004",
+      "size": "large",
+      "position": [
+        -70.0,
+        37.0
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_004",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "large",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-005",
+      "size": "small",
+      "position": [
+        -42.0,
+        38.0
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_005",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "small",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-006",
+      "size": "medium",
+      "position": [
+        -31.826,
+        -25.62
+      ],
+      "rotation_degrees": -0.0,
+      "creative_key": "ad_006",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "medium",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-007",
+      "size": "large",
+      "position": [
+        -12.131,
+        -61.991
+      ],
+      "rotation_degrees": -0.0,
+      "creative_key": "ad_007",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "large",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-008",
+      "size": "medium",
+      "position": [
+        -4.0,
+        -36.0
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_008",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "medium",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-009",
+      "size": "small",
+      "position": [
+        30.0,
+        -30.0
+      ],
+      "rotation_degrees": -45.0,
+      "creative_key": "ad_009",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "small",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-010",
+      "size": "large",
+      "position": [
+        56.0,
+        -33.0
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_010",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "large",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-011",
+      "size": "medium",
+      "position": [
+        88.923,
+        -48.175
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_011",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "medium",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-012",
+      "size": "small",
+      "position": [
+        51.928,
+        22.0
+      ],
+      "rotation_degrees": -135.0,
+      "creative_key": "ad_012",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "small",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-013",
+      "size": "medium",
+      "position": [
+        55.0,
+        46.0
+      ],
+      "rotation_degrees": -147.17,
+      "creative_key": "ad_013",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "medium",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-014",
+      "size": "small",
+      "position": [
+        -2.94,
+        44.914
+      ],
+      "rotation_degrees": -112.5,
+      "creative_key": "ad_014",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "small",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-015",
+      "size": "large",
+      "position": [
+        23.983,
+        44.739
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_015",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "large",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-016",
+      "size": "medium",
+      "position": [
+        -17.0,
+        6.0
+      ],
+      "rotation_degrees": -90.0,
+      "creative_key": "ad_016",
+      "campaign_id": null,
+      "active": false,
+      "placeholder": true,
+      "rate_card_tier": "medium",
+      "display_mode": "static_placeholder",
+      "future_rotation_seconds": 20
+    },
+    {
+      "id": "AD-017",
+      "position": [
+        95.366,
+        -34.949
+      ],
+      "rotation_degrees": 0.0,
+      "size": "medium",
+      "ad_slot": "LASU-017",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-018",
+      "position": [
+        -8.614,
+        72.606
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-018",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-019",
+      "position": [
+        -4.727,
+        -26.241
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-019",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-020",
+      "position": [
+        52.588,
+        -25.684
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-020",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-021",
+      "position": [
+        95.359,
+        -50.447
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-021",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-022",
+      "position": [
+        -41.417,
+        15.392
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-022",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-023",
+      "position": [
+        92.615,
+        -10.714
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-023",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-024",
+      "position": [
+        74.449,
+        -25.803
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-024",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-025",
+      "position": [
+        -58.237,
+        -28.882
+      ],
+      "rotation_degrees": -90.0,
+      "size": "small",
+      "ad_slot": "LASU-025",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-026",
+      "position": [
+        -80.241,
+        -3.938
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-026",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-027",
+      "position": [
+        -75.49,
+        39.552
+      ],
+      "rotation_degrees": -90.0,
+      "size": "medium",
+      "ad_slot": "LASU-027",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-028",
+      "position": [
+        -41.196,
+        -32.993
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-028",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-029",
+      "position": [
+        -14.04,
+        16.315
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-029",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-030",
+      "position": [
+        -3.131,
+        -55.038
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-030",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-031",
+      "position": [
+        -67.403,
+        41.051
+      ],
+      "rotation_degrees": -90.0,
+      "size": "small",
+      "ad_slot": "LASU-031",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-032",
+      "position": [
+        -54.045,
+        -24.3
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-032",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-033",
+      "position": [
+        -6.354,
+        31.276
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-033",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-034",
+      "position": [
+        95.89,
+        -19.843
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-034",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-035",
+      "position": [
+        88.642,
+        -3.688
+      ],
+      "rotation_degrees": -45.0,
+      "size": "small",
+      "ad_slot": "LASU-035",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-036",
+      "position": [
+        -38.85,
+        74.648
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-036",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-037",
+      "position": [
+        48.674,
+        -71.854
+      ],
+      "rotation_degrees": 90.0,
+      "size": "medium",
+      "ad_slot": "LASU-037",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-038",
+      "position": [
+        -21.756,
+        60.853
+      ],
+      "rotation_degrees": -77.01,
+      "size": "small",
+      "ad_slot": "LASU-038",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-039",
+      "position": [
+        -15.477,
+        49.517
+      ],
+      "rotation_degrees": -45.0,
+      "size": "small",
+      "ad_slot": "LASU-039",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-040",
+      "position": [
+        -12.939,
+        -28.791
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-040",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-041",
+      "position": [
+        -30.872,
+        -63.443
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-041",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-042",
+      "position": [
+        -90.932,
+        36.594
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-042",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-043",
+      "position": [
+        -17.103,
+        -64.43
+      ],
+      "rotation_degrees": 90.0,
+      "size": "medium",
+      "ad_slot": "LASU-043",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-044",
+      "position": [
+        8.478,
+        -17.57
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-044",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-045",
+      "position": [
+        -14.179,
+        28.707
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-045",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-046",
+      "position": [
+        59.816,
+        -70.898
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-046",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-047",
+      "position": [
+        -60.892,
+        56.477
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-047",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-048",
+      "position": [
+        54.866,
+        -71.951
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-048",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-049",
+      "position": [
+        -88.696,
+        24.016
+      ],
+      "rotation_degrees": -45.0,
+      "size": "small",
+      "ad_slot": "LASU-049",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-050",
+      "position": [
+        -13.008,
+        -41.442
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-050",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-051",
+      "position": [
+        83.841,
+        -73.743
+      ],
+      "rotation_degrees": 45.0,
+      "size": "small",
+      "ad_slot": "LASU-051",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-052",
+      "position": [
+        -78.677,
+        26.511
+      ],
+      "rotation_degrees": -90.0,
+      "size": "small",
+      "ad_slot": "LASU-052",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-053",
+      "position": [
+        27.785,
+        -36.208
+      ],
+      "rotation_degrees": 0.0,
+      "size": "medium",
+      "ad_slot": "LASU-053",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-054",
+      "position": [
+        -8.562,
+        53.875
+      ],
+      "rotation_degrees": -36.52,
+      "size": "small",
+      "ad_slot": "LASU-054",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-055",
+      "position": [
+        -12.683,
+        -32.658
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-055",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-056",
+      "position": [
+        75.543,
+        -76.1
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-056",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-057",
+      "position": [
+        82.577,
+        20.905
+      ],
+      "rotation_degrees": -90.0,
+      "size": "small",
+      "ad_slot": "LASU-057",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-058",
+      "position": [
+        -70.845,
+        -23.145
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-058",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-059",
+      "position": [
+        -13.619,
+        -24.426
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-059",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-060",
+      "position": [
+        78.959,
+        -26.502
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-060",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-061",
+      "position": [
+        87.532,
+        8.421
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-061",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-062",
+      "position": [
+        -81.682,
+        13.563
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-062",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-063",
+      "position": [
+        -13.495,
+        64.62
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-063",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-064",
+      "position": [
+        94.689,
+        -16.038
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-064",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-065",
+      "position": [
+        -5.218,
+        14.425
+      ],
+      "rotation_degrees": 0.0,
+      "size": "medium",
+      "ad_slot": "LASU-065",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-066",
+      "position": [
+        -41.628,
+        19.881
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-066",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-067",
+      "position": [
+        -5.905,
+        -7.6
+      ],
+      "rotation_degrees": -45.0,
+      "size": "small",
+      "ad_slot": "LASU-067",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-068",
+      "position": [
+        79.814,
+        -66.275
+      ],
+      "rotation_degrees": 45.0,
+      "size": "small",
+      "ad_slot": "LASU-068",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-069",
+      "position": [
+        -41.164,
+        -1.882
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-069",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-070",
+      "position": [
+        8.307,
+        73.998
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-070",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-071",
+      "position": [
+        25.878,
+        -20.742
+      ],
+      "rotation_degrees": 90.0,
+      "size": "medium",
+      "ad_slot": "LASU-071",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-072",
+      "position": [
+        -24.981,
+        -2.522
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-072",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-073",
+      "position": [
+        65.467,
+        11.148
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-073",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-074",
+      "position": [
+        -23.153,
+        73.553
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-074",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-075",
+      "position": [
+        -12.818,
+        -36.898
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-075",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-076",
+      "position": [
+        32.709,
+        -51.471
+      ],
+      "rotation_degrees": 135.0,
+      "size": "small",
+      "ad_slot": "LASU-076",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-077",
+      "position": [
+        95.509,
+        -58.802
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-077",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-078",
+      "position": [
+        60.712,
+        21.039
+      ],
+      "rotation_degrees": -90.0,
+      "size": "small",
+      "ad_slot": "LASU-078",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-079",
+      "position": [
+        -4.435,
+        65.102
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-079",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-080",
+      "position": [
+        -30.663,
+        74.878
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-080",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-081",
+      "position": [
+        -6.345,
+        -66.394
+      ],
+      "rotation_degrees": 180.0,
+      "size": "small",
+      "ad_slot": "LASU-081",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-082",
+      "position": [
+        23.035,
+        -73.939
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-082",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-083",
+      "position": [
+        -64.384,
+        -29.034
+      ],
+      "rotation_degrees": -92.7,
+      "size": "small",
+      "ad_slot": "LASU-083",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-084",
+      "position": [
+        59.734,
+        39.633
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-084",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-085",
+      "position": [
+        -25.624,
+        -12.051
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-085",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-086",
+      "position": [
+        2.329,
+        -73.89
+      ],
+      "rotation_degrees": 90.0,
+      "size": "medium",
+      "ad_slot": "LASU-086",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-087",
+      "position": [
+        8.448,
+        65.214
+      ],
+      "rotation_degrees": 90.0,
+      "size": "medium",
+      "ad_slot": "LASU-087",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-088",
+      "position": [
+        -5.303,
+        21.541
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-088",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-089",
+      "position": [
+        -52.573,
+        56.14
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-089",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-090",
+      "position": [
+        -94.615,
+        -22.285
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-090",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-091",
+      "position": [
+        -32.181,
+        -56.743
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-091",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-092",
+      "position": [
+        83.429,
+        -62.55
+      ],
+      "rotation_degrees": 45.0,
+      "size": "medium",
+      "ad_slot": "LASU-092",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-093",
+      "position": [
+        64.017,
+        3.973
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-093",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-094",
+      "position": [
+        -12.747,
+        41.629
+      ],
+      "rotation_degrees": -45.0,
+      "size": "small",
+      "ad_slot": "LASU-094",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-095",
+      "position": [
+        -16.017,
+        0.603
+      ],
+      "rotation_degrees": 0.0,
+      "size": "medium",
+      "ad_slot": "LASU-095",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-096",
+      "position": [
+        -97.299,
+        43.577
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-096",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-097",
+      "position": [
+        -14.614,
+        35.459
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-097",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-098",
+      "position": [
+        -19.462,
+        -56.031
+      ],
+      "rotation_degrees": 90.0,
+      "size": "small",
+      "ad_slot": "LASU-098",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-099",
+      "position": [
+        -81.635,
+        19.495
+      ],
+      "rotation_degrees": -90.0,
+      "size": "small",
+      "ad_slot": "LASU-099",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    },
+    {
+      "id": "AD-100",
+      "position": [
+        17.382,
+        66.9
+      ],
+      "rotation_degrees": 0.0,
+      "size": "small",
+      "ad_slot": "LASU-100",
+      "content": "AD SPACE / CAMPUS EVENTS",
+      "category": "placeholder"
+    }
+  ],
+  "vehicles": [
+    {
+      "id": "BUS-01",
+      "name": "Campus Shuttle",
+      "type": "bus",
+      "position": [
+        -48.54,
+        -52.302
+      ],
+      "rotation_degrees": -90.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "BUS-02",
+      "name": "Hostel Shuttle",
+      "type": "bus",
+      "position": [
+        -91.891,
+        -36.096
+      ],
+      "rotation_degrees": -90.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "BUS-03",
+      "name": "Faculty Shuttle",
+      "type": "bus",
+      "position": [
+        39.334,
+        -13.828
+      ],
+      "rotation_degrees": -0.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "CAR-01",
+      "name": "Staff Car",
+      "type": "car",
+      "position": [
+        -40.0,
+        -40.0
+      ],
+      "rotation_degrees": -90.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "CAR-02",
+      "name": "Visitor Car",
+      "type": "car",
+      "position": [
+        47.0,
+        -52.0
+      ],
+      "rotation_degrees": -0.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "CAR-03",
+      "name": "Staff Car",
+      "type": "car",
+      "position": [
+        -60.0,
+        -19.0
+      ],
+      "rotation_degrees": -0.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "CAR-04",
+      "name": "Visitor Car",
+      "type": "car",
+      "position": [
+        76.826,
+        -56.38
+      ],
+      "rotation_degrees": -0.0,
+      "status": "parked",
+      "interactive": false
+    },
+    {
+      "id": "VAN-01",
+      "name": "Campus Services",
+      "type": "van",
+      "position": [
+        -3.0,
+        42.0
+      ],
+      "rotation_degrees": -90.0,
+      "status": "parked",
+      "interactive": false
+    }
+  ],
+  "notes": [
+    "All vehicles are parked visual props. No boarding, movement, or driving in v0.6.",
+    "Billboards are local placeholders only; no connected ad network, tracking, monetisation or server.",
+    "Bus shelters are next to existing roads, not inside building footprints.",
+    "100 ad signboards total; collision-aware generated placements outside mapped protected footprints and roads; slots are placeholders, no real advertisements."
+  ]
+}

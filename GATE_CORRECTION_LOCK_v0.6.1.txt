@@ -1,0 +1,17 @@
+LOCKED CAMPUS CORRECTION — INSIDE LASU
+=======================================
+Confirmed by creator 2026-10-20:
+"The last main gate, the second main gate ... should be between Arts and
+administrative building, just in front of that road there."
+
+Feature ID 56: MAIN GATE 2 (FRANKLAS GATE)
+Position in v0.6.1: [86.45, -25.02] in SVG-derived schematic coordinates.
+This replaces the unresolved right-edge marker originally at [90.90, -25.02]
+with a gate spanning the EXISTING north-south main-road centreline at X=86.45.
+Arts, Administration, Old Library and all other buildings stay untouched.
+No road, landscaping, shelter, billboard, player or existing gate is moved.
+Do not call the gate GP: GP is PENAFORT GATE near staff quarters.
+Do not drop or rename this fixed gate in later project updates.
+
+This project has not been geographically surveyed: exact metre positions
+are schematic rather than claims of surveyed real-world coordinates.

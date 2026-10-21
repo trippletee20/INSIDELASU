@@ -1,0 +1,12 @@
+Inside LASU v0.8.3 — Script Helper Fix
+
+Fixed:
+- Added the missing _pole() helper used by destination bus-stop signposts.
+- Added the missing _label() helper used by destination bus-stop labels.
+- Preserved the existing destination stop visuals and interaction code.
+- No campus layout, road data, building placement, or gate positions were changed.
+
+Validation:
+- ZIP archive integrity check passed.
+- transit_manager.gd static helper-reference check passed: all underscore-prefixed local helper calls have definitions.
+- Godot runtime validation was not available in the packaging environment; please open the project in Godot and confirm the parser error is gone.

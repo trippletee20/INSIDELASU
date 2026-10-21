@@ -1,0 +1,40 @@
+INSIDE LASU v0.8.2 — CHANGELOG
+
+1. Shuttle road routing
+   - Both regular service routes are rebuilt from the connected road graph.
+   - Destination routes project to actual road segments and follow the graph through
+     intersections. Small endpoint repairs are rejected if they intersect mapped
+     building footprints.
+   - Smooth physics-tick movement and gradual body turning remain enabled.
+
+2. Destination bus stops and pickup calls
+   - Every selectable campus destination receives a stop/drop-off record.
+   - Compact roadside stands are created where a covered shelter or nearby stand is
+     not already available; nearby destinations share a stand to prevent pole overlap.
+   - Press E at a stop to dispatch the nearest available shuttle. It drives along roads,
+     waits up to 45 seconds for boarding, and returns if nobody boards.
+   - Existing shelter pickup points are preserved even when a shelter name differs from
+     a building destination name.
+
+3. Travel choice
+   - Ride & Watch follows the complete route and alights at the designated stop.
+   - Quick Travel charges the same ₦150 fare, skips the viewing animation, places the
+     player at the same stand, and does not teleport the shuttle.
+   - The menu displays approximate travel time and a final-walk hint.
+
+4. Sitting
+   - Bench and seat surfaces in covered shelters, gardens and the sports spectator area
+     receive interaction anchors. Press E to sit and E again to stand.
+   - Seat registration supports future chair/seat surfaces by naming convention or group.
+
+5. HUD / interaction improvements
+   - The player gets a call-shuttle prompt at a stand, a notice when a shuttle is already
+     en route, and a waiting prompt when it arrives.
+   - Shuttle boarding proximity was reduced to avoid boarding a vehicle from too far away.
+   - Stop status signs can display SHUTTLE COMING and SHUTTLE HERE.
+
+6. Layout preservation
+   - campus_layout.json: unchanged.
+   - road_network_v0.4.json: unchanged.
+   - Student profile, wallet, daily reward, hostel, Arcade, billboards, landscaping and
+     Franklas Gate assets are retained.

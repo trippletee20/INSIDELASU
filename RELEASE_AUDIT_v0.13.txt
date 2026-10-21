@@ -1,0 +1,53 @@
+PASS: main.gd: unique method names (82)
+PASS: main.gd: balanced braces/parentheses
+PASS: player_controller.gd: unique method names (12)
+PASS: player_controller.gd: balanced braces/parentheses
+PASS: interior_builder.gd: unique method names (13)
+PASS: interior_builder.gd: balanced braces/parentheses
+PASS: amenities_builder.gd: unique method names (11)
+PASS: amenities_builder.gd: balanced braces/parentheses
+PASS: transit_manager.gd: unique method names (71)
+PASS: transit_manager.gd: balanced braces/parentheses
+PASS: architecture_builder.gd: unique method names (17)
+PASS: architecture_builder.gd: balanced braces/parentheses
+PASS: traffic helper _update_parking_bay exists
+PASS: traffic helper _bay_position_is_clear exists
+PASS: traffic helper _find_traffic_blocker exists
+PASS: traffic helper _sound_horn exists
+PASS: hostel room interaction _enter_private_room exists
+PASS: hostel room interaction _return_to_hostel_lobby exists
+PASS: hostel room interaction _rest_in_room exists
+PASS: hostel room interaction _toggle_room_visitors exists
+PASS: hostel room interaction _buy_room_furniture exists
+PASS: distinct private room builder exists
+PASS: existing saved room furniture restored
+PASS: room furniture saved
+PASS: visitor privacy persisted
+PASS: rest cooldown persisted
+PASS: blocked traffic results are not overwritten
+PASS: stale 11m exclusion bubble removed
+PASS: own shuttle ignored in overlap checks
+PASS: parking bays tested before use
+PASS: roadside parking offset exists
+PASS: bay / road obstacle validator retained
+PASS: passenger boarding state retained
+PASS: passenger transit state retained
+PASS: destination shuttle controls retained
+PASS: JSON transit_routes_v0.7.json
+PASS: JSON road_network_v0.4.json
+PASS: JSON task_catalog_v0.9.json
+PASS: JSON interior_catalog_v0.10.json
+PASS: JSON landscape_v0.5.json
+PASS: JSON billboard_placement_audit_v0.10.json
+PASS: JSON amenities_v0.6.json
+PASS: JSON market_prices_v0.10.json
+PASS: JSON campus_layout.json
+PASS: five shuttle services preserved
+PASS: completed hostels retain interiors
+PASS: protected asset unchanged: data/campus_layout.json
+PASS: protected asset unchanged: data/road_network_v0.4.json
+PASS: protected asset unchanged: data/landscape_v0.5.json
+PASS: protected asset unchanged: data/amenities_v0.6.json
+PASS: protected asset unchanged: scenes/main.tscn
+
+NOTE: These are static tests only; no Godot executable was available.

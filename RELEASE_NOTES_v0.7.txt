@@ -1,0 +1,22 @@
+INSIDE LASU — v0.7 CHANGE LOG
+
+NEW:
+1. Two path-following moving shuttles (Main Gate–Central / Central–Science).
+2. E interaction near stationary shuttles: Board vs Pass menu.
+3. Automatic in-world ride, onboard camera, E disembark at destination.
+4. Small in-session campus-visit counter for exploration.
+5. New data/transit_routes_v0.7.json with source road segment provenance.
+
+UNCHANGED FROM v0.6.2:
+- All original layout data; no existing mapped feature is moved or renamed.
+- Main Gate 2 (Franklas Gate) corrected rotation and pillar clearance.
+- Previously upgraded Arcade, bus shelters, billboards, parked vehicles.
+- Existing road route definitions and pedestrian approach paths.
+- Landscaping and sports/faculty architecture.
+
+STATIC CHECKS:
+- Transit service paths contained in their existing source v0.4 road routes.
+- Shelter boarding positions within 12 metres of vehicle stops.
+- A 2.8 m wide moving-bus footprint does not intersect any mapped building rectangle.
+- ZIP integrity and unchanged-file hashes checked when packaged.
+- Godot runtime launch not available in packaging environment: user to run F5.

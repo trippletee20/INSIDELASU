@@ -1,0 +1,35 @@
+INSIDE LASU v0.6 — CHANGE & SAFETY AUDIT
+
+Baseline: v0.5.3_Corrected_Education_Radio_MassComm (user reported working)
+
+New assets:
+  scripts/amenities_builder.gd
+  data/amenities_v0.6.json
+
+Modified:
+  project.godot (window title only)
+  scripts/main.gd (load amenities, collision height, version HUD)
+  scripts/architecture_builder.gd (specialised 2-level Arcade)
+
+Verified byte-identical to v0.5.3:
+  data/campus_layout.json
+  data/road_network_v0.4.json
+  data/landscape_v0.5.json
+  scripts/player_controller.gd
+
+Spatial audit: 5 shelters, 16 billboards, 8 parked vehicles.
+  ✓ Every new schematic footprint avoids completed-building outline buffers.
+  ✓ Every new schematic footprint avoids asphalt and paved route footprints.
+  ✓ Every new schematic footprint avoids pre-existing mapped pedestrian accesses.
+  ✓ Every new schematic footprint is separated from other new amenities.
+  ✓ Tree canopy proximity is checked during placement.
+
+Static checks:
+  ✓ All four JSON files parse.
+  ✓ All new scene creation uses Godot 4 classes (Node3D, StaticBody3D,
+    MeshInstance3D, CollisionShape3D, Label3D, BoxMesh, CylinderMesh).
+  ✓ Arrays of object IDs and categories are unique.
+
+Important: Godot executable is not present in the build environment. This is
+NOT a claim that GDScript was compiled or the game ran there. The user's
+Windows Godot test is the next confirmation.

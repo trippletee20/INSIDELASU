@@ -1,0 +1,52 @@
+config_version=5
+
+[application]
+config/name="Inside LASU"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[display]
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.49, 0.72, 0.84, 1)
+
+[input]
+move_forward={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":87), Object(InputEventKey,"physical_keycode":4194320)]
+}
+move_back={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":83), Object(InputEventKey,"physical_keycode":4194322)]
+}
+move_left={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":65), Object(InputEventKey,"physical_keycode":4194319)]
+}
+move_right={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":68), Object(InputEventKey,"physical_keycode":4194321)]
+}
+jump={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":32)]
+}
+interact={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":69)]
+}
+toggle_mouse_capture={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194305)]
+}
+
+[physics]
+common/physics_ticks_per_second=60
+common/physics_interpolation=true

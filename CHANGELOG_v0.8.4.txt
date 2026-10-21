@@ -1,0 +1,11 @@
+Inside LASU v0.8.4 — Road Safety & Shuttle Clearance Fix
+
+- Reworked road route 0 to pass around the southern edge of the Sports Centre field.
+- Repositioned the route 1 eastern bend to clear the Sports Centre footprint and sports hall.
+- Removed route 18's redundant out-and-back spur at the sports boundary.
+- Rerouted route 8 around the Hostel Farm and incomplete hostel buildings.
+- Added segment-vs-feature footprint safety checks to road mesh generation and shuttle graph construction.
+- Endpoint-gap repair now respects outdoor protected areas rather than treating fields/gardens as drivable.
+- Destination bus-stop placement also rejects stands inside protected outdoor areas.
+- Added a reusable static audit script under tools/validate_road_safety.py.
+- No campus feature positions, building sizes, or gate placements were changed.

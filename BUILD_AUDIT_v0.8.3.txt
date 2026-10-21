@@ -1,0 +1,20 @@
+Inside LASU v0.8.3 Build Audit
+
+Source: Inside LASU v0.8.2 Destination Stops / Sitting / Quick Travel project.
+Scope: Minimal script repair only.
+
+Modified:
+- scripts/transit_manager.gd
+  - Implemented _pole(parent, position, radius, height, color, name) using CylinderMesh.
+  - Implemented _label(parent, text, position, font_size, color) using Label3D.
+
+Preserved:
+- project.godot and scenes/main.tscn.
+- All data files, road data, campus features, buildings, and gate corrections.
+- Existing shuttle routing, destination-stop placement, sitting, and quick-travel code.
+
+Checks:
+- ZIP CRC integrity: passed.
+- Required project files present: passed.
+- Local underscore-helper reference scan: passed.
+- Godot engine runtime execution: not performed in this environment.

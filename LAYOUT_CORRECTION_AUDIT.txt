@@ -1,0 +1,14 @@
+INSIDE LASU v0.5.3 — targeted map correction and building gap audit
+Old duplicates: source Mass Communication id 60 removed; id 62 placeholder becomes Mass Communication.
+Old marker anchor: [-8.64, -13.86]; constructed Mass Communication building centre: [-3.4, -19.0] (avoids approved road)
+Removed duplicate: {"id": 60, "name": "Mass Communication", "kind": "academic", "position": [-25.92, -14.22], "size": [9.0, 8.64], "height": 5.5, "fill": "#dceafc"}
+Final Education: {"id": 58, "name": "Faculty of Education", "kind": "academic", "position": [-37.44, -14.04], "size": [7.1, 8.1], "height": 9.0, "fill": "#dceafc"}
+Final Radio: {"id": 59, "name": "LASU Radio", "kind": "academic", "position": [-30.4, -14.22], "size": [3.6, 4.32], "height": 6.6, "fill": "#e1f3f2", "placement_note": "Between Faculty of Education and Mass Communication. Radio is a separate detached building."}
+Final Mass Communication: {"id": 62, "name": "Mass Communication", "kind": "academic", "position": [-3.4, -19.0], "size": [5.8, 4.8], "height": 8.4, "fill": "#dceafc", "source_label_anchor": [-8.64, -13.86], "placement_note": "This Mass Communication building replaces the Education continuation (unverified) marker; slightly southeast of that marker to keep the existing v0.4 main road clear. Former incorrect id 60 has been removed."}
+Other unchanged features (IDs except the separately listed setback sites, 58,59,60,62) retain all position/size fields from v0.5.2.
+Other sites whose rendered footprint was reduced for visible separation: [7, 8, 10, 11, 14, 15, 17, 18, 19, 22, 38, 39, 40, 43, 44, 47, 48, 69, 70, 73, 74]
+Building rectangle intersections: []
+Nearby sites whose rectangle gap < 1.15 schematic units: []
+Mass Comm nearest approved road edges: [(11, 1.303846153846156), (2, 1.4538461538461538), (20, 1.7999999999999998), (12, 2.8551913052402487), (1, 23.859847423385123)]
+Main road routes unchanged: true
+User must test visuals: roof slabs, signs and entrance decorations may extend beyond simplified rectangles.

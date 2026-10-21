@@ -1,0 +1,16 @@
+INSIDE LASU v0.9 – CAMPUS ACTIVITIES, ECONOMY, SEATING & AVATARS
+
+New: 83 mapped sites each have 3–8 relevant activity choices (full inventory in data/task_catalog_v0.9.json).
+E at a mapped location opens a working activity menu with practical services, prices, daily job restrictions and saved activity history.
+F at an outdoor bench/seat sits the character; F or E stands. E remains dedicated to bus stops/buildings.
+Character generation now uses rounded low-poly meshes, clothing, faces, hair and profile-based male/female/neutral presentation.
+Female and male avatars get different styling, but identical movement and hitboxes; player choice is cosmetic.
+Wallet purchases deduct in-game funds; receipt history and job cooldowns persist with the existing saved profile.
+Laundromat: staff wash/iron services and discounted DIY stations. Cybercafe: PDF/colour print, e-docket print, scanning.
+Large hall: scheduled event entry; trying to enter without permission may lead to being escorted out (no physical abuse).
+Event demo schedule Friday and Saturday 16:00–21:00 local time; explicitly not real LASU scheduled event data.
+
+This is the INTERACTIVE TASK FOUNDATION, not finished multi-floor interiors, official LASU pricing or verified LASU timetables.
+All scenes and prior v0.8.4 road/feature data are preserved; no gates/buildings/roads repositioned.
+
+Godot 4.x: import project.godot; press F5; approach a mapped location, press E. Use F near a bench.

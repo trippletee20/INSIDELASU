@@ -1,0 +1,29 @@
+INSIDE LASU v0.8 RELEASE NOTES
+==============================
+
+FOUNDATION SYSTEMS
+- Profile creation and persistent save.
+- Randomized backgrounds and starting wallet.
+- Full-time / part-time level generation and CGPA rule.
+- Hostel assignment with first session rent prepaid.
+- Daily reward claim and persistent anti-repeat date check.
+- Real-time clock and hostel curfew reminders.
+- Destination-selecting shuttles using the existing schematic road graph; ₦150 fare is charged once when boarding.
+- First hostel check-in objective.
+
+ECONOMY RULES
+- Universal minimum starting balance: ₦50,000.
+- Wealthy Family: ₦500,000–₦10,000,000, with larger balances weighted to be rare.
+- Supported Student: ₦200,000–₦2,000,000.
+- Independent Hustler: ₦50,000–₦250,000.
+- Scholarship Student: ₦50,000–₦300,000.
+- Daily reward: ₦5,000–₦2,000,000; every player can claim once per local calendar date; high rewards are rare.
+- Shuttle fare: ₦150 per ride.
+- Hostel rent: ₦525,000 per full academic session. First session prepaid; future renewal system is planned but not yet activated.
+
+MAP LOCK
+- campus_layout.json unchanged from v0.7.
+- road_network_v0.4.json unchanged from v0.7.
+- amenities_v0.6.json unchanged from v0.7.
+- transit_routes_v0.7.json unchanged from v0.7.
+- Franklas Gate correction and direction lock files retained.

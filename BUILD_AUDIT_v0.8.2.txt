@@ -1,0 +1,23 @@
+INSIDE LASU v0.8.2 — BUILD AUDIT
+
+Preservation checks
+- data/campus_layout.json matches the working v0.8.1 source byte-for-byte.
+- data/road_network_v0.4.json matches the working v0.8.1 source byte-for-byte.
+- Existing buildings, gates, roads, amenities, student profile and wallet assets retained.
+
+Static checks performed
+- All JSON data files parse successfully.
+- All GDScript files have balanced quote counts on each line.
+- A same-indent duplicate-local-declaration check found no duplicate declarations.
+- The source road geometry was checked against mapped building footprints; no road segment
+  was found running through the interior of a mapped building footprint.
+- The road graph retains the isolated edge-of-map segment as a separate component rather
+  than inventing a connecting road. Destination stops project onto the main connected road
+  component when necessary.
+- 67 named campus destinations pass the destination-selector filter.
+- Destination stop placement was checked geometrically against the mapped building boxes.
+
+Runtime test limitation
+- Godot is not installed in this build environment, so this exact ZIP could not be run in
+  the Godot editor here. Please perform the first runtime check on the Windows laptop.
+  These static checks are useful, but they are not a substitute for a Godot runtime test.

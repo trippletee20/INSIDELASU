@@ -1,0 +1,34 @@
+INSIDE LASU v0.10 — RELEASE AUDIT
+
+Protected files: unchanged from working v0.9
+  data/campus_layout.json (83 site positions)
+  data/road_network_v0.4.json (336 road segments, same routing geometry)
+  data/landscape_v0.5.json
+  scenes/main.tscn
+
+Added:
+  data/interior_catalog_v0.10.json
+  data/market_prices_v0.10.json
+  data/billboard_placement_audit_v0.10.json
+  scripts/interior_builder.gd
+  tools/validate_v010_release.py
+
+Edited:
+  data/task_catalog_v0.9.json
+  data/transit_routes_v0.7.json
+  data/amenities_v0.6.json
+  scripts/main.gd
+  scripts/transit_manager.gd
+  scripts/amenities_builder.gd
+
+KEY VALIDATION SCOPE
+- Five configured shuttle lines with existing shelter IDs.
+- Minimum 8.5 m centre separation as a runtime intent, not a certified
+  no-collision guarantee across all game states.
+- 100 ad slots in total; 84 newly generated placements checked against roads
+  and mapped protected campus footprints.
+- 782 task choices, no duplicate ID per site, no paid-reward loops.
+- Corrected market item costs and prohibited Science rice/stew entry.
+- Arcade remains 2 floors (ground with Chamber, upstairs union offices).
+- Existing save data can load; new stat keys use safe defaults.
+- This build was not run inside Godot. Static checks are not engine validation.

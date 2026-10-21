@@ -1,0 +1,22 @@
+Inside LASU v0.8.4 Road Safety Audit
+
+Method:
+- Read data/road_network_v0.4.json and data/campus_layout.json.
+- Checked each road-centreline segment against each mapped feature rectangle.
+- Treated every feature except landmark and unverified markers as protected (including outdoor fields/gardens).
+- Applied a 1.2 map-unit safety margin around each protected footprint.
+
+Result: PASS
+- Road segments checked: 336
+- Protected footprints checked: 64
+- Conflicts after rerouting: 0
+- Road graph simulation: 316 nodes, 342 edges, 1 connected component.
+- Destination-stop placement simulation: 67 of 67 selectable destinations have a clear roadside stand candidate.
+
+Targeted fixes:
+- Sports Centre field and hall corridor: clear.
+- Hostel Farm / incomplete-hostel corridor: clear.
+
+Limitations:
+- This is a static 2D footprint audit, not a live Godot physics simulation.
+- Shuttle turning envelope and runtime behavior still need in-engine testing.

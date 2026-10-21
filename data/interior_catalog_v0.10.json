@@ -1,0 +1,240 @@
+{
+  "version": "0.12",
+  "scope": "all eligible completed indoor sites; modular illustrative interiors (not surveyed blueprints); incomplete buildings closed",
+  "locations": {
+    "Arcade": [
+      "Ground — Retail, Games & Hallowed Chamber",
+      "Upper — Student Union Offices"
+    ],
+    "New Library": [
+      "Ground — Reception & Lending",
+      "Level 1 — Study Hall",
+      "Level 2 — Group Research",
+      "Level 3 — Quiet Reading"
+    ],
+    "Faculty of Education": [
+      "Ground — Department Reception",
+      "Level 1 — Seminar & Classrooms",
+      "Level 2 — Faculty Offices"
+    ],
+    "Mass Communication": [
+      "Ground — Reception & Studios",
+      "Level 1 — Editing & Lecture Rooms",
+      "Level 2 — Faculty Offices"
+    ],
+    "LASU Radio": [
+      "Ground — Reception & Audio Booth",
+      "Upper — Production Studio"
+    ],
+    "Senate Building": [
+      "Ground — Enquiries",
+      "Level 1 — Administrative Services",
+      "Level 2 — Meeting Offices"
+    ],
+    "LASU Healthcare Centre": [
+      "Ground — Reception & Triage",
+      "Level 1 — Health Education"
+    ],
+    "Sports Centre": [
+      "Ground — Sports pavilion and changing rooms",
+      "Indoor Hall — Fitness and training"
+    ],
+    "Laundromat": [
+      "Ground — Laundry Reception & Machines"
+    ],
+    "Registration / cybercafé row": [
+      "Ground — Print Counter & Computers"
+    ],
+    "CBT Centre": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "LASU International School": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Penafort-side Staff Quarters": [
+      "Ground — Lobby & reception",
+      "Upper — Private rooms"
+    ],
+    "Faculty of Management Sciences": [
+      "Ground — Reception & student services",
+      "Level 1 — Teaching and seminar rooms",
+      "Level 2 — Department offices"
+    ],
+    "Girls-only Hostel": [
+      "Ground — Reception, lounge & laundry",
+      "Level 1 — Student rooms & shared kitchens",
+      "Level 2 — Rooms & study area"
+    ],
+    "Hostel 5": [
+      "Ground — Reception, lounge & laundry",
+      "Level 1 — Student rooms & shared kitchens",
+      "Level 2 — Rooms & study area"
+    ],
+    "Hostel 4": [
+      "Ground — Reception, lounge & laundry",
+      "Level 1 — Student rooms & shared kitchens",
+      "Level 2 — Rooms & study area"
+    ],
+    "Hostel 3": [
+      "Ground — Reception, lounge & laundry",
+      "Level 1 — Student rooms & shared kitchens",
+      "Level 2 — Rooms & study area"
+    ],
+    "Hostel 2": [
+      "Ground — Reception, lounge & laundry",
+      "Level 1 — Student rooms & shared kitchens",
+      "Level 2 — Rooms & study area"
+    ],
+    "Hostel 1": [
+      "Ground — Reception, lounge & laundry",
+      "Level 1 — Student rooms & shared kitchens",
+      "Level 2 — Rooms & study area"
+    ],
+    "FSS Kitchen": [
+      "Ground — Customer services & counter"
+    ],
+    "FSS Hut": [
+      "Ground — Customer services & counter"
+    ],
+    "Faculty of Social Sciences": [
+      "Ground — Reception & student services",
+      "Level 1 — Teaching and seminar rooms",
+      "Level 2 — Department offices"
+    ],
+    "TETFund — FSS-side building": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "STEM Building": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Femi Gbajabiamila Hall": [
+      "Ground — Foyer & admissions",
+      "Main — Event hall & stage",
+      "Upper — Gallery & backstage"
+    ],
+    "School of Transport": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Entrepreneurship Centre (ENT)": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Additional Staff Quarters": [
+      "Ground — Lobby & reception",
+      "Upper — Private rooms"
+    ],
+    "Staff Quarters (southern route)": [
+      "Ground — Lobby & reception",
+      "Upper — Private rooms"
+    ],
+    "Staff Quarters (southern route, second block)": [
+      "Ground — Lobby & reception",
+      "Upper — Private rooms"
+    ],
+    "Buba Marwa Auditorium": [
+      "Ground — Foyer & admissions",
+      "Main — Event hall & stage",
+      "Upper — Gallery & backstage"
+    ],
+    "School of Part-Time Studies": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "AJ Market": [
+      "Ground — Shops & service counters"
+    ],
+    "School of Postgraduate Studies": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Faculty of Law": [
+      "Ground — Reception & student services",
+      "Level 1 — Teaching and seminar rooms",
+      "Level 2 — Department offices"
+    ],
+    "Makanjuola": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Eco Market (Art Market)": [
+      "Ground — Shops & service counters"
+    ],
+    "Banking Area": [
+      "Ground — Shops & service counters"
+    ],
+    "Faculty of Arts": [
+      "Ground — Reception & student services",
+      "Level 1 — Teaching and seminar rooms",
+      "Level 2 — Department offices"
+    ],
+    "Staff Club": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "MBA Auditorium": [
+      "Ground — Foyer & admissions",
+      "Main — Event hall & stage",
+      "Upper — Gallery & backstage"
+    ],
+    "Science Halls": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Science Shops (west)": [
+      "Ground — Shops & service counters"
+    ],
+    "Science Shops (west 2)": [
+      "Ground — Shops & service counters"
+    ],
+    "Science Shops (east)": [
+      "Ground — Shops & service counters"
+    ],
+    "Science Shops (east 2)": [
+      "Ground — Shops & service counters"
+    ],
+    "Science Classroom Hall": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Bola Ahmed Tinubu Science Complex": [
+      "Ground — Reception & student services",
+      "Level 1 — Teaching and seminar rooms",
+      "Level 2 — Department offices"
+    ],
+    "Innovation Hub": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "Old Library": [
+      "Ground — Reception & catalogue",
+      "Level 1 — Reading & book collections",
+      "Level 2 — Study rooms",
+      "Level 3 — Research and archives"
+    ],
+    "Administrative Area": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ],
+    "LASU Chapel": [
+      "Ground — Worship hall & foyer",
+      "Upper — Meeting rooms"
+    ],
+    "LASU Staff School": [
+      "Ground — Welcome desk and classrooms",
+      "Upper — Resource room and teaching rooms"
+    ],
+    "Staff Quarters (east/south route)": [
+      "Ground — Lobby & reception",
+      "Upper — Private rooms"
+    ],
+    "Additional campus building (labelled BUILDING)": [
+      "Ground — Reception & teaching spaces",
+      "Upper — Offices & group study"
+    ]
+  }
+}

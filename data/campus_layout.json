@@ -1,0 +1,2081 @@
+{
+  "source": "Inside_LASU_Master_Map_Vector_Trace_v0.2.svg",
+  "status": "v0.5.3: user correction; Education - LASU Radio - Mass Communication; distinct physical sites",
+  "scale_units_per_svg_px": 0.18,
+  "feature_count": 83,
+  "road_path_count": 24,
+  "features": [
+    {
+      "id": 1,
+      "name": "CBT Centre",
+      "kind": "academic",
+      "position": [
+        -56.16,
+        -61.2
+      ],
+      "size": [
+        10.44,
+        8.1
+      ],
+      "height": 5.5,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 2,
+      "name": "Student waiting / shuttle area",
+      "kind": "landmark",
+      "position": [
+        -50.04,
+        -54.9
+      ],
+      "size": [
+        5.22,
+        3.78
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 3,
+      "name": "Main Gate",
+      "kind": "landmark",
+      "position": [
+        -45.0,
+        -63.72
+      ],
+      "size": [
+        9.72,
+        6.12
+      ],
+      "height": 0.0,
+      "fill": "#f5e4c8"
+    },
+    {
+      "id": 4,
+      "name": "Penafort Gate (GP)",
+      "kind": "landmark",
+      "position": [
+        -88.2,
+        -40.5
+      ],
+      "size": [
+        5.4,
+        4.14
+      ],
+      "height": 0.0,
+      "fill": "#f5e4c8"
+    },
+    {
+      "id": 5,
+      "name": "LASU International School",
+      "kind": "academic",
+      "position": [
+        -80.46,
+        -40.5
+      ],
+      "size": [
+        6.84,
+        4.32
+      ],
+      "height": 5.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 6,
+      "name": "Penafort-side Staff Quarters",
+      "kind": "residential",
+      "position": [
+        -71.82,
+        -40.5
+      ],
+      "size": [
+        7.74,
+        4.32
+      ],
+      "height": 6.5,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 7,
+      "name": "Faculty of Management Sciences",
+      "kind": "academic",
+      "position": [
+        -57.24,
+        -41.04
+      ],
+      "size": [
+        8.64,
+        5.6
+      ],
+      "height": 9.0,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 8,
+      "name": "Registration / cybercafé row",
+      "kind": "academic",
+      "position": [
+        -57.06,
+        -48.42
+      ],
+      "size": [
+        4.68,
+        5.6
+      ],
+      "height": 5.5,
+      "fill": "#e1f3f2",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 9,
+      "name": "Hostel corridor junction",
+      "kind": "landmark",
+      "position": [
+        -90.36,
+        -32.4
+      ],
+      "size": [
+        4.32,
+        4.32
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 10,
+      "name": "Girls-only Hostel",
+      "kind": "residential",
+      "position": [
+        -84.78,
+        -25.92
+      ],
+      "size": [
+        4.6,
+        5.4
+      ],
+      "height": 7.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 11,
+      "name": "Hostel 5",
+      "kind": "residential",
+      "position": [
+        -77.4,
+        -26.28
+      ],
+      "size": [
+        7.0,
+        5.76
+      ],
+      "height": 7.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 12,
+      "name": "Almost Complete Hostel",
+      "kind": "residential",
+      "position": [
+        -89.82,
+        0.0
+      ],
+      "size": [
+        3.96,
+        8.64
+      ],
+      "height": 3.0,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 13,
+      "name": "Additional incomplete hostel (upper west)",
+      "kind": "residential",
+      "position": [
+        -89.82,
+        16.2
+      ],
+      "size": [
+        3.6,
+        3.96
+      ],
+      "height": 3.0,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 14,
+      "name": "Incomplete Hostel U2",
+      "kind": "residential",
+      "position": [
+        -81.54,
+        33.3
+      ],
+      "size": [
+        2.4,
+        5.22
+      ],
+      "height": 3.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 15,
+      "name": "Incomplete Hostel U1",
+      "kind": "residential",
+      "position": [
+        -77.58,
+        33.3
+      ],
+      "size": [
+        2.4,
+        5.22
+      ],
+      "height": 3.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 16,
+      "name": "Hostel 4",
+      "kind": "residential",
+      "position": [
+        -88.74,
+        53.64
+      ],
+      "size": [
+        5.04,
+        6.12
+      ],
+      "height": 7.0,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 17,
+      "name": "Hostel 3",
+      "kind": "residential",
+      "position": [
+        -82.8,
+        53.64
+      ],
+      "size": [
+        3.3,
+        6.12
+      ],
+      "height": 7.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 18,
+      "name": "Hostel 2",
+      "kind": "residential",
+      "position": [
+        -77.94,
+        53.64
+      ],
+      "size": [
+        3.3,
+        6.12
+      ],
+      "height": 7.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 19,
+      "name": "Hostel 1",
+      "kind": "residential",
+      "position": [
+        -72.9,
+        53.64
+      ],
+      "size": [
+        3.3,
+        6.12
+      ],
+      "height": 7.0,
+      "fill": "#fce2e8",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 20,
+      "name": "Hostel Farm",
+      "kind": "outdoor",
+      "position": [
+        -69.84,
+        27.0
+      ],
+      "size": [
+        9.54,
+        17.1
+      ],
+      "height": 0.12,
+      "fill": "#d6f1dc"
+    },
+    {
+      "id": 21,
+      "name": "Open Field",
+      "kind": "outdoor",
+      "position": [
+        -70.56,
+        2.7
+      ],
+      "size": [
+        10.8,
+        23.4
+      ],
+      "height": 0.12,
+      "fill": "#d6f1dc"
+    },
+    {
+      "id": 22,
+      "name": "FSS Kitchen",
+      "kind": "academic",
+      "position": [
+        -63.0,
+        9.18
+      ],
+      "size": [
+        4.86,
+        6.7
+      ],
+      "height": 5.5,
+      "fill": "#fff0c6",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 23,
+      "name": "FSS Hut",
+      "kind": "academic",
+      "position": [
+        -60.3,
+        16.38
+      ],
+      "size": [
+        3.6,
+        4.5
+      ],
+      "height": 5.5,
+      "fill": "#fff0c6"
+    },
+    {
+      "id": 24,
+      "name": "Faculty of Social Sciences",
+      "kind": "academic",
+      "position": [
+        -60.3,
+        -9.18
+      ],
+      "size": [
+        11.16,
+        9.36
+      ],
+      "height": 9.0,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 25,
+      "name": "Road to hostel / farm side",
+      "kind": "landmark",
+      "position": [
+        -78.3,
+        -14.4
+      ],
+      "size": [
+        3.96,
+        3.96
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 26,
+      "name": "TETFund — FSS-side building",
+      "kind": "academic",
+      "position": [
+        -71.82,
+        -14.94
+      ],
+      "size": [
+        4.86,
+        4.86
+      ],
+      "height": 5.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 27,
+      "name": "STEM Building",
+      "kind": "academic",
+      "position": [
+        -78.84,
+        -14.94
+      ],
+      "size": [
+        5.04,
+        4.68
+      ],
+      "height": 5.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 28,
+      "name": "Femi Gbajabiamila Hall",
+      "kind": "academic",
+      "position": [
+        -51.3,
+        -1.8
+      ],
+      "size": [
+        4.5,
+        4.5
+      ],
+      "height": 7.5,
+      "fill": "#e6e3ff"
+    },
+    {
+      "id": 29,
+      "name": "Laundromat",
+      "kind": "academic",
+      "position": [
+        -51.12,
+        8.28
+      ],
+      "size": [
+        4.5,
+        4.68
+      ],
+      "height": 5.5,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 30,
+      "name": "School of Transport",
+      "kind": "academic",
+      "position": [
+        -51.3,
+        18.18
+      ],
+      "size": [
+        4.5,
+        4.5
+      ],
+      "height": 5.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 31,
+      "name": "Entrepreneurship Centre (ENT)",
+      "kind": "academic",
+      "position": [
+        -51.3,
+        38.7
+      ],
+      "size": [
+        4.86,
+        5.04
+      ],
+      "height": 5.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 32,
+      "name": "Additional Staff Quarters",
+      "kind": "residential",
+      "position": [
+        -88.02,
+        44.46
+      ],
+      "size": [
+        4.5,
+        3.96
+      ],
+      "height": 6.5,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 33,
+      "name": "Julian Hostel Gate",
+      "kind": "landmark",
+      "position": [
+        -60.84,
+        68.76
+      ],
+      "size": [
+        5.4,
+        5.4
+      ],
+      "height": 0.0,
+      "fill": "#f5e4c8"
+    },
+    {
+      "id": 34,
+      "name": "Zoology Garden",
+      "kind": "outdoor",
+      "position": [
+        -48.96,
+        64.08
+      ],
+      "size": [
+        8.64,
+        4.32
+      ],
+      "height": 0.12,
+      "fill": "#d6f1dc"
+    },
+    {
+      "id": 35,
+      "name": "Staff Quarters (southern route)",
+      "kind": "residential",
+      "position": [
+        -37.08,
+        63.54
+      ],
+      "size": [
+        5.04,
+        4.5
+      ],
+      "height": 6.5,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 36,
+      "name": "Staff Quarters (southern route, second block)",
+      "kind": "residential",
+      "position": [
+        -28.98,
+        61.92
+      ],
+      "size": [
+        4.86,
+        4.32
+      ],
+      "height": 6.5,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 37,
+      "name": "Gate on southern road (label MG)",
+      "kind": "landmark",
+      "position": [
+        23.04,
+        71.1
+      ],
+      "size": [
+        5.22,
+        4.32
+      ],
+      "height": 0.0,
+      "fill": "#f5e4c8"
+    },
+    {
+      "id": 38,
+      "name": "Buba Marwa Auditorium",
+      "kind": "academic",
+      "position": [
+        -34.92,
+        -46.08
+      ],
+      "size": [
+        6.5,
+        7.56
+      ],
+      "height": 7.5,
+      "fill": "#e6e3ff",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 39,
+      "name": "New Library",
+      "kind": "academic",
+      "position": [
+        -26.82,
+        -46.08
+      ],
+      "size": [
+        6.5,
+        7.56
+      ],
+      "height": 9.0,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 40,
+      "name": "School of Part-Time Studies",
+      "kind": "academic",
+      "position": [
+        -18.9,
+        -46.08
+      ],
+      "size": [
+        6.0,
+        7.2
+      ],
+      "height": 5.5,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 41,
+      "name": "T-junction",
+      "kind": "landmark",
+      "position": [
+        -8.28,
+        -46.44
+      ],
+      "size": [
+        5.04,
+        4.68
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 42,
+      "name": "AJ Market",
+      "kind": "commercial",
+      "position": [
+        0.0,
+        -46.26
+      ],
+      "size": [
+        5.04,
+        4.5
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6"
+    },
+    {
+      "id": 43,
+      "name": "School of Postgraduate Studies",
+      "kind": "academic",
+      "position": [
+        8.82,
+        -46.44
+      ],
+      "size": [
+        8.6,
+        6.84
+      ],
+      "height": 5.5,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 44,
+      "name": "Faculty of Law",
+      "kind": "academic",
+      "position": [
+        19.44,
+        -46.44
+      ],
+      "size": [
+        9.2,
+        7.2
+      ],
+      "height": 9.0,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 45,
+      "name": "Law-side junction",
+      "kind": "landmark",
+      "position": [
+        32.4,
+        -46.44
+      ],
+      "size": [
+        5.58,
+        4.68
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 46,
+      "name": "Path / junction to Healthcare Centre",
+      "kind": "landmark",
+      "position": [
+        41.76,
+        -51.84
+      ],
+      "size": [
+        5.4,
+        4.32
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 47,
+      "name": "LASU Healthcare Centre",
+      "kind": "academic",
+      "position": [
+        48.06,
+        -39.42
+      ],
+      "size": [
+        12.96,
+        20.4
+      ],
+      "height": 5.5,
+      "fill": "#e1f3f2",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 48,
+      "name": "Makanjuola",
+      "kind": "academic",
+      "position": [
+        43.56,
+        -25.92
+      ],
+      "size": [
+        8.28,
+        3.2
+      ],
+      "height": 5.5,
+      "fill": "#e6e3ff",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 49,
+      "name": "Sports Centre",
+      "kind": "outdoor",
+      "position": [
+        20.34,
+        -61.2
+      ],
+      "size": [
+        38.16,
+        10.44
+      ],
+      "height": 0.12,
+      "fill": "#d6f1dc"
+    },
+    {
+      "id": 50,
+      "name": "Arcade",
+      "kind": "commercial",
+      "position": [
+        53.1,
+        -60.66
+      ],
+      "size": [
+        10.8,
+        7.56
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6"
+    },
+    {
+      "id": 51,
+      "name": "Arts / Eco Market junction",
+      "kind": "landmark",
+      "position": [
+        64.62,
+        -60.3
+      ],
+      "size": [
+        5.22,
+        4.32
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 52,
+      "name": "Eco Market (Art Market)",
+      "kind": "commercial",
+      "position": [
+        73.08,
+        -60.3
+      ],
+      "size": [
+        9.0,
+        5.04
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6"
+    },
+    {
+      "id": 53,
+      "name": "Banking Area",
+      "kind": "commercial",
+      "position": [
+        73.44,
+        -67.14
+      ],
+      "size": [
+        7.38,
+        4.14
+      ],
+      "height": 2.7,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 54,
+      "name": "AP Gate",
+      "kind": "landmark",
+      "position": [
+        90.9,
+        -66.6
+      ],
+      "size": [
+        6.3,
+        4.32
+      ],
+      "height": 0.0,
+      "fill": "#f5e4c8"
+    },
+    {
+      "id": 55,
+      "name": "Faculty of Arts",
+      "kind": "academic",
+      "position": [
+        73.8,
+        -43.2
+      ],
+      "size": [
+        20.16,
+        23.76
+      ],
+      "height": 9.0,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 56,
+      "name": "Main Gate 2 (Franklas Gate)",
+      "kind": "landmark",
+      "position": [
+        86.45,
+        -25.02
+      ],
+      "size": [
+        5.04,
+        8.46
+      ],
+      "height": 0.0,
+      "fill": "#f5e4c8",
+      "verified_by": "user correction 2026-10-20",
+      "placement_note": "Across the unchanged main-road centreline between Faculty of Arts and Administrative Area; replaces former unverified right-edge marker ID 56",
+      "previous_unverified_marker_position": [
+        90.9,
+        -25.02
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Main-road junction",
+      "kind": "landmark",
+      "position": [
+        -43.38,
+        -14.4
+      ],
+      "size": [
+        4.5,
+        4.5
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 58,
+      "name": "Faculty of Education",
+      "kind": "academic",
+      "position": [
+        -37.44,
+        -14.04
+      ],
+      "size": [
+        7.1,
+        8.1
+      ],
+      "height": 9.0,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 59,
+      "name": "LASU Radio",
+      "kind": "academic",
+      "position": [
+        -30.4,
+        -14.22
+      ],
+      "size": [
+        3.6,
+        4.32
+      ],
+      "height": 6.6,
+      "fill": "#e1f3f2",
+      "placement_note": "Between Faculty of Education and Mass Communication. Radio is a separate detached building."
+    },
+    {
+      "id": 61,
+      "name": "Senate Building",
+      "kind": "academic",
+      "position": [
+        -17.1,
+        -14.04
+      ],
+      "size": [
+        9.72,
+        7.56
+      ],
+      "height": 9.0,
+      "fill": "#e6e3ff"
+    },
+    {
+      "id": 62,
+      "name": "Mass Communication",
+      "kind": "academic",
+      "position": [
+        -3.4,
+        -19.0
+      ],
+      "size": [
+        5.8,
+        4.8
+      ],
+      "height": 8.4,
+      "fill": "#dceafc",
+      "source_label_anchor": [
+        -8.64,
+        -13.86
+      ],
+      "placement_note": "This Mass Communication building replaces the Education continuation (unverified) marker; slightly southeast of that marker to keep the existing v0.4 main road clear. Former incorrect id 60 has been removed."
+    },
+    {
+      "id": 63,
+      "name": "Staff Club",
+      "kind": "academic",
+      "position": [
+        -5.94,
+        2.52
+      ],
+      "size": [
+        5.22,
+        12.42
+      ],
+      "height": 5.5,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 64,
+      "name": "Love Garden",
+      "kind": "outdoor",
+      "position": [
+        5.04,
+        -4.32
+      ],
+      "size": [
+        7.74,
+        16.56
+      ],
+      "height": 0.12,
+      "fill": "#d6f1dc"
+    },
+    {
+      "id": 65,
+      "name": "MBA Auditorium",
+      "kind": "academic",
+      "position": [
+        14.22,
+        -5.4
+      ],
+      "size": [
+        10.08,
+        10.8
+      ],
+      "height": 7.5,
+      "fill": "#e6e3ff"
+    },
+    {
+      "id": 66,
+      "name": "Science Halls",
+      "kind": "academic",
+      "position": [
+        25.56,
+        -4.86
+      ],
+      "size": [
+        8.64,
+        16.2
+      ],
+      "height": 7.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 67,
+      "name": "Science Shops (west)",
+      "kind": "commercial",
+      "position": [
+        4.32,
+        16.02
+      ],
+      "size": [
+        4.68,
+        12.6
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6"
+    },
+    {
+      "id": 68,
+      "name": "Science Shops (west 2)",
+      "kind": "commercial",
+      "position": [
+        10.62,
+        16.02
+      ],
+      "size": [
+        4.86,
+        12.6
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6"
+    },
+    {
+      "id": 69,
+      "name": "Science Shops (east)",
+      "kind": "commercial",
+      "position": [
+        21.6,
+        15.3
+      ],
+      "size": [
+        4.86,
+        6.3
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 70,
+      "name": "Science Shops (east 2)",
+      "kind": "commercial",
+      "position": [
+        27.72,
+        15.3
+      ],
+      "size": [
+        4.86,
+        6.3
+      ],
+      "height": 2.7,
+      "fill": "#fff0c6",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 71,
+      "name": "Science Classroom Hall",
+      "kind": "academic",
+      "position": [
+        23.22,
+        22.68
+      ],
+      "size": [
+        13.86,
+        5.4
+      ],
+      "height": 7.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 72,
+      "name": "Science/BAT junction",
+      "kind": "landmark",
+      "position": [
+        36.36,
+        -14.22
+      ],
+      "size": [
+        5.94,
+        5.04
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 73,
+      "name": "Bola Ahmed Tinubu Science Complex",
+      "kind": "academic",
+      "position": [
+        48.42,
+        1.26
+      ],
+      "size": [
+        24.3,
+        22.2
+      ],
+      "height": 9.0,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 74,
+      "name": "Innovation Hub",
+      "kind": "academic",
+      "position": [
+        58.14,
+        -14.22
+      ],
+      "size": [
+        9.36,
+        5.4
+      ],
+      "height": 5.5,
+      "fill": "#dceafc",
+      "setback_note": "Render footprint reduced locally to provide separation without moving the mapped building centre."
+    },
+    {
+      "id": 75,
+      "name": "Old Library junction",
+      "kind": "landmark",
+      "position": [
+        65.34,
+        -14.4
+      ],
+      "size": [
+        5.04,
+        4.68
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 76,
+      "name": "Old Library",
+      "kind": "academic",
+      "position": [
+        76.32,
+        -15.12
+      ],
+      "size": [
+        17.28,
+        9.36
+      ],
+      "height": 9.0,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 77,
+      "name": "Administrative Area",
+      "kind": "academic",
+      "position": [
+        76.5,
+        -5.04
+      ],
+      "size": [
+        7.74,
+        5.22
+      ],
+      "height": 5.5,
+      "fill": "#e6e3ff"
+    },
+    {
+      "id": 78,
+      "name": "LASU Chapel",
+      "kind": "religious",
+      "position": [
+        76.5,
+        8.46
+      ],
+      "size": [
+        9.72,
+        9.36
+      ],
+      "height": 6.0,
+      "fill": "#f2e7fa"
+    },
+    {
+      "id": 79,
+      "name": "Road label (RD)",
+      "kind": "landmark",
+      "position": [
+        76.5,
+        1.44
+      ],
+      "size": [
+        6.12,
+        4.68
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    },
+    {
+      "id": 80,
+      "name": "LASU Staff School",
+      "kind": "residential",
+      "position": [
+        66.78,
+        30.42
+      ],
+      "size": [
+        14.04,
+        5.76
+      ],
+      "height": 5.5,
+      "fill": "#dceafc"
+    },
+    {
+      "id": 81,
+      "name": "Staff Quarters (east/south route)",
+      "kind": "residential",
+      "position": [
+        21.96,
+        61.2
+      ],
+      "size": [
+        6.48,
+        5.4
+      ],
+      "height": 6.5,
+      "fill": "#fce2e8"
+    },
+    {
+      "id": 82,
+      "name": "Additional campus building (labelled BUILDING)",
+      "kind": "academic",
+      "position": [
+        39.42,
+        48.6
+      ],
+      "size": [
+        14.4,
+        6.12
+      ],
+      "height": 5.5,
+      "fill": "#e6e3ff"
+    },
+    {
+      "id": 83,
+      "name": "Radioactive-labelled building — verification needed",
+      "kind": "unverified",
+      "position": [
+        48.06,
+        25.02
+      ],
+      "size": [
+        21.96,
+        6.3
+      ],
+      "height": 0.0,
+      "fill": "#f1f5f9"
+    },
+    {
+      "id": 84,
+      "name": "AP Gate connecting road",
+      "kind": "landmark",
+      "position": [
+        72.9,
+        -56.7
+      ],
+      "size": [
+        5.4,
+        4.5
+      ],
+      "height": 0.0,
+      "fill": "#e1f3f2"
+    }
+  ],
+  "roads": [
+    [
+      [
+        -45.54,
+        -60.3
+      ],
+      [
+        -9.36,
+        -60.3
+      ],
+      [
+        40.14,
+        -61.38
+      ],
+      [
+        63.0,
+        -61.38
+      ],
+      [
+        90.9,
+        -61.56
+      ]
+    ],
+    [
+      [
+        -45.54,
+        -46.44
+      ],
+      [
+        -35.1,
+        -46.44
+      ],
+      [
+        -26.46,
+        -46.44
+      ],
+      [
+        -18.9,
+        -46.44
+      ],
+      [
+        -9.0,
+        -46.44
+      ],
+      [
+        -0.54,
+        -46.44
+      ],
+      [
+        8.64,
+        -46.44
+      ],
+      [
+        18.9,
+        -46.44
+      ],
+      [
+        32.04,
+        -46.44
+      ],
+      [
+        41.04,
+        -52.2
+      ],
+      [
+        53.1,
+        -61.38
+      ]
+    ],
+    [
+      [
+        -9.0,
+        -60.3
+      ],
+      [
+        -9.0,
+        -46.44
+      ],
+      [
+        -9.0,
+        -14.58
+      ],
+      [
+        -9.0,
+        4.14
+      ],
+      [
+        -9.0,
+        43.2
+      ],
+      [
+        -9.671,
+        46.274
+      ],
+      [
+        -10.534,
+        49.234
+      ],
+      [
+        -11.587,
+        52.078
+      ],
+      [
+        -12.83,
+        54.806
+      ],
+      [
+        -14.265,
+        57.42
+      ],
+      [
+        -15.89,
+        59.918
+      ],
+      [
+        -17.707,
+        62.302
+      ],
+      [
+        -19.714,
+        64.57
+      ],
+      [
+        -21.911,
+        66.722
+      ],
+      [
+        -24.3,
+        68.76
+      ]
+    ],
+    [
+      [
+        -45.54,
+        -60.3
+      ],
+      [
+        -45.54,
+        -40.5
+      ],
+      [
+        -45.54,
+        -14.4
+      ],
+      [
+        -45.54,
+        45.54
+      ]
+    ],
+    [
+      [
+        -51.3,
+        -54.36
+      ],
+      [
+        -51.3,
+        -40.5
+      ],
+      [
+        -51.3,
+        -13.5
+      ],
+      [
+        -51.3,
+        7.2
+      ],
+      [
+        -51.3,
+        27.0
+      ],
+      [
+        -51.3,
+        38.7
+      ],
+      [
+        -57.24,
+        45.18
+      ],
+      [
+        -57.42,
+        68.58
+      ]
+    ],
+    [
+      [
+        -51.3,
+        -40.32
+      ],
+      [
+        -88.92,
+        -40.32
+      ],
+      [
+        -90.0,
+        -26.82
+      ],
+      [
+        -77.4,
+        -26.82
+      ]
+    ],
+    [
+      [
+        -83.88,
+        -26.82
+      ],
+      [
+        -83.88,
+        43.2
+      ],
+      [
+        -57.42,
+        45.18
+      ]
+    ],
+    [
+      [
+        -77.58,
+        -14.4
+      ],
+      [
+        -62.82,
+        -14.4
+      ],
+      [
+        -62.82,
+        44.64
+      ],
+      [
+        -83.7,
+        44.64
+      ]
+    ],
+    [
+      [
+        -77.94,
+        7.2
+      ],
+      [
+        -77.94,
+        42.12
+      ]
+    ],
+    [
+      [
+        -88.2,
+        43.92
+      ],
+      [
+        -88.2,
+        52.56
+      ],
+      [
+        -57.42,
+        52.56
+      ]
+    ],
+    [
+      [
+        -57.42,
+        68.76
+      ],
+      [
+        -53.276,
+        69.433
+      ],
+      [
+        -49.198,
+        69.941
+      ],
+      [
+        -45.184,
+        70.283
+      ],
+      [
+        -41.234,
+        70.459
+      ],
+      [
+        -37.35,
+        70.47
+      ],
+      [
+        -33.53,
+        70.315
+      ],
+      [
+        -29.776,
+        69.995
+      ],
+      [
+        -26.086,
+        69.509
+      ],
+      [
+        -22.46,
+        68.857
+      ],
+      [
+        -18.9,
+        68.04
+      ],
+      [
+        -15.25,
+        68.359
+      ],
+      [
+        -11.498,
+        68.666
+      ],
+      [
+        -7.646,
+        68.963
+      ],
+      [
+        -3.694,
+        69.25
+      ],
+      [
+        0.36,
+        69.525
+      ],
+      [
+        4.514,
+        69.79
+      ],
+      [
+        8.77,
+        70.043
+      ],
+      [
+        13.126,
+        70.286
+      ],
+      [
+        17.582,
+        70.519
+      ],
+      [
+        22.14,
+        70.74
+      ]
+    ],
+    [
+      [
+        -51.3,
+        -14.04
+      ],
+      [
+        -36.72,
+        -14.04
+      ],
+      [
+        -30.42,
+        -14.04
+      ],
+      [
+        -24.66,
+        -14.04
+      ],
+      [
+        -17.1,
+        -14.04
+      ],
+      [
+        -8.64,
+        -14.04
+      ],
+      [
+        0.72,
+        -14.04
+      ],
+      [
+        32.76,
+        -14.04
+      ],
+      [
+        39.06,
+        -14.04
+      ],
+      [
+        58.5,
+        -14.04
+      ],
+      [
+        74.52,
+        -14.04
+      ]
+    ],
+    [
+      [
+        -9.0,
+        -14.04
+      ],
+      [
+        -9.0,
+        2.88
+      ],
+      [
+        -9.0,
+        24.66
+      ]
+    ],
+    [
+      [
+        41.4,
+        -61.38
+      ],
+      [
+        54.0,
+        -61.38
+      ],
+      [
+        64.44,
+        -61.38
+      ],
+      [
+        72.9,
+        -61.38
+      ],
+      [
+        90.9,
+        -61.38
+      ]
+    ],
+    [
+      [
+        64.44,
+        -61.38
+      ],
+      [
+        64.44,
+        -44.28
+      ],
+      [
+        64.44,
+        -14.4
+      ]
+    ],
+    [
+      [
+        90.9,
+        -61.38
+      ],
+      [
+        90.9,
+        -15.12
+      ],
+      [
+        76.86,
+        -15.12
+      ]
+    ],
+    [
+      [
+        73.98,
+        -57.96
+      ],
+      [
+        73.98,
+        -14.22
+      ],
+      [
+        73.98,
+        9.0
+      ],
+      [
+        74.03,
+        11.101
+      ],
+      [
+        73.894,
+        13.154
+      ],
+      [
+        73.57,
+        15.161
+      ],
+      [
+        73.058,
+        17.122
+      ],
+      [
+        72.36,
+        19.035
+      ],
+      [
+        71.474,
+        20.902
+      ],
+      [
+        70.402,
+        22.721
+      ],
+      [
+        69.142,
+        24.494
+      ],
+      [
+        67.694,
+        26.221
+      ],
+      [
+        66.06,
+        27.9
+      ],
+      [
+        64.418,
+        29.813
+      ],
+      [
+        62.662,
+        31.738
+      ],
+      [
+        60.79,
+        33.673
+      ],
+      [
+        58.802,
+        35.618
+      ],
+      [
+        56.7,
+        37.575
+      ],
+      [
+        54.482,
+        39.542
+      ],
+      [
+        52.15,
+        41.521
+      ],
+      [
+        49.702,
+        43.51
+      ],
+      [
+        47.138,
+        45.509
+      ],
+      [
+        44.46,
+        47.52
+      ],
+      [
+        22.14,
+        61.38
+      ],
+      [
+        22.14,
+        70.74
+      ]
+    ],
+    [
+      [
+        32.22,
+        -46.44
+      ],
+      [
+        32.22,
+        -30.78
+      ],
+      [
+        43.2,
+        -26.1
+      ],
+      [
+        47.7,
+        -14.94
+      ]
+    ],
+    [
+      [
+        40.5,
+        -51.84
+      ],
+      [
+        47.88,
+        -51.84
+      ],
+      [
+        47.88,
+        -26.1
+      ],
+      [
+        47.88,
+        -14.76
+      ]
+    ],
+    [
+      [
+        32.4,
+        -14.04
+      ],
+      [
+        32.4,
+        -26.28
+      ],
+      [
+        47.88,
+        -26.28
+      ]
+    ],
+    [
+      [
+        -9.0,
+        -46.26
+      ],
+      [
+        -9.0,
+        -14.04
+      ]
+    ],
+    [
+      [
+        56.34,
+        -61.38
+      ],
+      [
+        56.34,
+        -26.28
+      ],
+      [
+        56.34,
+        -14.76
+      ]
+    ],
+    [
+      [
+        76.86,
+        -15.12
+      ],
+      [
+        76.86,
+        8.28
+      ],
+      [
+        76.86,
+        15.3
+      ]
+    ],
+    [
+      [
+        22.14,
+        61.38
+      ],
+      [
+        22.5,
+        70.2
+      ]
+    ]
+  ],
+  "water_or_secondary_paths": [
+    [
+      [
+        -9.36,
+        -46.44
+      ],
+      [
+        -8.644,
+        -42.779
+      ],
+      [
+        -8.078,
+        -39.211
+      ],
+      [
+        -7.664,
+        -35.737
+      ],
+      [
+        -7.402,
+        -32.357
+      ],
+      [
+        -7.29,
+        -29.07
+      ],
+      [
+        -7.33,
+        -25.877
+      ],
+      [
+        -7.52,
+        -22.777
+      ],
+      [
+        -7.862,
+        -19.771
+      ],
+      [
+        -8.356,
+        -16.859
+      ],
+      [
+        -9.0,
+        -14.04
+      ]
+    ],
+    [
+      [
+        32.04,
+        -46.44
+      ],
+      [
+        33.721,
+        -44.035
+      ],
+      [
+        35.381,
+        -41.717
+      ],
+      [
+        37.019,
+        -39.485
+      ],
+      [
+        38.635,
+        -37.339
+      ],
+      [
+        40.23,
+        -35.28
+      ],
+      [
+        41.803,
+        -33.307
+      ],
+      [
+        43.355,
+        -31.421
+      ],
+      [
+        44.885,
+        -29.621
+      ],
+      [
+        46.393,
+        -27.907
+      ],
+      [
+        47.88,
+        -26.28
+      ]
+    ],
+    [
+      [
+        -57.42,
+        68.58
+      ],
+      [
+        -55.237,
+        67.41
+      ],
+      [
+        -52.934,
+        66.492
+      ],
+      [
+        -50.513,
+        65.826
+      ],
+      [
+        -47.974,
+        65.412
+      ],
+      [
+        -45.315,
+        65.25
+      ],
+      [
+        -42.538,
+        65.34
+      ],
+      [
+        -39.641,
+        65.682
+      ],
+      [
+        -36.626,
+        66.276
+      ],
+      [
+        -33.493,
+        67.122
+      ],
+      [
+        -30.24,
+        68.22
+      ]
+    ]
+  ]
+}

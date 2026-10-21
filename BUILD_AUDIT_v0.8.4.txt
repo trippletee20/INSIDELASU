@@ -1,0 +1,18 @@
+Inside LASU v0.8.4 Build Audit
+
+Base: v0.8.3 Shuttle Stop Script Fix.
+Modified files:
+- data/road_network_v0.4.json (road-only geometry correction; campus_layout.json unchanged)
+- scripts/main.gd (road rendering guard against protected campus footprints)
+- scripts/transit_manager.gd (vehicle-route, endpoint-join and protected-stop-placement safety guards)
+- README_FIRST.txt, changelog and road-safety audit notes
+- tools/validate_road_safety.py (repeatable geometry audit)
+
+Checks:
+- Road-safety geometry audit at 1.2 map-unit clearance: PASS (0 conflicts).
+- Independent road-graph simulation: PASS (316 nodes, 342 edges, one connected component).
+- Destination stop-placement simulation: PASS (67/67 selectable destinations have clear stand positions).
+- Campus feature layout checksum compared with v0.8.3 source: unchanged.
+- JSON parsing: PASS.
+- ZIP CRC: will be checked after packaging.
+- Godot runtime: not executed in this packaging environment.
