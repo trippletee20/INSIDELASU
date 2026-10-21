@@ -21,9 +21,9 @@ for name, suffix in (("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache"),
     ENV[name] = str(path)
 
 
-def run(name, command, marker=None, allow_safe_wait=False):
+def run(name, command, marker=None, allow_safe_wait=False, timeout=180):
     result = subprocess.run(command, cwd=ROOT, env=ENV, text=True,
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=180)
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
     (OUT / f"{name}.log").write_text(result.stdout)
     print(result.stdout, end="")
     if result.returncode:
@@ -53,6 +53,12 @@ run("import", ["godot", "--headless", "--editor", "--path", str(ROOT), "--quit"]
 run("road-safety", [sys.executable, "tools/validate_road_safety.py"], "PASS: checked 336 road segments")
 run("traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/traffic_regression.gd"],
     "0 failures (seed 14014, 60 Hz)", allow_safe_wait=True)
+run("reservations", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/traffic_reservation_regression.gd"],
+    "25 checks, 0 failures")
+run("long-traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/traffic_long_run.gd", "--", "--seconds=300"],
+    "13 checks, 0 failures (300s, seed 14014, 60 Hz)", timeout=300)
+run("occupied-traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/traffic_long_run.gd", "--", "--seconds=300", "--held-passenger"],
+    "14 checks, 0 failures (300s, seed 14014, 60 Hz)", timeout=300)
 run("runtime", ["godot", "--headless", "--path", str(ROOT), "--fixed-fps", "60", "--quit-after", "180"])
 telemetry = OUT / "traffic.jsonl"
 telemetry.unlink(missing_ok=True)

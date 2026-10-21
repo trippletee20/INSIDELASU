@@ -1,5 +1,8 @@
 # Inside LASU v0.14: first traffic milestone
 
+Historical report: the follow-up in [TRAFFIC_RESERVATIONS.md](TRAFFIC_RESERVATIONS.md)
+adds reservations and addresses the long-run blockage described below.
+
 Implemented the brief's **first implementation task only**: diagnostics, deterministic
 engine scenarios, and reproduced traffic fixes. Later UI/economy, interior, NPC,
 save-schema migration, full lane-graph/reservation, and release work remains pending.

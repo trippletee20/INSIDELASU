@@ -1,0 +1,6 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+FAIL: parked passenger: departure starts at actual parked position
+FAIL: parked passenger: departure starts at actual parked position
+FAIL: parked passenger: quick travel restores exact lane and parking pose
+RESERVATION REGRESSION: 25 checks, 3 failures

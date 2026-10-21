@@ -1,0 +1,14 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SCENARIO: two-way passing completed
+SCENARIO: junction contention completed
+SCENARIO: blocked bay completed
+WARNING: Shuttle still waiting at bottleneck: yield. No unsafe teleport was used.
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _attempt_traffic_advance (res://scripts/transit_manager.gd:419)
+         [1] _run (res://tools/traffic_regression.gd:111)
+SCENARIO: backing to safe route / bounded safe wait completed
+SCENARIO: summoned pickup and onboard passenger completed
+SCENARIO: five-shuttle campus simulation completed
+TRAFFIC REGRESSION: 37 checks, 0 failures (seed 14014, 60 Hz)

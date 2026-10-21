@@ -20,6 +20,7 @@ var _destination_stop_visuals: Array = []
 var _destination_footprints: Array = []
 var _shared_stand_positions: Array = []
 var _junction_positions: Array = []
+var _reservations = preload("res://scripts/traffic_reservations.gd").new()
 const LANE_OFFSET_METRES: float = 2.12
 const LANE_MERGE_DISTANCE: float = 9.0
 const BUS_LENGTH: float = 6.6
@@ -161,6 +162,7 @@ func initialise(transit_data: Dictionary, shelter_data: Array, scale_factor: flo
         _services.append(service)
         _place_service(service)
 
+    _reservations.initialise(self)
     _build_terminal_bays()
     _build_destination_stops(campus_features, road_data)
     if OS.get_cmdline_user_args().has("--traffic-debug"):
@@ -194,6 +196,8 @@ func _build_terminal_bays() -> void:
             add_child(bay)
 
 func _physics_process(delta: float) -> void:
+    # Batch requests before movement so service iteration cannot steal a lease.
+    _reservations.update(self, delta)
     # Drive on fixed physics ticks; project physics interpolation smooths the render.
     for index in range(_services.size()):
         var service: Dictionary = _services[index]
@@ -240,9 +244,11 @@ func _physics_process(delta: float) -> void:
                     turning["lane_shift"] = minf(1.0, float(service.get("lane_shift", -1.0)) + delta * 0.52)
                     if _swept_pose_is_clear(index, turning):
                         service = turning
+                        service["blocked_duration"] = 0.0
+                        service["traffic_warning_issued"] = false
                     else:
                         service["waiting"] = destination_wait
-                        service["blocked_duration"] = float(service.get("blocked_duration", 0.0)) + delta
+                        _note_pose_wait(index, service, turning, delta, "turnaround")
                     _services[index] = service
                     _place_service(service, delta)
                 else:
@@ -264,7 +270,8 @@ func _physics_process(delta: float) -> void:
                     service["total"] = float(service.get("base_total", 1.0))
                     service["progress"] = float(service.get("base_progress", 0.0))
                     service["direction"] = int(service.get("base_direction", 1))
-                    service["lane_shift"] = 1.0
+                    service["lane_shift"] = float(service.get("base_lane_shift", 1.0))
+                    service["parking_blend"] = float(service.get("base_parking_blend", 0.0))
                     service["destination_mode"] = false
                     service["destination_name"] = ""
                     service["returning"] = false
@@ -295,9 +302,11 @@ func _physics_process(delta: float) -> void:
                 turning["lane_shift"] = minf(1.0, float(service.get("lane_shift", -1.0)) + delta * 0.5)
                 if _swept_pose_is_clear(index, turning):
                     service = turning
+                    service["blocked_duration"] = 0.0
+                    service["traffic_warning_issued"] = false
                 else:
                     service["waiting"] = waiting
-                    service["blocked_duration"] = float(service.get("blocked_duration", 0.0)) + delta
+                    _note_pose_wait(index, service, turning, delta, "turnaround")
                 _services[index] = service
                 _place_service(service, delta)
             else:
@@ -322,7 +331,8 @@ func _physics_process(delta: float) -> void:
                 service["total"] = float(service.get("loop_total", 1.0))
                 service["progress"] = float(service.get("loop_progress", 0.0))
                 service["direction"] = int(service.get("loop_direction", 1))
-                service["lane_shift"] = 1.0
+                service["lane_shift"] = float(service.get("loop_lane_shift", 1.0))
+                service["parking_blend"] = float(service.get("loop_parking_blend", 0.0))
                 service["at_stop_index"] = int(service.get("loop_at_stop_index", 0))
                 service["pickup_dispatch"] = false
                 service["pickup_only"] = false
@@ -337,6 +347,23 @@ func _physics_process(delta: float) -> void:
         _services[index] = service
         _place_service(service, delta)
 
+func _note_pose_wait(index: int, service: Dictionary, proposed: Dictionary, delta: float, reason: String) -> void:
+    service["blocked_duration"] = float(service.get("blocked_duration", 0.0)) + delta
+    service["traffic_reason"] = reason
+    var state: Array = _point_and_heading(proposed)
+    service["traffic_blocker"] = -1
+    for other_index in range(_services.size()):
+        if other_index == index:
+            continue
+        var other: Node3D = _services[other_index].node
+        if _vehicle_rectangles_overlap(Vector2(state[0].x, state[0].z), float(state[1]), Vector2(other.position.x, other.position.z), other.rotation.y):
+            service["traffic_blocker"] = other_index
+            break
+    if float(service.blocked_duration) > 25.0 and not service.get("traffic_warning_issued", false):
+        service["traffic_warning_issued"] = true
+        push_warning("Shuttle still waiting at bottleneck: " + str(service.get("name", "shuttle")) + ". Blocked " + reason + ".")
+        traffic_safe_wait.emit(str(service.get("id", "")), reason)
+
 func _attempt_traffic_advance(index: int, proposed_progress: float, delta: float) -> bool:
     # No colliding or teleporting: a standing bus is asked to clear the road;
     # otherwise a lower-priority bus reverses only on its existing valid route.
@@ -346,11 +373,17 @@ func _attempt_traffic_advance(index: int, proposed_progress: float, delta: float
         moving["yield_retreat_distance"] = 0.0
         moving["force_yield"] = false
         moving["traffic_warning_issued"] = false
+        moving["traffic_reason"] = ""
+        moving["traffic_blocker"] = -1
         _services[index] = moving
         return true
     var blocked: Dictionary = _services[index]
     var elapsed: float = float(blocked.get("blocked_duration", 0.0)) + delta
     blocked["blocked_duration"] = elapsed
+    var probe: Dictionary = blocked.duplicate()
+    probe.progress = proposed_progress
+    blocked["traffic_reason"] = "reservation" if not _reservations.permits(self, index, probe) else "vehicle"
+    blocked["traffic_blocker"] = _find_traffic_blocker(index, proposed_progress)
     _services[index] = blocked
     if elapsed >= HORN_WAIT_SECONDS and float(blocked.get("horn_cooldown", 0.0)) <= 0.0:
         var obstructing_index: int = _find_traffic_blocker(index, proposed_progress)
@@ -365,7 +398,7 @@ func _attempt_traffic_advance(index: int, proposed_progress: float, delta: float
                 # a waiting shuttle may leave its stop early.
                 if float(front_bus.get("waiting", 0.0)) > 0.0:
                     front_bus["waiting"] = 0.0
-                if obstructing_index > index:
+                if _must_yield_to_higher_priority(obstructing_index):
                     front_bus["force_yield"] = true
                 _services[obstructing_index] = front_bus
     if elapsed > 3.5 and (_must_yield_to_higher_priority(index) or bool(_services[index].get("force_yield", false))):
@@ -403,7 +436,7 @@ func _find_traffic_blocker(index: int, proposed_progress: float) -> int:
         var other_bus: Node3D = other.get("node") as Node3D
         if other_bus == null:
             continue
-        var other_heading: float = float(_point_and_heading(other)[1])
+        var other_heading: float = other_bus.rotation.y
         if _vehicle_rectangles_overlap(position_2d, heading, Vector2(other_bus.position.x, other_bus.position.z), other_heading):
             return other_index
     return -1
@@ -464,7 +497,10 @@ func _update_parking_bay(index: int, delta: float) -> bool:
     # Vehicle may not leave the road if the bay would clip a building or a bus.
     var dwell: bool = float(service.get("waiting", 0.0)) > 0.0 or bool(service.get("menu_hold", false))
     var current: float = float(service.get("parking_blend", 0.0))
-    var target: float = 1.0 if dwell else 0.0
+    # Merge back to the carriageway before turning; never sweep a full bay
+    # offset across both lanes while changing direction.
+    var turning: bool = float(service.get("lane_shift", 1.0)) < 0.9999
+    var target: float = 1.0 if dwell and not turning else 0.0
     if absf(target - current) < 0.0001:
         return false
     var change: float = delta * 0.75
@@ -481,27 +517,35 @@ func _update_parking_bay(index: int, delta: float) -> bool:
         # Never trap a bus in a stop that has no safe shoulder.
         service["waiting"] = minf(float(service.get("waiting", 0.0)), 0.55)
         _services[index] = service
+    if current > 0.01 and not dwell:
+        _note_pose_wait(index, service, test, delta, "bay merge")
+        _services[index] = service
     # A failed outward parking attempt must still let the dwell timer expire.
     # An unsafe inward merge holds position until the carriageway is clear.
     return current > 0.01 and not dwell
 
 func _must_yield_to_higher_priority(index: int) -> bool:
-    # Strict numerical priority breaks circular waiting: only lower-priority
-    # services reverse. The highest-priority bus never backs up because of a
-    # lower-priority bus, preventing two buses reversing toward one another.
     var service: Dictionary = _services[index]
-    var bus: Node3D = service.get("node") as Node3D
-    if bus == null:
-        return false
-    for other_index in range(index):
-        var other: Dictionary = _services[other_index]
-        var other_bus: Node3D = other.get("node") as Node3D
-        if other_bus == null:
-            continue
-        var gap: float = Vector2(bus.position.x - other_bus.position.x, bus.position.z - other_bus.position.z).length()
-        if gap < 23.0:
-            return true
-    return false
+    var direction: int = -1 if service.get("returning", false) else int(service.get("direction", 1))
+    var blocker: int = _find_traffic_blocker(index, clampf(float(service.progress) + direction, 0.0, float(service.total)))
+    if blocker < 0:
+        return false  # Queued reservations are not a reason to reverse.
+    var other: Dictionary = _services[blocker]
+    if other.get("menu_hold", false) or other.get("arrived", false):
+        return true
+    for zone in _reservations.zones:
+        if zone.queue.has(index) and zone.queue.has(blocker):
+            if int(zone.owner) == blocker:
+                return true
+            if int(zone.owner) == index:
+                return false
+            return int(zone.queue[blocker].ticket) < int(zone.queue[index].ticket)
+    # Outside reserved areas, let the older blocked request clear first.
+    var own_wait: float = float(service.get("blocked_duration", 0.0))
+    var other_wait: float = float(other.get("blocked_duration", 0.0))
+    if absf(own_wait - other_wait) > 0.1:
+        return other_wait > own_wait
+    return str(other.get("id", "")) < str(service.get("id", ""))
 
 func _safe_to_advance(index: int, next_progress: float) -> bool:
     # A circular 8.5 m keep-out zone previously locked opposing buses nose-to-nose.
@@ -512,6 +556,8 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
     var service: Dictionary = _services[index]
     var proposed: Dictionary = service.duplicate()
     proposed["progress"] = next_progress
+    if not _reservations.permits(self, index, proposed):
+        return false
     if not _swept_pose_is_clear(index, proposed):
         return false
     var proposed_state: Array = _point_and_heading(proposed)
@@ -520,7 +566,6 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
     var own_node: Node3D = service.get("node") as Node3D
     if own_node == null:
         return false
-    var current_xz: Vector2 = Vector2(own_node.position.x, own_node.position.z)
     var candidate_xz: Vector2 = Vector2(position_value.x, position_value.z)
     for other_index in range(_services.size()):
         if other_index == index:
@@ -538,26 +583,6 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
         # traffic even when a bus was fully parked inside an off-road bay.
         if _vehicle_rectangles_overlap(candidate_xz, heading, other_xz, other_heading):
             return false
-        # At crossings, smaller service index has right-of-way. The larger index
-        # yields BEFORE the intersection, rather than both stopping in the middle.
-        if other_index < index and not bool(other.get("arrived", false)):
-            if float(other.get("waiting", 0.0)) > 0.0 or bool(other.get("menu_hold", false)):
-                continue
-            var a_forward: Vector2 = Vector2(cos(heading), -sin(heading))
-            var b_forward: Vector2 = Vector2(cos(other_heading), -sin(other_heading))
-            if absf(a_forward.dot(b_forward)) > 0.78:
-                continue  # parallel or opposite lanes; oriented footprints handle these
-            for junction_variant in _junction_positions:
-                var junction: Vector2 = junction_variant
-                var current_distance: float = current_xz.distance_to(junction)
-                if current_distance > JUNCTION_APPROACH:
-                    continue
-                # A bus already crossing may finish: do not strand it inside the junction.
-                if current_distance < 5.0:
-                    continue
-                var next_distance: float = candidate_xz.distance_to(junction)
-                if next_distance < current_distance and next_distance < JUNCTION_APPROACH and other_xz.distance_to(junction) < 12.0:
-                    return false
     return true
 
 func _swept_pose_is_clear(index: int, proposed: Dictionary, check_features: bool = false) -> bool:
@@ -1058,6 +1083,8 @@ func prepare_destination(bus: Node3D, target_raw: Vector2, target_name: String) 
     service["base_total"] = float(service.get("total", 1.0))
     service["base_progress"] = float(service.get("progress", 0.0))
     service["base_direction"] = int(service.get("direction", 1))
+    service["base_lane_shift"] = float(service.get("lane_shift", 1.0))
+    service["base_parking_blend"] = float(service.get("parking_blend", 0.0))
     service["base_at_stop_index"] = int(service.get("at_stop_index", 0))
     service["base_waiting"] = float(service.get("waiting", 0.0))
     var stop_record: Dictionary = _destination_stops.get(target_name, {})
@@ -1069,6 +1096,9 @@ func prepare_destination(bus: Node3D, target_raw: Vector2, target_name: String) 
     service["progress"] = 0.0
     service["direction"] = 1
     service["destination_mode"] = true
+    # The new path already starts at the actual lane/bay-offset bus position.
+    # Applying its old parking offset again would jump the occupied bus sideways.
+    service["parking_blend"] = 0.0
     service["lane_shift"] = 1.0
     service["destination_name"] = target_name
     service["returning"] = false
@@ -1320,6 +1350,8 @@ func request_pickup(stop_name: String) -> bool:
         service["loop_total"] = float(service.get("base_total", 1.0))
         service["loop_progress"] = float(service.get("base_progress", 0.0))
         service["loop_direction"] = int(service.get("base_direction", 1))
+        service["loop_lane_shift"] = float(service.get("base_lane_shift", 1.0))
+        service["loop_parking_blend"] = float(service.get("base_parking_blend", 0.0))
         service["loop_at_stop_index"] = int(service.get("base_at_stop_index", 0))
         var pickup_points: Array = service.get("points", []).duplicate()
         var pickup_total: float = float(service.get("total", 1.0))
@@ -1327,6 +1359,8 @@ func request_pickup(stop_name: String) -> bool:
         service["base_total"] = pickup_total
         service["base_progress"] = pickup_total
         service["base_direction"] = -1
+        service["base_lane_shift"] = -1.0
+        service["base_parking_blend"] = 0.0
         service["base_at_stop_index"] = int(service.get("loop_at_stop_index", 0))
         service["destination_stand_position"] = stand_world
         service["destination_feature_position"] = stop_record.get("feature_world", stand_world)
@@ -1439,7 +1473,8 @@ func finish_quick_travel(bus: Node3D) -> void:
     service["total"] = float(service.get("base_total", 1.0))
     service["progress"] = float(service.get("base_progress", 0.0))
     service["direction"] = int(service.get("base_direction", 1))
-    service["lane_shift"] = 1.0
+    service["lane_shift"] = float(service.get("base_lane_shift", 1.0))
+    service["parking_blend"] = float(service.get("base_parking_blend", 0.0))
     service["at_stop_index"] = int(service.get("base_at_stop_index", 0))
     service["waiting"] = maxf(float(service.get("base_waiting", 0.0)), 2.0)
     service["destination_mode"] = false

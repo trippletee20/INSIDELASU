@@ -52,7 +52,9 @@ func snapshot() -> Array:
         var node: Node3D = s.node
         var direction: int = -1 if s.get("returning", false) else int(s.get("direction", 1))
         var next: float = clampf(float(s.progress) + direction * float(s.speed) / 60.0, 0.0, float(s.total))
-        var blocker: int = manager._find_traffic_blocker(i, next)
+        var blocker: int = int(s.get("traffic_blocker", -1))
+        if blocker < 0:
+            blocker = manager._find_traffic_blocker(i, next)
         var blocked: float = float(s.get("blocked_duration", 0.0))
         var state: String = "DRIVING"
         if float(s.get("waiting", 0.0)) > 0.0 or s.get("arrived", false):
@@ -72,7 +74,8 @@ func snapshot() -> Array:
             "blocker": str(manager._services[blocker].id) if blocker >= 0 else "",
             "stuck_seconds": blocked, "retreat_metres": float(s.get("yield_retreat_distance", 0.0)),
             "retreat_direction": -direction, "passenger": bool(s.get("passenger", false)),
-            "pickup": bool(s.get("pickup_dispatch", false)), "reservation": null,
+            "pickup": bool(s.get("pickup_dispatch", false)), "reservation": manager._reservations.records(i),
+            "reason": str(s.get("traffic_reason", "")),
             "priority_index": i})
     return result
 
@@ -103,7 +106,7 @@ func footprint(mesh: ImmediateMesh, pos: Vector3, heading: float, color: Color) 
 func redraw() -> void:
     var mesh := ImmediateMesh.new()
     mesh.surface_begin(Mesh.PRIMITIVE_LINES)
-    var text: String = "TRAFFIC DEBUG · F8 drawing · fixed 60 Hz\nCyan: centreline / green: lane / yellow: swept poses / red: blocker\nReservations: NONE (legacy proximity priority)\n"
+    var text: String = "TRAFFIC DEBUG · F8 drawing · fixed 60 Hz\nCyan: centreline / green: lane / yellow: swept poses / red: blocker\nReservations: FIFO / protected terminal exits\n"
     for i in range(manager._services.size()):
         var s: Dictionary = manager._services[i]
         var row: Dictionary = last_snapshot[i]
@@ -122,6 +125,14 @@ func redraw() -> void:
             prior = state[0]
         footprint(mesh, s.node.position, s.node.rotation.y, Color.WHITE)
         var blocker: int = manager._find_traffic_blocker(i, float(sample.progress))
+        for lease in row.reservation:
+            var center: Vector3 = Vector3(lease.position[0], 0.12, lease.position[1])
+            var color: Color = Color.MAGENTA if int(lease.owner) == i else Color.ORANGE
+            var prior_corner: Vector3 = center + Vector3(9, 0, 0)
+            for edge in range(1, 25):
+                var corner: Vector3 = center + Vector3(cos(edge * TAU / 24.0), 0, sin(edge * TAU / 24.0)) * 9.0
+                line(mesh, prior_corner, corner, color)
+                prior_corner = corner
         if blocker >= 0:
             line(mesh, s.node.position, manager._services[blocker].node.position, Color.RED)
         # Blue arrow is the potential retreat direction along the existing route.
