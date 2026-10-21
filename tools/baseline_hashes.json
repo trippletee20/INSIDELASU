@@ -1,0 +1,18 @@
+{
+  "data/transit_routes_v0.7.json": "5ac8021fdd7c030a79d56ccc65a199504ff21434fc4dc8196138da1b327d3b10",
+  "data/road_network_v0.4.json": "f7587e7ea37bfa320dad4c56d1acfbe00a837bb5766be3f4e36bdc4034a52cb1",
+  "data/task_catalog_v0.9.json": "cb4168c258e61209f229bd6a9f5b0dc616bb2a329fac163337bcd95098f7b06c",
+  "data/interior_catalog_v0.10.json": "5f7b1f67be069f7047f3651ff15d029058e93ccfd1f0f68e0fa40a118a4a9661",
+  "data/landscape_v0.5.json": "60982058a69402da16009bf4a425353f9095fab159e7f2a8f5c18671fdffb5ca",
+  "data/billboard_placement_audit_v0.10.json": "80afdd7319976734d23601819f6b7d342489fba45fda05c0212a7f5b21a2844c",
+  "data/amenities_v0.6.json": "9b1b6f21be0e3c20e90b9ddd962aacd4ba8e50c152872ef290be5147388a8527",
+  "data/market_prices_v0.10.json": "2fb21a28fed80dd2d2b46e7331d45b4a7f7df98d35a12e71bb90772b34a61c0a",
+  "data/campus_layout.json": "fe4467702650ba124221a4b7dfaa650e820515db084195ef511bbce97cc63257",
+  "project.godot": "344f0bffb64dd06a873bd8a5e1a2c7fe061e6befc4c850276cc97b013f02b1fb",
+  "scenes/main.tscn": "d9f88f59d82dfbe5ecd60ce478390edc24dfc9d5b0b053c6fcaed29e2524508a",
+  "scripts/main.gd": "86fb14088925a8a4cddba86e5823e361e0fbac74fd747335c96331443357d76c",
+  "scripts/interior_builder.gd": "ed6ff77c64ddb16a26231bf11435ccb3a632eb49107c857b26ccfc69af6bc920",
+  "scripts/player_controller.gd": "d75dfb772180836c92e21d5be8e6d9bd386b7f3491cc4e9db51b28a6e77b8526",
+  "scripts/architecture_builder.gd": "eec5bb46e263149ea1810ee2c9507ad76d9187460143d22f760bc4f6d4513e69",
+  "scripts/amenities_builder.gd": "b6acc60ef5193e3f744c22a72cf010a781cc4bb14ab60fe5be9f871f6b6d73c5"
+}

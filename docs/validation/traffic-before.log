@@ -1,0 +1,25 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SCENARIO: two-way passing completed
+FAIL: junction contention: both clear within 8 seconds
+SCENARIO: junction contention completed
+FAIL: blocked bay: full bus nose cannot penetrate a protected wall
+FAIL: blocked bay: unavailable shoulder does not hold service indefinitely
+SCENARIO: blocked bay completed
+FAIL: backing: retreat never exceeds 38 metre budget
+WARNING: Shuttle still waiting at bottleneck: yield. No unsafe teleport was used.
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _attempt_traffic_advance (res://scripts/transit_manager.gd:362)
+         [1] _run (res://tools/traffic_regression.gd:103)
+SCENARIO: backing to safe route / bounded safe wait completed
+FAIL: swept movement: cannot jump through a bus on a long tick
+SCENARIO: summoned pickup and onboard passenger completed
+WARNING: Skipping shuttle service because no continuous road route connects its stops: CENTRAL_LINK
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] initialise (res://scripts/transit_manager.gd:74)
+         [1] _run (res://tools/traffic_regression.gd:146)
+FAIL: campus: all five configured shuttles initialise
+SCENARIO: five-shuttle campus simulation completed
+TRAFFIC REGRESSION: 31 checks, 6 failures (seed 14014, 60 Hz)

@@ -1,0 +1,4 @@
+.godot/
+*.gd.uid
+*.import
+test-results/

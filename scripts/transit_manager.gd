@@ -1,4 +1,5 @@
 extends Node3D
+signal traffic_safe_wait(service_id: String, reason: String)
 # Inside LASU v0.13 — bus-bay staging, horns, rear-bus priority and deadlock recovery,
 # and junction right-of-way. Existing road graph / campus coordinates stay immutable.
 # Physics-tick movement with smooth steering and endpoint lane merging.
@@ -69,6 +70,11 @@ func initialise(transit_data: Dictionary, shelter_data: Array, scale_factor: flo
         var end_world: Vector3 = _shelter_positions[str(stop_ids[1])]
         var start_raw: Vector2 = Vector2(start_world.x / _scale, start_world.z / _scale)
         var end_raw: Vector2 = Vector2(end_world.x / _scale, end_world.z / _scale)
+        # Shelters are pedestrian waiting areas, not guaranteed road points.
+        # Project only the initial route origin; no off-road driving connector.
+        var origin_edge: Dictionary = _nearest_road_edge(start_raw, _main_component_id)
+        if not origin_edge.is_empty():
+            start_raw = origin_edge["point"]
         var raw_route: Array = _road_path_between(start_raw, end_raw)
         if raw_route.size() < 2:
             push_warning("Skipping shuttle service because no continuous road route connects its stops: " + str(line.get("id", "unknown")))
@@ -157,6 +163,11 @@ func initialise(transit_data: Dictionary, shelter_data: Array, scale_factor: flo
 
     _build_terminal_bays()
     _build_destination_stops(campus_features, road_data)
+    if OS.get_cmdline_user_args().has("--traffic-debug"):
+        var observer = load("res://scripts/traffic_debug.gd").new()
+        observer.name = "TrafficDiagnostics"
+        add_child(observer)
+        observer.attach(self)
 
 func _build_terminal_bays() -> void:
     # Visible pull-off pockets are separate from the running carriageway.
@@ -225,7 +236,13 @@ func _physics_process(delta: float) -> void:
             if destination_wait > 0.0:
                 service["waiting"] = maxf(0.0, destination_wait - delta)
                 if float(service.get("lane_shift", 1.0)) < 1.0:
-                    service["lane_shift"] = minf(1.0, float(service.get("lane_shift", -1.0)) + delta * 0.52)
+                    var turning: Dictionary = service.duplicate()
+                    turning["lane_shift"] = minf(1.0, float(service.get("lane_shift", -1.0)) + delta * 0.52)
+                    if _swept_pose_is_clear(index, turning):
+                        service = turning
+                    else:
+                        service["waiting"] = destination_wait
+                        service["blocked_duration"] = float(service.get("blocked_duration", 0.0)) + delta
                     _services[index] = service
                     _place_service(service, delta)
                 else:
@@ -274,7 +291,13 @@ func _physics_process(delta: float) -> void:
         if waiting > 0.0:
             service["waiting"] = maxf(0.0, waiting - delta)
             if float(service.get("lane_shift", 1.0)) < 1.0:
-                service["lane_shift"] = minf(1.0, float(service.get("lane_shift", -1.0)) + delta * 0.5)
+                var turning: Dictionary = service.duplicate()
+                turning["lane_shift"] = minf(1.0, float(service.get("lane_shift", -1.0)) + delta * 0.5)
+                if _swept_pose_is_clear(index, turning):
+                    service = turning
+                else:
+                    service["waiting"] = waiting
+                    service["blocked_duration"] = float(service.get("blocked_duration", 0.0)) + delta
                 _services[index] = service
                 _place_service(service, delta)
             else:
@@ -351,7 +374,8 @@ func _attempt_traffic_advance(index: int, proposed_progress: float, delta: float
         if bool(yielding.get("returning", false)):
             direction = -1
         var current: float = float(yielding.get("progress", 0.0))
-        var retreat: float = clampf(current - float(direction) * delta * 2.8, 0.0, float(yielding.get("total", 0.0)))
+        var retreat_budget: float = maxf(0.0, MAX_YIELD_DISTANCE - float(yielding.get("yield_retreat_distance", 0.0)))
+        var retreat: float = clampf(current - float(direction) * minf(delta * 2.8, retreat_budget), 0.0, float(yielding.get("total", 0.0)))
         if absf(retreat - current) > 0.0001 and float(yielding.get("yield_retreat_distance", 0.0)) < MAX_YIELD_DISTANCE and _safe_to_advance(index, retreat):
             yielding["progress"] = retreat
             yielding["yield_retreat_distance"] = float(yielding.get("yield_retreat_distance", 0.0)) + absf(retreat - current)
@@ -360,6 +384,7 @@ func _attempt_traffic_advance(index: int, proposed_progress: float, delta: float
             return false
     if elapsed > 25.0 and not bool(_services[index].get("traffic_warning_issued", false)):
         push_warning("Shuttle still waiting at bottleneck: " + str(_services[index].get("name", "shuttle")) + ". No unsafe teleport was used.")
+        traffic_safe_wait.emit(str(_services[index].get("id", "")), "Blocked route; bounded retreat unavailable")
         blocked = _services[index]
         blocked["traffic_warning_issued"] = true
         _services[index] = blocked
@@ -414,7 +439,10 @@ func _bay_position_is_clear(index: int, proposed: Dictionary) -> bool:
     var state: Array = _point_and_heading(proposed)
     var pos: Vector3 = state[0]
     var point: Vector2 = Vector2(pos.x / _scale, pos.z / _scale)
-    if not _segment_clear_of_campus_features(point, point, (BUS_WIDTH * 0.5 + 0.32) / _scale):
+    var forward: Vector2 = Vector2(cos(float(state[1])), -sin(float(state[1])))
+    # Conservative capsule includes nose, tail and corners, unlike a centre test.
+    var half_length: float = (BUS_LENGTH * 0.5 + COLLISION_BUFFER) / _scale
+    if not _segment_clear_of_campus_features(point - forward * half_length, point + forward * half_length, (BUS_WIDTH * 0.5 + 0.32) / _scale):
         return false
     for other_index in range(_services.size()):
         if index == other_index:
@@ -443,7 +471,7 @@ func _update_parking_bay(index: int, delta: float) -> bool:
     var future: float = move_toward(current, target, change)
     var test: Dictionary = service.duplicate()
     test["parking_blend"] = future
-    if _bay_position_is_clear(index, test):
+    if _bay_position_is_clear(index, test) and _swept_pose_is_clear(index, test, true):
         service["parking_blend"] = future
         _services[index] = service
         _place_service(service, delta)
@@ -453,7 +481,9 @@ func _update_parking_bay(index: int, delta: float) -> bool:
         # Never trap a bus in a stop that has no safe shoulder.
         service["waiting"] = minf(float(service.get("waiting", 0.0)), 0.55)
         _services[index] = service
-    return current > 0.01
+    # A failed outward parking attempt must still let the dwell timer expire.
+    # An unsafe inward merge holds position until the carriageway is clear.
+    return current > 0.01 and not dwell
 
 func _must_yield_to_higher_priority(index: int) -> bool:
     # Strict numerical priority breaks circular waiting: only lower-priority
@@ -482,6 +512,8 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
     var service: Dictionary = _services[index]
     var proposed: Dictionary = service.duplicate()
     proposed["progress"] = next_progress
+    if not _swept_pose_is_clear(index, proposed):
+        return false
     var proposed_state: Array = _point_and_heading(proposed)
     var position_value: Vector3 = proposed_state[0]
     var heading: float = float(proposed_state[1])
@@ -525,6 +557,42 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
                     continue
                 var next_distance: float = candidate_xz.distance_to(junction)
                 if next_distance < current_distance and next_distance < JUNCTION_APPROACH and other_xz.distance_to(junction) < 12.0:
+                    return false
+    return true
+
+func _swept_pose_is_clear(index: int, proposed: Dictionary, check_features: bool = false) -> bool:
+    # Sample intermediate route poses as well as the endpoint. Bound sample spacing
+    # and angular steps so a long physics tick cannot skip a stationary shuttle.
+    var service: Dictionary = _services[index]
+    var own: Node3D = service.get("node") as Node3D
+    if own == null:
+        return false
+    var target_state: Array = _point_and_heading(proposed)
+    var travel: float = absf(float(proposed.get("progress", 0.0)) - float(service.get("progress", 0.0)))
+    travel = maxf(travel, own.position.distance_to(target_state[0]))
+    var angle: float = absf(angle_difference(own.rotation.y, float(target_state[1])))
+    var steps: int = maxi(1, maxi(int(ceil(travel / 0.25)), int(ceil(angle / deg_to_rad(5.0)))))
+    for step in range(1, steps + 1):
+        var t: float = float(step) / float(steps)
+        var sample: Dictionary = proposed.duplicate()
+        sample["progress"] = lerpf(float(service.get("progress", 0.0)), float(proposed.get("progress", 0.0)), t)
+        sample["lane_shift"] = lerpf(float(service.get("lane_shift", 1.0)), float(proposed.get("lane_shift", 1.0)), t)
+        sample["parking_blend"] = lerpf(float(service.get("parking_blend", 0.0)), float(proposed.get("parking_blend", 0.0)), t)
+        var state: Array = _point_and_heading(sample)
+        var pos: Vector3 = state[0]
+        var xz: Vector2 = Vector2(pos.x, pos.z)
+        # Include the rendered body's rotation, which can lag the route tangent.
+        for heading in [float(state[1]), lerp_angle(own.rotation.y, float(target_state[1]), t)]:
+            if check_features:
+                var forward: Vector2 = Vector2(cos(heading), -sin(heading))
+                var half_length: float = (BUS_LENGTH * 0.5 + COLLISION_BUFFER) / _scale
+                if not _segment_clear_of_campus_features(xz / _scale - forward * half_length, xz / _scale + forward * half_length, (BUS_WIDTH * 0.5 + 0.32) / _scale):
+                    return false
+            for other_index in range(_services.size()):
+                if other_index == index:
+                    continue
+                var other_node: Node3D = _services[other_index].get("node") as Node3D
+                if other_node != null and _vehicle_rectangles_overlap(xz, heading, Vector2(other_node.position.x, other_node.position.z), other_node.rotation.y):
                     return false
     return true
 
@@ -1115,7 +1183,17 @@ func _place_service(service: Dictionary, smoothing_delta: float = 0.0) -> void:
         bus.rotation.y = target_heading
     else:
         # Smooth the vehicle body through corners while keeping its centre on the road.
-        bus.rotation.y = lerp_angle(bus.rotation.y, target_heading, clampf(smoothing_delta * 14.0, 0.0, 1.0))
+        var next_heading: float = lerp_angle(bus.rotation.y, target_heading, clampf(smoothing_delta * 14.0, 0.0, 1.0))
+        var rotation_clear: bool = true
+        for other in _services:
+            var other_bus: Node3D = other.get("node") as Node3D
+            if other_bus == null or other_bus == bus:
+                continue
+            if _vehicle_rectangles_overlap(Vector2(bus.position.x, bus.position.z), next_heading, Vector2(other_bus.position.x, other_bus.position.z), other_bus.rotation.y):
+                rotation_clear = false
+                break
+        if rotation_clear:
+            bus.rotation.y = next_heading
 
 func _find_service(bus: Node3D) -> int:
     for i in range(_services.size()):
