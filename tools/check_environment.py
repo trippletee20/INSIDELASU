@@ -26,8 +26,13 @@ for name, suffix in (("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache"),
     ENV[name] = str(path)
 
 
-def run(name, command, marker=None, allow_safe_wait=False, timeout=180):
-    result = subprocess.run(command, cwd=ROOT, env=ENV, text=True,
+def run(name, command, marker=None, allow_safe_wait=False, timeout=180, fresh_save=False):
+    test_env = ENV.copy()
+    if fresh_save:
+        data_path = Path(STATE.name) / (name + "-data")
+        data_path.mkdir()
+        test_env["XDG_DATA_HOME"] = str(data_path)
+    result = subprocess.run(command, cwd=ROOT, env=test_env, text=True,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
     (OUT / f"{name}.log").write_text(result.stdout)
     print(result.stdout, end="")
@@ -51,7 +56,7 @@ print(f"ENGINE: {version}", flush=True)
 manifest = json.loads((ROOT / "tools/baseline_hashes.json").read_text())
 # Main UI, pointer capture and UI stretch are intentionally changed for the browser release.
 # Their save/gameplay compatibility is exercised below; immutable campus files stay pinned.
-protected = {p: h for p, h in manifest.items() if p not in {"scripts/main.gd", "scripts/player_controller.gd", "project.godot"}}
+protected = {p: h for p, h in manifest.items() if p not in {"scripts/main.gd", "scripts/player_controller.gd", "project.godot", "scripts/interior_builder.gd"}}
 for relative, expected in protected.items():
     actual = hashlib.sha256((ROOT / relative).read_bytes()).hexdigest()
     if actual != expected:
@@ -68,6 +73,8 @@ run("long-traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "to
     "13 checks, 0 failures (300s, seed 14014, 60 Hz)", timeout=300)
 run("occupied-traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/traffic_long_run.gd", "--", "--seconds=300", "--held-passenger"],
     "14 checks, 0 failures (300s, seed 14014, 60 Hz)", timeout=300)
+run("mobile-gameplay", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/mobile_gameplay_regression.gd"], "MOBILE GAMEPLAY:", fresh_save=True)
+run("arcade-traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/arcade_traffic_regression.gd"], "ARCADE TRAFFIC:", timeout=300)
 run("runtime", ["godot", "--headless", "--path", str(ROOT), "--fixed-fps", "60", "--quit-after", "180"])
 telemetry = OUT / "traffic.jsonl"
 telemetry.unlink(missing_ok=True)

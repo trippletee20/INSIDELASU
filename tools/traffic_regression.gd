@@ -17,6 +17,8 @@ func check(ok: bool, message: String) -> void:
 
 func manager() -> Node3D:
     var m = Transit.new()
+    # Historical collision/reservation mode remains covered explicitly.
+    m.vehicle_blocking = true
     root.add_child(m)
     m.set_physics_process(false)
     m._scale = 1.0

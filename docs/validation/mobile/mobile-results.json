@@ -1,0 +1,14 @@
+{
+  "target": "Chromium mobile touch emulation; physical Android testing still required",
+  "viewports": [
+    "393x873",
+    "873x393"
+  ],
+  "profile_created_with_software_text_input": true,
+  "simultaneous_move_look_and_action": true,
+  "movement_energy_before": 94,
+  "movement_energy_after": 93.8677880666666,
+  "save_reloaded": true,
+  "pointer_lock": false,
+  "errors": []
+}

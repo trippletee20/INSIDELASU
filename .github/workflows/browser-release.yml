@@ -39,6 +39,10 @@ jobs:
           echo "$RUNNER_TEMP/browser-venv/bin" >> "$GITHUB_PATH"
       - name: Test exported browser game
         run: python3 tools/test_web.py
+      - name: Test mobile touch gameplay
+        run: python3 tools/test_mobile_web.py
+      - name: Test billboard advertising preview
+        run: python3 tools/test_advertising_preview.py
       - name: Upload test evidence
         if: always()
         uses: actions/upload-artifact@v4

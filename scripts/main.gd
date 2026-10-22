@@ -17,6 +17,10 @@ const SAVE_PATH = "user://inside_lasu_save.json"
 const SAVE_STORE = preload("res://scripts/save_store.gd")
 const STUDENT_UI = preload("res://scenes/ui/student_ui.tscn")
 var student_ui
+const MOBILE_CONTROLS = preload("res://scripts/mobile_controls.gd")
+var mobile_controls
+var billboard_slots: Array[Node3D] = []
+var selected_billboard: String = ""
 var transactions: Array = []
 var save_extras: Dictionary = {}
 var autosave_timer: float = 0.0
@@ -83,6 +87,10 @@ var wallet_summary_label: Label
 var wallet_balance_label: Label
 var daily_reward_button: Button
 var task_catalog: Dictionary = {}
+var building_experiences: Dictionary = {}
+var challenge_site: String = ""
+var challenge_entry: Dictionary = {}
+var challenge_step: int = 0
 var task_panel: PanelContainer
 var task_panel_layer: CanvasLayer
 var task_title_label: Label
@@ -136,6 +144,12 @@ func _ready() -> void:
     _create_transit_system()
     _create_shuttle_menu()
     _initialise_student_profile()
+    mobile_controls = MOBILE_CONTROLS.new()
+    add_child(mobile_controls)
+    mobile_controls.action_requested.connect(_mobile_action)
+    mobile_controls.look_requested.connect(_look_around)
+    mobile_controls.world_tapped.connect(_try_billboard_at)
+    _register_billboards(self)
 
 func _load_map_data() -> void:
     var file := FileAccess.open(LAYOUT_PATH, FileAccess.READ)
@@ -567,7 +581,7 @@ func _create_shuttle_menu() -> void:
     shuttle_menu = PanelContainer.new()
     shuttle_menu.name = "DestinationBoardingMenu"
     shuttle_menu.position = Vector2(340, 80)
-    shuttle_menu.custom_minimum_size = Vector2(600, 300)
+    shuttle_menu.custom_minimum_size = Vector2.ZERO
     shuttle_menu.visible = false
     var style: StyleBoxFlat = StyleBoxFlat.new()
     style.bg_color = Color(0.055, 0.12, 0.17, 0.97)
@@ -582,7 +596,11 @@ func _create_shuttle_menu() -> void:
     shuttle_menu.add_theme_stylebox_override("panel", style)
     var column: VBoxContainer = VBoxContainer.new()
     column.add_theme_constant_override("separation", 10)
-    shuttle_menu.add_child(column)
+    var boarding_scroll := ScrollContainer.new()
+    boarding_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+    shuttle_menu.add_child(boarding_scroll)
+    boarding_scroll.add_child(column)
+    column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     shuttle_menu_title = Label.new()
     shuttle_menu_title.add_theme_font_size_override("font_size", 17)
     shuttle_menu_title.add_theme_color_override("font_color", Color.WHITE)
@@ -594,7 +612,9 @@ func _create_shuttle_menu() -> void:
     destination_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(destination_label)
     destination_option = OptionButton.new()
-    destination_option.custom_minimum_size = Vector2(540, 40)
+    destination_option.custom_minimum_size = Vector2(0, 48)
+    destination_option.fit_to_longest_item = false
+    destination_option.clip_text = true
     destination_option.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     destination_option.item_selected.connect(_on_destination_selected)
     column.add_child(destination_option)
@@ -604,18 +624,18 @@ func _create_shuttle_menu() -> void:
     shuttle_fare_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(shuttle_fare_label)
     _refresh_shuttle_fare_label()
-    var travel_buttons: HBoxContainer = HBoxContainer.new()
+    var travel_buttons: BoxContainer = VBoxContainer.new() if MOBILE_CONTROLS.touch_device() else HBoxContainer.new()
     travel_buttons.add_theme_constant_override("separation", 12)
     column.add_child(travel_buttons)
     var ride_button: Button = Button.new()
     ride_button.text = "RIDE & WATCH • ₦150"
-    ride_button.custom_minimum_size = Vector2(260, 43)
+    ride_button.custom_minimum_size = Vector2(0, 48)
     ride_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     ride_button.pressed.connect(_confirm_board_shuttle)
     travel_buttons.add_child(ride_button)
     var quick_button: Button = Button.new()
     quick_button.text = "QUICK TRAVEL • ₦150"
-    quick_button.custom_minimum_size = Vector2(260, 43)
+    quick_button.custom_minimum_size = Vector2(0, 48)
     quick_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     quick_button.pressed.connect(_confirm_quick_travel)
     travel_buttons.add_child(quick_button)
@@ -624,7 +644,7 @@ func _create_shuttle_menu() -> void:
     column.add_child(pass_row)
     var pass_button: Button = Button.new()
     pass_button.text = "PASS / WALK"
-    pass_button.custom_minimum_size = Vector2(540, 38)
+    pass_button.custom_minimum_size = Vector2(0, 48)
     pass_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     pass_button.pressed.connect(_decline_board_shuttle)
     pass_row.add_child(pass_button)
@@ -722,7 +742,7 @@ func try_vehicle_interaction(walker: Node3D) -> bool:
     shuttle_menu_title.text = transit_system.line_name(chosen_bus) + "\nChoose your destination and travel style."
     _refresh_shuttle_fare_label()
     shuttle_menu.visible = true
-    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+    _set_mouse_capture(false)
     return true
 
 func _decline_board_shuttle() -> void:
@@ -731,7 +751,7 @@ func _decline_board_shuttle() -> void:
     chosen_bus = null
     shuttle_menu.visible = false
     if not overview_on:
-        Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+        _set_mouse_capture(true)
 
 func _confirm_board_shuttle() -> void:
     if chosen_bus == null or transit_system == null or player == null:
@@ -771,7 +791,7 @@ func _confirm_board_shuttle() -> void:
     var ride_camera: Camera3D = transit_system.onboard_camera(ride_bus)
     if ride_camera != null:
         ride_camera.current = true
-    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+    _set_mouse_capture(false)
     notice = "Paid ₦150. Travelling to " + destination_name + ". You'll alight near the destination and walk to the entrance." + route_note
     notice_timer = 6.0
     _update_wallet_panel()
@@ -829,7 +849,7 @@ func _disembark_shuttle() -> void:
         walk_camera.current = true
     ride_bus = null
     if not overview_on:
-        Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+        _set_mouse_capture(true)
     notice = "Arrived at " + arrived_at + ". You're back on foot."
     notice_timer = 5.0
 
@@ -950,6 +970,7 @@ func _create_hud() -> void:
     add_child(student_ui)
     student_ui.modal_changed.connect(_on_student_modal)
     student_ui.reward_requested.connect(_claim_daily_reward)
+    student_ui.ad_preview_requested.connect(_preview_advertisement)
     hud_label = student_ui.prompt
     hud_time_chip = student_ui.clock
     hud_energy_meter = student_ui.energy
@@ -962,6 +983,9 @@ func _create_wallet_panel() -> void:
     wallet_summary_label = student_ui.wallet_summary
 
 func _on_student_modal(open: bool) -> void:
+    if open and (profile_layer != null or (task_panel != null and task_panel.visible) or (shuttle_menu != null and shuttle_menu.visible)):
+        student_ui.close()
+        return
     if open:
         _update_wallet_panel()
     if player == null or profile_data.is_empty():
@@ -971,7 +995,7 @@ func _on_student_modal(open: bool) -> void:
     player.set_process_unhandled_input(can_walk)
     if open:
         player.velocity = Vector3.ZERO
-    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if open else Input.MOUSE_MODE_CAPTURED
+    _set_mouse_capture(not open)
     if not open:
         _save_game()
 
@@ -1018,7 +1042,7 @@ func _initialise_student_profile() -> void:
         if player != null:
             player.set_physics_process(false)
             player.set_process_unhandled_input(false)
-        Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+        _set_mouse_capture(false)
         _create_profile_ui()
     else:
         if player != null:
@@ -1026,7 +1050,7 @@ func _initialise_student_profile() -> void:
             player.set_process_unhandled_input(true)
         if player.has_method("apply_profile_appearance"):
             player.call("apply_profile_appearance", str(profile_data.get("gender", "Prefer not to say")), str(profile_data.get("student_name", "Student")))
-        Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if OS.has_feature("web") else Input.MOUSE_MODE_CAPTURED
+        _set_mouse_capture(not OS.has_feature("web"))
         if wallet_panel != null:
             wallet_panel.visible = true
         _update_wallet_panel()
@@ -1046,7 +1070,7 @@ func _create_profile_ui() -> void:
     panel.custom_minimum_size = Vector2(0, 0)
     var layout_profile: Callable = func():
         var viewport: Vector2 = get_viewport().get_visible_rect().size
-        panel.size = Vector2(minf(740, viewport.x - 32), minf(620, viewport.y - 32))
+        panel.size = Vector2(minf(740, viewport.x - 24), minf(620, viewport.y - 24))
         panel.position = (viewport - panel.size) * 0.5
     get_viewport().size_changed.connect(layout_profile)
     panel.tree_exiting.connect(func():
@@ -1075,8 +1099,9 @@ func _create_profile_ui() -> void:
     var title: Label = Label.new()
     title.text = "WELCOME TO INSIDE LASU"
     title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     title.add_theme_color_override("font_color", Color(0.06, 0.19, 0.29))
-    title.add_theme_font_size_override("font_size", 25)
+    title.add_theme_font_size_override("font_size", 18 if MOBILE_CONTROLS.touch_device() else 25)
     column.add_child(title)
     var subtitle: Label = Label.new()
     subtitle.text = "Create your student profile. Your level, CGPA, background and starting money will be assigned randomly."
@@ -1088,7 +1113,8 @@ func _create_profile_ui() -> void:
 
     profile_name_input = LineEdit.new()
     profile_name_input.max_length = 40
-    profile_name_input.call_deferred("grab_focus")
+    if not MOBILE_CONTROLS.touch_device():
+        profile_name_input.call_deferred("grab_focus")
     profile_name_input.placeholder_text = "Enter your student's name"
     profile_name_input.custom_minimum_size = Vector2(440, 36)
     _add_profile_row(column, "Student name", profile_name_input)
@@ -1137,30 +1163,32 @@ func _create_profile_ui() -> void:
 
     var create_button: Button = Button.new()
     create_button.text = "GENERATE MY STUDENT LIFE"
-    create_button.custom_minimum_size = Vector2(440, 48)
+    create_button.custom_minimum_size = Vector2(0, 48)
     create_button.add_theme_font_size_override("font_size", 16)
     create_button.pressed.connect(_create_student_profile)
     column.add_child(create_button)
     var footer: Label = Label.new()
     footer.text = "In-game currency only • Your first hostel rent is prepaid • Daily rewards use your real system date"
     footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    footer.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     footer.add_theme_color_override("font_color", Color(0.30, 0.36, 0.40))
     footer.add_theme_font_size_override("font_size", 11)
     column.add_child(footer)
 
 func _add_profile_row(parent: VBoxContainer, label_text: String, control: Control) -> void:
-    var row: HBoxContainer = HBoxContainer.new()
-    row.add_theme_constant_override("separation", 12)
+    var row: BoxContainer = VBoxContainer.new() if MOBILE_CONTROLS.touch_device() else HBoxContainer.new()
+    row.add_theme_constant_override("separation", 6 if MOBILE_CONTROLS.touch_device() else 12)
     var label: Label = Label.new()
     label.text = label_text
-    label.custom_minimum_size = Vector2(170, 34)
+    label.custom_minimum_size = Vector2(0 if MOBILE_CONTROLS.touch_device() else 170, 26)
     label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
     label.add_theme_color_override("font_color", Color(0.09, 0.17, 0.22))
     label.add_theme_font_size_override("font_size", 14)
     row.add_child(label)
-    control.custom_minimum_size = Vector2(0, maxf(control.custom_minimum_size.y, 36.0))
+    control.custom_minimum_size = Vector2(0, maxf(control.custom_minimum_size.y, 44.0 if MOBILE_CONTROLS.touch_device() else 36.0))
     if control is OptionButton:
         control.fit_to_longest_item = false
+        control.clip_text = true
     control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     row.add_child(control)
     parent.add_child(row)
@@ -1287,7 +1315,7 @@ func _create_student_profile() -> void:
         player.set_process_unhandled_input(true)
     if wallet_panel != null:
         wallet_panel.visible = true
-    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+    _set_mouse_capture(true)
     var cgpa_text: String = "Not yet assigned (100 Level starts from scratch)" if assigned_level == 100 else str(cgpa_value)
     notice = "Welcome, " + student_name + "! " + str(profile_data["background"]) + " background • Level " + str(assigned_level) + " • CGPA: " + cgpa_text + " • First-session rent prepaid. First objective: check in at " + hostel_name + "."
     notice_timer = 10.0
@@ -1446,6 +1474,10 @@ func _check_hostel_curfew() -> void:
     _save_game()
 
 func _unhandled_input(event: InputEvent) -> void:
+    if not MOBILE_CONTROLS.touch_device() and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+        if _try_billboard_at(event.position):
+            get_viewport().set_input_as_handled()
+            return
     if student_ui != null and profile_layer == null and event is InputEventKey and event.pressed and not event.echo:
         if event.keycode == KEY_ESCAPE and student_ui.modal.visible:
             student_ui.close()
@@ -1487,6 +1519,10 @@ func _unhandled_input(event: InputEvent) -> void:
             _decline_board_shuttle()
         return
     if ride_bus != null:
+        if event is InputEventKey and event.pressed and event.keycode == KEY_V:
+            transit_system.toggle_passenger_view(ride_bus)
+        elif event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+            transit_system.look_passenger(ride_bus, event.relative)
         return
     if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_M:
         overview_on = not overview_on
@@ -1495,9 +1531,10 @@ func _unhandled_input(event: InputEvent) -> void:
             var walk_camera := player.get("camera") as Camera3D
             if walk_camera != null:
                 walk_camera.current = true
-        Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if overview_on else Input.MOUSE_MODE_CAPTURED
+        _set_mouse_capture(not overview_on)
 
 func _process(delta: float) -> void:
+    _sync_mobile_controls()
     autosave_timer += delta
     if autosave_timer >= 30.0:
         autosave_timer = 0.0
@@ -1514,7 +1551,7 @@ func _process(delta: float) -> void:
     if player != null and not profile_data.is_empty() and ride_bus == null and (task_panel == null or not task_panel.visible):
         var walk_rate: float = Vector2(player.velocity.x, player.velocity.z).length()
         if walk_rate > 0.5 and not bool(player.get("is_sitting")):
-            var sprinting: bool = Input.is_key_pressed(KEY_SHIFT)
+            var sprinting: bool = Input.is_key_pressed(KEY_SHIFT) or bool(player.get("touch_running"))
             energy = maxf(0.0, energy - delta * (0.095 if sprinting else 0.022))
             stamina = maxf(0.0, stamina - delta * (0.32 if sprinting else 0.055))
             stress = minf(100.0, stress + delta * 0.007)
@@ -1541,11 +1578,11 @@ func _update_hud() -> void:
             location_name = str(nearby.get_meta("campus_name", "Campus"))
     student_ui.location.text = location_name
     student_ui.objective.text = "Create your student profile to begin." if profile_data.is_empty() else ("Check in at " + str(profile_data.get("hostel_name", "your hostel")) if not profile_data.get("hostel_checked_in", false) else "Explore campus · study, work and build your skills")
-    var message: String = "E interact · F sit · M map · B wallet · P profile · H help"
+    var message: String = "Left stick: move · Swipe right: look · Tap Interact near a building" if MOBILE_CONTROLS.touch_device() else "E interact · F sit · M map · B wallet · P profile · H help"
     if not active_interior_site.is_empty():
-        message = "E — Activities, room access, floors and exit"
+        message = "Interact: activities, rooms, floors and exit" if MOBILE_CONTROLS.touch_device() else "E — Activities, room access, floors and exit"
     if ride_bus != null and transit_system != null:
-        message = "Arrived — press E to leave the shuttle" if transit_system.has_arrived(ride_bus) else "Onboard: " + transit_system.next_stop_name(ride_bus)
+        message = "Arrived — tap Alight / press E to leave" if transit_system.has_arrived(ride_bus) else "Onboard: " + transit_system.next_stop_name(ride_bus)
     if not notice.is_empty():
         message += "\n" + notice
     hud_label.text = message
@@ -1587,6 +1624,10 @@ func _load_task_catalog() -> void:
     source.close()
     if typeof(parsed) == TYPE_DICTIONARY:
         task_catalog = parsed.get("locations", {})
+        building_experiences = JSON.parse_string(FileAccess.get_file_as_string("res://data/building_experiences.json")).get("locations", {})
+        for site in building_experiences:
+            var original: Array = task_catalog.get(site, [])
+            task_catalog[site] = building_experiences[site].get("tasks", []).duplicate(true) + original
     else:
         push_error("Invalid task catalogue JSON.")
 
@@ -1594,7 +1635,8 @@ func _layout_action_menus() -> void:
     var viewport: Vector2 = get_viewport().get_visible_rect().size
     for panel in [task_panel, shuttle_menu]:
         if panel != null:
-            panel.position = Vector2(maxf(16, (viewport.x - panel.size.x) * 0.5), maxf(16, (viewport.y - panel.size.y) * 0.5))
+            panel.size = Vector2(minf(660, viewport.x - 24), minf(560 if panel == task_panel else 420, viewport.y - 24))
+            panel.position = (viewport - panel.size) * 0.5
 
 func _create_task_panel() -> void:
     task_panel_layer = CanvasLayer.new()
@@ -1604,7 +1646,7 @@ func _create_task_panel() -> void:
     task_panel = PanelContainer.new()
     task_panel.name = "ActivityPanel"
     task_panel.visible = false
-    task_panel.custom_minimum_size = Vector2(660, 560)
+    task_panel.custom_minimum_size = Vector2.ZERO
     task_panel.position = Vector2(310, 80)
     get_viewport().size_changed.connect(_layout_action_menus)
     call_deferred("_layout_action_menus")
@@ -1624,7 +1666,8 @@ func _create_task_panel() -> void:
     column.add_theme_constant_override("separation", 8)
     task_panel.add_child(column)
     task_title_label = Label.new()
-    task_title_label.add_theme_font_size_override("font_size", 23)
+    task_title_label.add_theme_font_size_override("font_size", 20)
+    task_title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     task_title_label.add_theme_color_override("font_color", Color(0.95, 0.98, 0.97))
     column.add_child(task_title_label)
     var help: Label = Label.new()
@@ -1633,7 +1676,8 @@ func _create_task_panel() -> void:
     help.add_theme_color_override("font_color", Color(0.67, 0.85, 0.85))
     column.add_child(help)
     var scroll: ScrollContainer = ScrollContainer.new()
-    scroll.custom_minimum_size = Vector2(600, 330)
+    scroll.custom_minimum_size = Vector2(0, 80)
+    scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
     column.add_child(scroll)
     task_buttons_container = VBoxContainer.new()
@@ -1642,7 +1686,7 @@ func _create_task_panel() -> void:
     scroll.add_child(task_buttons_container)
     task_status_label = Label.new()
     task_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    task_status_label.custom_minimum_size = Vector2(600, 54)
+    task_status_label.custom_minimum_size = Vector2(0, 48)
     task_status_label.add_theme_color_override("font_color", Color(0.98, 0.83, 0.55))
     column.add_child(task_status_label)
     var close_button: Button = Button.new()
@@ -1668,16 +1712,18 @@ func _open_task_panel(site_name: String) -> void:
             if site_name == str(profile_data.get("hostel_name", "")):
                 if active_private_room:
                     _populate_private_room_menu()
+                    _fit_activity_navigation()
+                    _layout_action_menus()
                     task_panel.visible = true
                     if player != null:
                         player.velocity = Vector3.ZERO
                         player.set_physics_process(false)
                         player.set_process_unhandled_input(false)
-                    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+                    _set_mouse_capture(false)
                     return
                 var private_button := Button.new()
                 private_button.text = "UNLOCK MY ROOM " + str(profile_data.get("room_number", "?")) + "  •  Private personal space"
-                private_button.custom_minimum_size = Vector2(560, 48)
+                private_button.custom_minimum_size = Vector2(0, 48)
                 private_button.pressed.connect(_enter_private_room)
                 task_buttons_container.add_child(private_button)
             var floor_list: Array = interior_catalog[site_name]
@@ -1709,17 +1755,27 @@ func _open_task_panel(site_name: String) -> void:
             elif _task_floor_for_site(site_name, entry) != active_interior_floor:
                 continue
         var action: Button = Button.new()
-        action.custom_minimum_size = Vector2(580, 63)
+        action.custom_minimum_size = Vector2(0, 72)
         action.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        action.alignment = HORIZONTAL_ALIGNMENT_LEFT
-        action.text = str(entry.get("title", "Activity"))
+        var caption: String = str(entry.get("title", "Activity"))
         var cost: int = _activity_price(entry)
         var reward: int = int(entry.get("reward", 0))
         if cost > 0:
-            action.text += "   −" + _format_naira(cost)
+            caption += "   −" + _format_naira(cost)
         elif reward > 0:
-            action.text += "   +" + _format_naira(reward)
-        action.text += "\n" + str(entry.get("description", ""))
+            caption += "   +" + _format_naira(reward)
+        var task_label := Label.new()
+        task_label.text = caption + "\n" + str(entry.get("description", ""))
+        task_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+        task_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+        task_label.add_theme_font_size_override("font_size", 13)
+        task_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+        task_label.offset_left = 12
+        task_label.offset_right = -12
+        task_label.offset_top = 8
+        task_label.offset_bottom = -8
+        action.add_child(task_label)
+        task_label.resized.connect(func(): action.custom_minimum_size.y = maxf(72, task_label.get_minimum_size().y + 16))
         var task_box: StyleBoxFlat = StyleBoxFlat.new()
         task_box.bg_color = Color(0.105, 0.25, 0.31)
         task_box.border_color = Color(0.22, 0.53, 0.53)
@@ -1735,12 +1791,14 @@ func _open_task_panel(site_name: String) -> void:
         action.add_theme_font_size_override("font_size", 13)
         action.pressed.connect(_run_location_task.bind(site_name, entry))
         task_buttons_container.add_child(action)
+    _fit_activity_navigation()
     task_panel.visible = true
+    _layout_action_menus()
     if player != null:
         player.velocity = Vector3.ZERO
         player.set_physics_process(false)
         player.set_process_unhandled_input(false)
-    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+    _set_mouse_capture(false)
 
 func _close_task_panel() -> void:
     if task_panel != null:
@@ -1749,7 +1807,7 @@ func _close_task_panel() -> void:
         player.set_physics_process(true)
         player.set_process_unhandled_input(true)
     if not overview_on and ride_bus == null:
-        Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+        _set_mouse_capture(true)
 
 func _run_location_task(site_name: String, entry: Dictionary) -> void:
     var kind: String = str(entry.get("kind", "information"))
@@ -1767,6 +1825,18 @@ func _run_location_task(site_name: String, entry: Dictionary) -> void:
         return
     if str(entry.get("requires", "")) == "radio_major_or_invitation" and not _radio_eligible(today):
         task_status_label.text = "LASU Radio studio access requires a related media department or a confirmed interview invitation."
+        return
+    if entry.has("floor") and active_interior_floor != _task_floor_for_site(site_name, entry):
+        task_status_label.text = "Go to the indicated floor to begin this activity."
+        return
+    if entry.has("challenge"):
+        if bool(entry.get("once_daily", false)) and str(task_daily_completions.get(task_id, "")) == today:
+            task_status_label.text = "You have completed this activity today. Come back tomorrow."
+            return
+        challenge_site = site_name
+        challenge_entry = entry.duplicate(true)
+        challenge_step = 0
+        _show_challenge_step()
         return
     if kind == "arcade_match":
         var fee: int = cost
@@ -1859,6 +1929,7 @@ func _run_location_task(site_name: String, entry: Dictionary) -> void:
     _apply_activity_stats(entry, task_id, today)
     _save_game()
     _update_wallet_panel()
+    message = str(entry.get("success", message))
     task_status_label.text = message
     notice = title + " • " + message
     notice_timer = 7.0
@@ -2108,6 +2179,8 @@ func _apply_activity_stats(entry: Dictionary, task_id: String, today: String) ->
 
 func _task_floor_for_site(site_name: String, entry: Dictionary) -> int:
     var options: Array = interior_catalog.get(site_name, [])
+    if entry.has("floor"):
+        return clampi(int(entry.floor), 0, maxi(0, options.size() - 1))
     if options.size() < 2:
         return 0
     var taskid: String = str(entry.get("id", "")).to_lower()
@@ -2148,3 +2221,169 @@ func _register_interior_seats() -> void:
         var world: Vector3 = mesh.global_position
         anchor.set_meta("seat_surface_position", world)
         anchor.global_position = Vector3(world.x, maxf(0.05, world.y - 0.37), world.z - 0.40)
+
+
+func _set_mouse_capture(capture: bool) -> void:
+    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if capture and not MOBILE_CONTROLS.touch_device() else Input.MOUSE_MODE_VISIBLE
+
+func _sync_mobile_controls() -> void:
+    if mobile_controls == null or player == null:
+        return
+    var playable: bool = not profile_data.is_empty() and profile_layer == null and not student_ui.modal.visible and not task_panel.visible and not shuttle_menu.visible
+    mobile_controls.set_enabled(playable, ride_bus != null, overview_on)
+    player.touch_movement = mobile_controls.movement if playable and ride_bus == null and not overview_on else Vector2.ZERO
+    player.touch_running = mobile_controls.running if playable and ride_bus == null and not overview_on else false
+    if not playable:
+        player.touch_jump = false
+
+func _mobile_action(action: String) -> void:
+    if profile_data.is_empty() or student_ui.modal.visible or task_panel.visible or shuttle_menu.visible:
+        return
+    match action:
+        "interact":
+            if ride_bus != null:
+                if transit_system.has_arrived(ride_bus):
+                    _disembark_shuttle()
+                else:
+                    notice = "Stay seated until the shuttle reaches its stop."
+                    notice_timer = 3
+            elif not active_interior_site.is_empty():
+                _open_task_panel(active_interior_site)
+            else:
+                player.perform_interaction()
+        "sit":
+            player.perform_seat_interaction()
+        "jump":
+            player.touch_jump = true
+        "map":
+            overview_on = not overview_on
+            overview_camera.current = overview_on
+            if not overview_on:
+                player.camera.current = true
+        "view":
+            if ride_bus != null:
+                transit_system.toggle_passenger_view(ride_bus)
+    _sync_mobile_controls()
+
+func _look_around(relative: Vector2) -> void:
+    if ride_bus != null:
+        transit_system.look_passenger(ride_bus, relative)
+    elif not overview_on:
+        player.look(relative * 1.35)
+
+func _fit_activity_navigation() -> void:
+    for control in task_buttons_container.get_children():
+        if control is Button and control.get_child_count() == 0:
+            var caption: String = control.text
+            control.text = ""
+            control.custom_minimum_size = Vector2(0, 52)
+            var text := Label.new()
+            text.text = caption
+            text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+            text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+            text.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+            text.offset_left = 10
+            text.offset_right = -10
+            text.offset_top = 6
+            text.offset_bottom = -6
+            text.add_theme_font_size_override("font_size", 13)
+            control.add_child(text)
+            text.resized.connect(func(): control.custom_minimum_size.y = maxf(52, text.get_minimum_size().y + 12))
+
+func _register_billboards(root: Node) -> void:
+    if root is Node3D and root.has_meta("ad_slot_id") and root.has_meta("ad_tier"):
+        billboard_slots.append(root)
+        for child in root.get_children():
+            if child is MeshInstance3D and child.name.begins_with("AdvertisingPanel"):
+                var area := Area3D.new()
+                area.name = "AdInteractionArea"
+                area.collision_layer = 2
+                area.collision_mask = 0
+                area.set_meta("ad_slot_id", root.get_meta("ad_slot_id"))
+                var collision := CollisionShape3D.new()
+                var box := BoxShape3D.new()
+                box.size = Vector3(child.mesh.size.x, child.mesh.size.y, 0.4)
+                collision.shape = box
+                area.position = child.position
+                area.add_child(collision)
+                root.add_child(area)
+                break
+    for child in root.get_children():
+        _register_billboards(child)
+
+func try_billboard_interaction(walker: Node3D) -> bool:
+    var closest: Node3D = null
+    var distance: float = 7.0
+    for slot in billboard_slots:
+        var d: float = Vector2(walker.global_position.x - slot.global_position.x, walker.global_position.z - slot.global_position.z).length()
+        if d < distance:
+            closest = slot
+            distance = d
+    if closest == null:
+        return false
+    _open_advertising(str(closest.get_meta("ad_slot_id")))
+    return true
+
+func _open_advertising(slot: String) -> void:
+    selected_billboard = slot
+    student_ui.toggle("advertise")
+    student_ui.profile_text.text = "BILLBOARD " + slot + "\n\nBusiness advertising is planned for after launch.\n\nChoose a billboard, preview your business image, select a campaign duration, and pay through Paystack or Flutterwave when bookings open. Campaigns will be reviewed before publication.\n\nReal-money booking is not open yet. No game-wallet money is charged.\n\nUse the Preview ad button to try the design form. Your image stays on your device during this preview."
+
+func _preview_advertisement() -> void:
+    var url: String = "https://trippletee20.github.io/INSIDELASU/advertise.html?slot=" + selected_billboard.uri_encode()
+    if OS.has_feature("web"):
+        JavaScriptBridge.eval("window.open(" + JSON.stringify(url) + ", '_blank', 'noopener,noreferrer')")
+    else:
+        OS.shell_open(url)
+
+func _show_challenge_step() -> void:
+    for child in task_buttons_container.get_children():
+        task_buttons_container.remove_child(child)
+        child.queue_free()
+    var steps: Array = challenge_entry.get("challenge", [])
+    if challenge_step >= steps.size():
+        var completed: Dictionary = challenge_entry.duplicate(true)
+        completed.erase("challenge")
+        var site: String = challenge_site
+        _open_task_panel(site)
+        _run_location_task(site, completed)
+        return
+    var step: Dictionary = steps[challenge_step]
+    task_title_label.text = str(challenge_entry.get("title", "Activity"))
+    task_status_label.text = "Step %d of %d • %s" % [challenge_step + 1, steps.size(), str(step.prompt)]
+    for i in range(step.options.size()):
+        var choice := Button.new()
+        choice.text = str(step.options[i])
+        choice.pressed.connect(_answer_challenge.bind(i))
+        task_buttons_container.add_child(choice)
+    var back := Button.new()
+    back.text = "Cancel activity • no charge or reward"
+    back.pressed.connect(_open_task_panel.bind(challenge_site))
+    task_buttons_container.add_child(back)
+    _fit_activity_navigation()
+    _layout_action_menus()
+
+func _answer_challenge(answer: int) -> void:
+    var steps: Array = challenge_entry.get("challenge", [])
+    if challenge_step >= steps.size():
+        return
+    if answer != int(steps[challenge_step].answer):
+        task_status_label.text = "Try again: " + str(steps[challenge_step].prompt) + " No reward has been claimed."
+        return
+    challenge_step += 1
+    _show_challenge_step()
+
+func _try_billboard_at(at: Vector2) -> bool:
+    if profile_data.is_empty() or student_ui.modal.visible or task_panel.visible or shuttle_menu.visible or ride_bus != null or overview_on:
+        return false
+    var camera: Camera3D = get_viewport().get_camera_3d()
+    if camera == null:
+        return false
+    var start: Vector3 = camera.project_ray_origin(at)
+    var query := PhysicsRayQueryParameters3D.create(start, start + camera.project_ray_normal(at) * 100, 3)
+    query.collide_with_areas = true
+    var hit: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+    if hit.is_empty() or not hit.collider.has_meta("ad_slot_id"):
+        return false
+    _open_advertising(str(hit.collider.get_meta("ad_slot_id")))
+    return true

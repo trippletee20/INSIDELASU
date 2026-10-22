@@ -3,6 +3,8 @@ extends Node3D
 # All completed indoor site entries share a walkable shell but use distinct
 # room contents, palettes and floor arrangements. These are NOT field-surveyed
 # architectural plans. Only the active floor is instantiated (low-end friendly).
+const IDENTITY = preload("res://scripts/interior_identity.gd")
+var designs: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/building_experiences.json")).get("locations", {})
 var current_floor: Node3D = null
 var current_site: String = ""
 const ROOM_BASE: Vector3 = Vector3(900.0, 0.0, 0.0)
@@ -59,13 +61,13 @@ func _seat(parent: Node3D, at: Vector3, color: Color, seat_name: String = "Chair
         _shape(parent, "ChairLeg", at + Vector3(side, 0.22, -0.26), Vector3(0.11, 0.45, 0.12), Color(0.24, 0.31, 0.37))
 
 func _table(parent: Node3D, at: Vector3, dims: Vector3, wood: Color, name_value: String = "Table") -> void:
-    _shape(parent, name_value, at + Vector3(0, 0.78, 0), Vector3(dims.x, 0.16, dims.z), wood)
+    _shape(parent, name_value, at + Vector3(0, 0.78, 0), Vector3(dims.x, 0.16, dims.z), wood, true)
     for side in [-1.0, 1.0]:
         for near in [-1.0, 1.0]:
             _shape(parent, "TableSupport", at + Vector3(side * (dims.x * 0.4), 0.37, near * (dims.z * 0.38)), Vector3(0.13, 0.68, 0.13), Color(0.26, 0.31, 0.35))
 
-func _room_shell(node: Node3D, title_text: String, warm: Color, accent: Color, dark: Color) -> void:
-    _shape(node, "WalkableInteriorFloor", Vector3(0, -0.16, 0), Vector3(29.0, 0.32, 25.0), Color(0.68, 0.71, 0.68), true)
+func _room_shell(node: Node3D, title_text: String, warm: Color, accent: Color, dark: Color, theme: String = "lecture") -> void:
+    _shape(node, "WalkableInteriorFloor", Vector3(0, -0.16, 0), Vector3(29.0, 0.32, 25.0), accent.lightened(0.58) if theme not in ["library", "law", "auditorium", "hostel"] else Color(0.57, 0.43, 0.30), true)
     _shape(node, "EntranceRunner", Vector3(0, 0.017, 5.7), Vector3(4.6, 0.025, 12), Color(0.13, 0.32, 0.39))
     _shape(node, "BackWall", Vector3(0, 2.30, -12.35), Vector3(29.0, 4.6, 0.32), warm, true)
     _shape(node, "LeftWall", Vector3(-14.32, 2.30, 0), Vector3(0.32, 4.6, 24.8), warm, true)
@@ -73,7 +75,8 @@ func _room_shell(node: Node3D, title_text: String, warm: Color, accent: Color, d
     _shape(node, "FrontLeft", Vector3(-9.2, 2.30, 12.3), Vector3(10.6, 4.6, 0.3), warm, true)
     _shape(node, "FrontRight", Vector3(9.2, 2.30, 12.3), Vector3(10.6, 4.6, 0.3), warm, true)
     # Central corridor opens into two wings through 3 m gaps in these partitions.
-    for side in [-1.0, 1.0]:
+    var wing_sides: Array = [-1.0, 1.0] if theme in ["hostel", "clinic", "education", "lecture", "social"] else []
+    for side in wing_sides:
         var xx: float = side * 4.2
         _shape(node, "UpperCorridorPartition", Vector3(xx, 2.0, -7.7), Vector3(0.25, 4.0, 9.0), warm.lightened(0.06), true)
         _shape(node, "LowerCorridorPartition", Vector3(xx, 2.0, 7.5), Vector3(0.25, 4.0, 8.2), warm.lightened(0.06), true)
@@ -94,7 +97,7 @@ func _room_shell(node: Node3D, title_text: String, warm: Color, accent: Color, d
     for xx in [-12.6, 12.6]:
         _shape(node, "PlantPot", Vector3(xx, 0.40, 9.8), Vector3(0.8, 0.75, 0.8), Color(0.60, 0.36, 0.23))
         _shape(node, "Foliage", Vector3(xx, 1.26, 9.8), Vector3(1.2, 1.13, 0.95), Color(0.18, 0.56, 0.38))
-    _label(node, "E: ACTIVITIES & FLOORS", Vector3(0, 2.0, 11.75), 22)
+    _label(node, "INTERACT: ACTIVITIES & FLOORS", Vector3(0, 2.0, 11.75), 22)
 
 func _hostel_rooms(node: Node3D, floor_index: int, blue: Color, wood: Color) -> void:
     var rooms: Array = [Vector3(-9.1, 0, -6.1), Vector3(9.1, 0, -6.1)]
@@ -224,11 +227,15 @@ func show_floor(site_name: String, floor_title: String, floor_index: int, own_ro
     var wood: Color = Color(0.52, 0.36, 0.24)
     var warm: Color = Color(0.88, 0.85, 0.77)
     var dark: Color = Color(0.09, 0.20, 0.28)
-    _room_shell(current_floor, site_name, warm, accent, dark)
+    var design: Dictionary = designs.get(site_name, {})
+    var theme: String = str(design.get("theme", "lecture"))
+    accent = Color(str(design.get("accent", "397777")))
+    warm = accent.lightened(0.78)
+    _room_shell(current_floor, site_name, warm, accent, dark, theme)
     _label(current_floor, floor_title.to_upper(), Vector3(0, 2.75, 4.7), 26)
-    _special_rooms(current_floor, site_name, floor_title, wood, accent)
+    IDENTITY.new().build(self, current_floor, theme, floor_index, site_name, accent)
     if own_room > 0 and "hostel" in site_name.to_lower():
-        _label(current_floor, "ROOM " + str(own_room) + " • APPROACH THIS DOOR & PRESS E", Vector3(0, 3.18, -11.8), 23)
+        _label(current_floor, "ROOM " + str(own_room) + " • INTERACT FOR YOUR ROOM", Vector3(0, 3.18, -11.8), 23)
     return ROOM_BASE + Vector3(0, 0.45, 9.5)
 
 func show_private_room(hostel_name: String, room_number: int, chosen_furniture: Array) -> Vector3:

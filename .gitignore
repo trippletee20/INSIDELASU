@@ -3,3 +3,4 @@
 *.import
 test-results/
 build/
+__pycache__/

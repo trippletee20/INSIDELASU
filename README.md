@@ -1,7 +1,7 @@
 # Inside LASU
 
-A single-player campus-life game, now live as a **desktop browser beta**.
-Players use a keyboard and mouse; they do not need Godot or a source ZIP.
+A single-player campus-life game, now live as a **mobile and desktop browser beta**.
+Phones use a thumbstick, swipe look and touch buttons. Desktop players can use a keyboard and mouse. No Godot installation or source ZIP is needed.
 
 **[Play Inside LASU in your browser](https://trippletee20.github.io/INSIDELASU/)**
 
@@ -27,13 +27,17 @@ Future game updates run the same build/test/deployment pipeline.
 
 ## Play and save
 
-Create a student, check into the assigned hostel, and press **E** near buildings or
+On phones, move with the left stick, swipe on the right to look and tap **Interact** near buildings or shuttle stands. **Map** opens the campus overview.
+
+On desktop, create a student, check into the assigned hostel, and press **E** near buildings or
 shuttle stands to find activities. **H** opens help, **P** the student profile,
 **B** the wallet and receipts, and **M** the map. Click the game for mouse look;
 **Esc** releases the mouse or closes a menu.
 
 Progress is stored on the current browser/device. There is no account or cloud
-save. Clearing site data removes local progress. All money is fictional.
+save. Clearing site data removes local progress. The game wallet uses fictional money.
+
+The [mobile expansion](docs/MOBILE_EXPANSION.md) adds 24 interior themes, 168 building challenges, nonblocking shuttle traffic and passenger cabin views. [Billboard advertising](docs/BILLBOARD_ADVERTISING.md) has a local artwork preview; real bookings through Paystack and Flutterwave are planned for after launch and are not enabled.
 
 ## Develop
 
@@ -44,6 +48,8 @@ evidence and limitations are in [docs/BROWSER_RELEASE.md](docs/BROWSER_RELEASE.m
 python3 tools/check_environment.py
 python3 tools/build_web.py
 python3 tools/test_web.py
+python3 tools/test_mobile_web.py
+python3 tools/test_advertising_preview.py
 ```
 
 Export requires the matching single-thread web templates. Browser tests require

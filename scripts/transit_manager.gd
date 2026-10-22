@@ -4,6 +4,8 @@ signal traffic_safe_wait(service_id: String, reason: String)
 # and junction right-of-way. Existing road graph / campus coordinates stay immutable.
 # Physics-tick movement with smooth steering and endpoint lane merging.
 
+## Arcade beta: only peer-vehicle blocking is disabled; paths and world checks remain.
+var vehicle_blocking: bool = false
 var _services: Array = []
 var _shelter_positions: Dictionary = {}
 var _shelter_names: Dictionary = {}
@@ -199,7 +201,8 @@ func _build_terminal_bays() -> void:
 func _physics_process(delta: float) -> void:
     _lane_offset_cache.clear()
     # Batch requests before movement so service iteration cannot steal a lease.
-    _reservations.update(self, delta)
+    if vehicle_blocking:
+        _reservations.update(self, delta)
     # Drive on fixed physics ticks; project physics interpolation smooths the render.
     for index in range(_services.size()):
         var service: Dictionary = _services[index]
@@ -479,6 +482,8 @@ func _bay_position_is_clear(index: int, proposed: Dictionary) -> bool:
     var half_length: float = (BUS_LENGTH * 0.5 + COLLISION_BUFFER) / _scale
     if not _segment_clear_of_campus_features(point - forward * half_length, point + forward * half_length, (BUS_WIDTH * 0.5 + 0.32) / _scale):
         return false
+    if not vehicle_blocking:
+        return true
     for other_index in range(_services.size()):
         if index == other_index:
             continue
@@ -558,10 +563,12 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
     var service: Dictionary = _services[index]
     var proposed: Dictionary = service.duplicate()
     proposed["progress"] = next_progress
-    if not _reservations.permits(self, index, proposed):
+    if vehicle_blocking and not _reservations.permits(self, index, proposed):
         return false
     if not _swept_pose_is_clear(index, proposed):
         return false
+    if not vehicle_blocking:
+        return true
     var proposed_state: Array = _point_and_heading(proposed)
     var position_value: Vector3 = proposed_state[0]
     var heading: float = float(proposed_state[1])
@@ -590,6 +597,8 @@ func _safe_to_advance(index: int, next_progress: float) -> bool:
 func _swept_pose_is_clear(index: int, proposed: Dictionary, check_features: bool = false) -> bool:
     # Sample intermediate route poses as well as the endpoint. Bound sample spacing
     # and angular steps so a long physics tick cannot skip a stationary shuttle.
+    if not vehicle_blocking and not check_features:
+        return true
     var service: Dictionary = _services[index]
     var own: Node3D = service.get("node") as Node3D
     if own == null:
@@ -616,7 +625,7 @@ func _swept_pose_is_clear(index: int, proposed: Dictionary, check_features: bool
                 if not _segment_clear_of_campus_features(xz / _scale - forward * half_length, xz / _scale + forward * half_length, (BUS_WIDTH * 0.5 + 0.32) / _scale):
                     return false
             for other_index in range(_services.size()):
-                if other_index == index:
+                if not vehicle_blocking or other_index == index:
                     continue
                 var other_node: Node3D = _services[other_index].get("node") as Node3D
                 if other_node != null and _vehicle_rectangles_overlap(xz, heading, Vector2(other_node.position.x, other_node.position.z), other_node.rotation.y):
@@ -1227,7 +1236,7 @@ func _place_service(service: Dictionary, smoothing_delta: float = 0.0) -> void:
         var rotation_clear: bool = true
         for other in _services:
             var other_bus: Node3D = other.get("node") as Node3D
-            if other_bus == null or other_bus == bus:
+            if not vehicle_blocking or other_bus == null or other_bus == bus:
                 continue
             if _vehicle_rectangles_overlap(Vector2(bus.position.x, bus.position.z), next_heading, Vector2(other_bus.position.x, other_bus.position.z), other_bus.rotation.y):
                 rotation_clear = false
@@ -1912,12 +1921,15 @@ func disembark(bus: Node3D) -> Vector3:
     return exit_position
 
 func onboard_camera(bus: Node3D) -> Camera3D:
-    return bus.get_node_or_null("OnboardCamera") as Camera3D
+    return bus.get_node_or_null("PassengerCamera") as Camera3D
 
 func _material(tint: Color) -> StandardMaterial3D:
     var mat := StandardMaterial3D.new()
     mat.albedo_color = tint
     mat.roughness = 0.78
+    if tint.a < 1.0:
+        mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+        mat.cull_mode = BaseMaterial3D.CULL_DISABLED
     return mat
 
 
@@ -1977,10 +1989,26 @@ func _build_bus(bus: Node3D, display_name: String, line_id: String) -> void:
     # +X is the front of the bus, for stable turn rotation along paved paths.
     var ivory := Color(0.97, 0.91, 0.68)
     var teal := Color(0.10, 0.48, 0.54)
-    var glass := Color(0.12, 0.27, 0.36)
+    var glass := Color(0.28, 0.62, 0.70, 0.20)
     var steel := Color(0.18, 0.22, 0.26)
     _box(bus, "ShuttleChassis", Vector3(0.0, 0.85, 0.0), Vector3(6.6, 0.55, 2.35), steel)
-    _box(bus, "PassengerCabin", Vector3(0.0, 1.90, 0.0), Vector3(6.2, 2.05, 2.32), ivory)
+    # Open volume: lower panels, pillars and transparent windows enclose a real cabin.
+    _box(bus, "CabinFloor", Vector3(0, 1.18, 0), Vector3(6.2, 0.12, 2.25), steel)
+    _box(bus, "RearPanel", Vector3(-3.06, 1.60, 0), Vector3(0.15, 0.75, 2.24), ivory)
+    _box(bus, "FrontPanel", Vector3(3.06, 1.60, 0), Vector3(0.15, 0.75, 2.24), ivory)
+    for side in [-1.0, 1.0]:
+        _box(bus, "LowerSidePanel", Vector3(0, 1.53, side * 1.12), Vector3(6.2, 0.58, 0.12), ivory)
+        for x in [-3.02, -1.82, -0.62, 0.58, 1.78, 3.02]:
+            _box(bus, "WindowPillar", Vector3(x, 2.36, side * 1.12), Vector3(0.10, 1.04, 0.10), ivory)
+        for x in [-2.20, -0.75, 0.70]:
+            _box(bus, "PassengerSeat", Vector3(x, 1.58, side * 0.72), Vector3(0.85, 0.18, 0.61), teal)
+            _box(bus, "SeatBack", Vector3(x - 0.38, 1.95, side * 0.72), Vector3(0.14, 0.85, 0.63), teal.darkened(0.25))
+        _box(bus, "HandRail", Vector3(0, 2.73, side * 0.62), Vector3(5.4, 0.06, 0.06), steel)
+    _box(bus, "DriverSeat", Vector3(2.0, 1.55, -0.65), Vector3(0.8, 0.22, 0.68), steel)
+    _box(bus, "DriverSeatBack", Vector3(1.65, 1.96, -0.65), Vector3(0.15, 0.9, 0.68), steel)
+    _box(bus, "Dashboard", Vector3(2.78, 1.87, 0), Vector3(0.45, 0.38, 2.0), steel)
+    _box(bus, "InstrumentPanel", Vector3(2.52, 2.06, -0.57), Vector3(0.05, 0.22, 0.52), Color(0.24, 0.72, 0.67))
+    _box(bus, "AisleRunner", Vector3(-0.3, 1.25, 0), Vector3(4.9, 0.02, 0.65), Color(0.27, 0.29, 0.32))
     _box(bus, "Roof", Vector3(0.0, 2.97, 0.0), Vector3(6.3, 0.18, 2.4), teal)
     _box(bus, "WindowFront", Vector3(3.13, 2.23, 0.0), Vector3(0.07, 0.93, 1.92), glass)
     _box(bus, "WindowRear", Vector3(-3.13, 2.23, 0.0), Vector3(0.07, 0.84, 1.94), glass)
@@ -2011,3 +2039,30 @@ func _build_bus(bus: Node3D, display_name: String, line_id: String) -> void:
     bus.add_child(camera)
     camera.look_at(bus.to_global(Vector3(2.7, 1.4, 0.0)), Vector3.UP)
     camera.current = false
+    var passenger := Camera3D.new()
+    passenger.name = "PassengerCamera"
+    passenger.position = Vector3(-1.75, 2.25, 0)
+    passenger.rotation = Vector3(deg_to_rad(-4), -PI * 0.5, 0)
+    passenger.near = 0.06
+    passenger.fov = 78
+    passenger.far = 220
+    bus.add_child(passenger)
+    passenger.current = false
+
+
+func toggle_passenger_view(bus: Node3D) -> void:
+    var inside: Camera3D = onboard_camera(bus)
+    var outside: Camera3D = bus.get_node_or_null("OnboardCamera") as Camera3D
+    if inside == null or outside == null:
+        return
+    if inside.current:
+        outside.current = true
+    else:
+        inside.current = true
+
+func look_passenger(bus: Node3D, relative: Vector2) -> void:
+    var camera: Camera3D = onboard_camera(bus)
+    if camera == null or not camera.current:
+        return
+    camera.rotation.y = clampf(camera.rotation.y - relative.x * 0.004, -PI * 0.5 - 2.35, -PI * 0.5 + 2.35)
+    camera.rotation.x = clampf(camera.rotation.x - relative.y * 0.004, deg_to_rad(-45), deg_to_rad(35))

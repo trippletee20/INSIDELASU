@@ -2,6 +2,7 @@ extends CanvasLayer
 ## Player-facing HUD and expandable profile/wallet. World simulation stays separate.
 signal modal_changed(open: bool)
 signal reward_requested
+signal ad_preview_requested
 var student_name: Label
 var balance: Label
 var location: Label
@@ -23,6 +24,12 @@ var records: Array = []
 var current: String = ""
 var money_formatter: Callable
 var top_buttons: Array[Button] = []
+var top_row: HBoxContainer
+var status_panel: PanelContainer
+var footer_panel: PanelContainer
+var meters_row: HBoxContainer
+var close_button: Button
+var ad_preview: Button
 
 func _panel(parent: Node) -> PanelContainer:
     var panel := PanelContainer.new()
@@ -47,7 +54,7 @@ func _label(text: String, parent: Node, size: int = 16) -> Label:
 func _button(text: String, parent: Node, action: Callable) -> Button:
     var button := Button.new()
     button.text = text
-    button.custom_minimum_size.y = 38
+    button.custom_minimum_size.y = 44
     button.pressed.connect(action)
     parent.add_child(button)
     return button
@@ -80,6 +87,7 @@ func _ready() -> void:
     root.add_child(margin)
     var top: PanelContainer = _panel(margin)
     var row := HBoxContainer.new()
+    top_row = row
     row.add_theme_constant_override("separation", 16)
     top.add_child(row)
     student_name = _label("INSIDE LASU", row, 18)
@@ -92,6 +100,7 @@ func _ready() -> void:
         var key: String = item[1]
         top_buttons.append(_button(item[0], row, func(): toggle(key)))
     var status := _panel(root)
+    status_panel = status
     status.position = Vector2(16, 88)
     status.custom_minimum_size.x = 360
     var column := VBoxContainer.new()
@@ -102,12 +111,14 @@ func _ready() -> void:
     objective.custom_minimum_size.x = 320
     objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     var meters := HBoxContainer.new()
+    meters_row = meters
     meters.add_theme_constant_override("separation", 12)
     column.add_child(meters)
     energy = _meter("Energy", meters, Color("5db688"))
     stamina = _meter("Stamina", meters, Color("5596cf"))
     stress = _meter("Stress", meters, Color("e39a62"))
     var footer := _panel(root)
+    footer_panel = footer
     footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
     footer.offset_left = 16
     footer.offset_right = -16
@@ -126,11 +137,15 @@ func _ready() -> void:
     content.add_child(heading)
     modal_title = _label("Student", heading, 24)
     modal_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    _button("Close · Esc", heading, close)
+    modal_title.clip_text = true
+    modal_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+    close_button = _button("Close", heading, close)
     profile_text = RichTextLabel.new()
     profile_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
     profile_text.add_theme_font_size_override("normal_font_size", 17)
     content.add_child(profile_text)
+    ad_preview = _button("Preview an ad", content, func(): ad_preview_requested.emit())
+    ad_preview.visible = false
     wallet_box = VBoxContainer.new()
     wallet_box.size_flags_vertical = Control.SIZE_EXPAND_FILL
     content.add_child(wallet_box)
@@ -152,7 +167,36 @@ func _layout() -> void:
     var viewport: Vector2 = get_viewport().get_visible_rect().size
     modal.size = Vector2(minf(720, viewport.x - 32), minf(570, viewport.y - 32))
     modal.position = (viewport - modal.size) * 0.5
+    var touch: bool = preload("res://scripts/mobile_controls.gd").touch_device()
+    var compact: bool = viewport.x < 700
+    wallet_summary.add_theme_font_size_override("font_size", 14 if compact else 16)
+    student_name.visible = not compact and not touch
+    clock.visible = not compact and not touch
+    status_panel.custom_minimum_size.x = minf(360, viewport.x - 32)
+    status_panel.size = Vector2(minf(360, viewport.x - 32), 0)
+    objective.custom_minimum_size.x = minf(320, viewport.x - 70)
+    objective.size.x = minf(320, viewport.x - 70)
+    objective.visible = not (touch and viewport.y < 500)
+    meters_row.visible = not (touch and viewport.y < 500)
+    if touch:
+        top_row.add_theme_constant_override("separation", 6)
+        balance.visible = viewport.x >= 350
+        balance.custom_minimum_size = Vector2(90, 44)
+        balance.clip_text = true
+        balance.add_theme_font_size_override("font_size", 14)
+        for i in range(top_buttons.size()):
+            top_buttons[i].custom_minimum_size.x = 44 if i == 2 else 56
+            top_buttons[i].visible = i != 2 or viewport.x >= 390 or viewport.x < 350
+        footer_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+        footer_panel.offset_left = 16
+        footer_panel.offset_right = -16
+        footer_panel.offset_top = 130 if viewport.y < 500 else 230
+        footer_panel.offset_bottom = footer_panel.offset_top + 62
+        prompt.add_theme_font_size_override("font_size", 12)
+        prompt.max_lines_visible = 3
+        prompt.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     for button in top_buttons:
+        button.add_theme_font_size_override("font_size", 12 if compact else 14)
         button.text = button.text.get_slice(" · ", 0) if viewport.x < 1000 else ["Profile · P", "Wallet · B", "Help · H"][top_buttons.find(button)]
 
 func toggle(kind: String) -> void:
@@ -161,11 +205,12 @@ func toggle(kind: String) -> void:
         return
     current = kind
     modal.visible = true
-    modal_title.text = {"profile": "Student profile", "wallet": "Wallet & activity", "help": "How to play"}[kind]
+    modal_title.text = {"profile": "Student profile", "wallet": "Wallet & activity", "help": "How to play", "advertise": "Billboard advertising"}[kind]
+    ad_preview.visible = kind == "advertise"
     wallet_box.visible = kind == "wallet"
     profile_text.visible = kind != "wallet"
     if kind == "help":
-        profile_text.text = "WELCOME TO INSIDE LASU\n\nYour first goal: visit your assigned hostel and check in. Press E near a building to see its activities.\n\nWASD — Walk\nMouse — Look around\nShift — Run\nSpace — Jump\nE — Interact, board or leave an arrived shuttle\nF — Sit or stand\nM — Campus map\nP — Student profile\nB — Wallet and receipts\nH — Help\nEsc — Close a menu / release mouse\n\nVisit a shuttle stand and press E to call a shuttle. Every trip costs ₦150.\n\nYour first hostel session is prepaid. Your assigned room has rest, furniture and privacy options. Hostel curfew starts at 23:00; permitted faculty night access stays available.\n\nProgress saves on this browser and device. Clearing site data deletes local saves. Keyboard and mouse are required for this beta."
+        profile_text.text = "WELCOME TO INSIDE LASU\n\nYour first goal: visit your assigned hostel and check in. Press E near a building to see its activities.\n\nWASD — Walk\nMouse — Look around\nShift — Run\nSpace — Jump\nE — Interact, board or leave an arrived shuttle\nF — Sit or stand\nM — Campus map\nP — Student profile\nB — Wallet and receipts\nH — Help\nEsc — Close a menu / release mouse\n\nVisit a shuttle stand and press E to call a shuttle. Every trip costs ₦150.\n\nYour first hostel session is prepaid. Your assigned room has rest, furniture and privacy options. Hostel curfew starts at 23:00; permitted faculty night access stays available.\n\nProgress saves on this browser and device. Clearing site data deletes local saves. On phones: use the left thumbstick to move, swipe on the right to look, and tap Interact near buildings and shuttles. Run is a toggle. Map opens the campus overview. Onboard, use Inside / outside to switch views. On desktop, press V to switch ride views and hold the right mouse button to look around inside."
     modal_changed.emit(true)
     reward.grab_focus() if kind == "wallet" else modal.grab_focus()
 
@@ -179,7 +224,7 @@ func update_student(profile: Dictionary, skills: Dictionary, amount: int, journa
     student_name.text = str(profile.get("student_name", "INSIDE LASU"))
     balance.text = formatter.call(amount)
     records = journal
-    if current != "help":
+    if current not in ["help", "advertise"]:
         var lines: Array[String] = []
         for pair in [["Student", "student_name"], ["Department", "department"], ["Faculty", "faculty"], ["Level", "level"], ["CGPA", "cgpa"], ["Background", "background"], ["Hostel", "hostel_name"], ["Room", "room_number"]]:
             lines.append(pair[0] + ": " + str(profile.get(pair[1], "—")))
@@ -196,7 +241,7 @@ func update_student(profile: Dictionary, skills: Dictionary, amount: int, journa
             var value: int = int(record.get("amount", 0))
             earned += maxi(0, value)
             spent += maxi(0, -value)
-    wallet_summary.text = "Balance: %s\nEarned today: %s   ·   Spent today: %s\nLast daily support: %s" % [formatter.call(amount), formatter.call(earned), formatter.call(spent), formatter.call(last_reward)]
+    wallet_summary.text = "Balance: %s\nEarned today: %s\nSpent today: %s\nLast daily support: %s" % [formatter.call(amount), formatter.call(earned), formatter.call(spent), formatter.call(last_reward)]
     reward.disabled = claimed
     reward.text = "Daily support claimed today" if claimed else "Claim daily support · ₦500–₦1,500"
     _render_transactions()

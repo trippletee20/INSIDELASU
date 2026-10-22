@@ -1,0 +1,156 @@
+ENGINE: 4.6.3.stable.official.7d41c59c4
+PASS: 12 protected baseline files unchanged
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (2 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+PASS: import (exit 0)
+PASS: checked 336 road segments against 64 protected campus footprints; no conflicts at 1.2 map-unit clearance.
+PASS: road-safety (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+LAYOUT (800, 600) viewport=(800.0, 600.0) bounds=[P: (40.0, 16.0), S: (720.0, 568.0)]
+LAYOUT (1280, 720) viewport=(1280.0, 720.0) bounds=[P: (280.0, 75.0), S: (720.0, 570.0)]
+LAYOUT (1920, 1080) viewport=(1920.0, 1080.0) bounds=[P: (600.0, 255.0), S: (720.0, 570.0)]
+GAMEPLAY REGRESSION: 50 checks, 0 failures
+PASS: gameplay (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+SCENARIO: two-way passing completed
+SCENARIO: junction contention completed
+SCENARIO: blocked bay completed
+WARNING: Shuttle still waiting at bottleneck: yield. No unsafe teleport was used.
+     at: push_warning (core/variant/variant_utility.cpp:1034)
+     GDScript backtrace (most recent call first):
+         [0] _attempt_traffic_advance (res://scripts/transit_manager.gd:424)
+         [1] _run (res://tools/traffic_regression.gd:113)
+SCENARIO: backing to safe route / bounded safe wait completed
+SCENARIO: summoned pickup and onboard passenger completed
+SCENARIO: five-shuttle campus simulation completed
+TRAFFIC REGRESSION: 37 checks, 0 failures (seed 14014, 60 Hz)
+PASS: traffic (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+RESERVATION REGRESSION: 25 checks, 0 failures
+PASS: reservations (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+ROUTE WEST (-118.3, 0.12, -145.9068) -> (-106.7326, 0.12, -53.17) length 109.084234714508
+ROUTE SCIENCE (-106.7326, 0.12, -53.17) -> (87.88, 0.12, -39.65) length 271.657557487488
+ROUTE GATE_EXPRESS (-118.3, 0.12, -145.9068) -> (112.489, 0.12, -153.0345) length 295.735845565796
+ROUTE HOSTEL_LINK (-233.22, 0.12, -83.5614) -> (-106.7326, 0.12, -53.17) length 221.636382579803
+ROUTE CENTRAL_LINK (112.489, 0.12, -153.0345) -> (87.88, 0.12, -39.65) length 158.78697347641
+TIME 60.0 stationary=[0.0, 0.0, 0.0, 0.0, 0.0] trips=[2, 1, 1, 0, 1]
+DETAIL WEST pos (-120.42, 0.12, -83.4318) p 62.4749999999997 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 16, "kind": "junction", "owner": 0, "position": [-130.130004882812, -86.9700012207031], "wait_seconds": 1.56666666666658, "ticket": 30 }]
+DETAIL SCIENCE pos (12.21676, 0.12, -37.82) p 187.424224154153 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 12, "kind": "junction", "owner": 1, "position": [-23.6600017547607, -37.9600067138672], "wait_seconds": 0.05, "ticket": 32 }]
+DETAIL GATE_EXPRESS pos (111.334, 0.12, -153.6083) p 295.735845565796 dir -1 lane -0.60833333333333 park 0.0 wait 8.21666666666663 leases [{ "zone": 3, "kind": "terminal", "owner": 2, "position": [112.489036560059, -153.034545898438], "wait_seconds": 5.53333333333302, "ticket": 28 }, { "zone": 6, "kind": "junction", "owner": 2, "position": [116.609992980957, -174.850006103516], "wait_seconds": 0.74999999999996, "ticket": 31 }]
+DETAIL HOSTEL_LINK pos (-113.1074, 0.12, -51.05319) p 215.145455303197 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 1, "kind": "terminal", "owner": 3, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 4.24999999999976, "ticket": 29 }]
+DETAIL CENTRAL_LINK pos (103.52, 0.12, -89.95476) p 69.6619734764099 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 38, "kind": "junction", "owner": 4, "position": [96.3300018310547, -81.9000015258789], "wait_seconds": 21.2833333333321, "ticket": 22 }]
+TIME 120.0 stationary=[0.0, 0.0, 0.0, 0.0, 0.0] trips=[4, 2, 2, 2, 3]
+DETAIL WEST pos (-120.42, 0.12, -77.76514) p 68.1416666666664 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 16, "kind": "junction", "owner": 0, "position": [-130.130004882812, -86.9700012207031], "wait_seconds": 2.18333333333321, "ticket": 54 }]
+DETAIL SCIENCE pos (-28.97407, 0.12, -17.25) p 127.933333333332 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 12, "kind": "junction", "owner": 1, "position": [-23.6600017547607, -37.9600067138672], "wait_seconds": 1.48333333333325, "ticket": 55 }, { "zone": 13, "kind": "junction", "owner": 1, "position": [-25.3500003814697, -19.3699989318848], "wait_seconds": 3.48333333333314, "ticket": 53 }]
+DETAIL GATE_EXPRESS pos (-118.6357, 0.12, -145.9068) p 0.0 dir 1 lane -0.15833333333333 park 0.0 wait 7.31666666666662 leases [{ "zone": 0, "kind": "terminal", "owner": 2, "position": [-118.300003051758, -145.906799316406], "wait_seconds": 16.7833333333324, "ticket": 51 }]
+DETAIL HOSTEL_LINK pos (-208.8287, 0.12, -89.92) p 54.9599999999996 dir 1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL CENTRAL_LINK pos (86.62, 0.12, -46.98996) p 143.28697347641 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 18.2833333333323, "ticket": 49 }]
+TIME 180.0 stationary=[9.46666666666672, 0.6, 0.0, 0.0, 0.0] trips=[6, 4, 3, 3, 5]
+DETAIL WEST pos (-120.42, 0.12, -70.39847) p 75.508333333333 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 1, "kind": "terminal", "owner": 1, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 9.8833333333412, "ticket": 86 }]
+DETAIL SCIENCE pos (-106.7326, 0.12, -58.84) p 0.0 dir 1 lane 1.0 park 1.0 wait 3.06666666666664 leases [{ "zone": 1, "kind": "terminal", "owner": 1, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 10.0833333333414, "ticket": 85 }]
+DETAIL GATE_EXPRESS pos (118.73, 0.12, -172.0873) p 275.715845565796 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 3, "kind": "terminal", "owner": 2, "position": [112.489036560059, -153.034545898438], "wait_seconds": 17.6833333333474, "ticket": 79 }, { "zone": 6, "kind": "junction", "owner": 2, "position": [116.609992980957, -174.850006103516], "wait_seconds": 12.8833333333436, "ticket": 83 }]
+DETAIL HOSTEL_LINK pos (-226.348, 0.12, -99.83572) p 30.7163825797982 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 4, "kind": "terminal", "owner": 3, "position": [-233.219985961914, -83.5614013671875], "wait_seconds": 2.58333333333539, "ticket": 87 }]
+DETAIL CENTRAL_LINK pos (84.56101, 0.12, -42.96898) p 158.78697347641 dir -1 lane 1.0 park 0.725 wait 0.0 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 15.2833333333455, "ticket": 82 }]
+TIME 240.0 stationary=[0.0, 0.0, 3.44999999999999, 0.0, 0.7] trips=[8, 5, 4, 5, 7]
+DETAIL WEST pos (-120.42, 0.12, -61.89847) p 84.0083333333329 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 1, "kind": "terminal", "owner": 0, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 6.58333333333857, "ticket": 114 }]
+DETAIL SCIENCE pos (-43.58318, 0.12, -21.49) p 113.324224154154 dir -1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL GATE_EXPRESS pos (-112.63, 0.12, -145.9068) p 0.0 dir 1 lane 1.0 park 1.0 wait 0.21666666666664 leases [{ "zone": 0, "kind": "terminal", "owner": 2, "position": [-118.300003051758, -145.906799316406], "wait_seconds": 28.8833333333563, "ticket": 102 }]
+DETAIL HOSTEL_LINK pos (-132.2133, 0.12, -38.84558) p 190.796382579802 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 17, "kind": "junction", "owner": 3, "position": [-133.509994506836, -36.2700004577637], "wait_seconds": 14.5833333333449, "ticket": 108 }]
+DETAIL CENTRAL_LINK pos (83.8707, 0.12, -43.6593) p 158.78697347641 dir -1 lane 1.0 park 1.0 wait 2.96666666666664 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 11.8833333333428, "ticket": 110 }]
+TIME 300.0 stationary=[0.0, 3.34999999999999, 0.0, 0.0, 0.0] trips=[11, 6, 5, 6, 9]
+DETAIL WEST pos (-109.5659, 0.12, -55.29) p 106.250901381175 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 1, "kind": "terminal", "owner": 0, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 15.0499999999863, "ticket": 137 }]
+DETAIL SCIENCE pos (65.73415, 0.12, -39.22) p 243.041666666664 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 4.78333333332898, "ticket": 143 }]
+DETAIL GATE_EXPRESS pos (86.44931, 0.12, -181.52) p 238.242512232464 dir -1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL HOSTEL_LINK pos (-133.94, 0.12, -56.62877) p 166.800000000003 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 17, "kind": "junction", "owner": 3, "position": [-133.509994506836, -36.2700004577637], "wait_seconds": 2.09999999999809, "ticket": 144 }]
+DETAIL CENTRAL_LINK pos (87.13046, 0.12, -40.39954) p 158.78697347641 dir -1 lane 0.5 park 0.0 wait 5.99999999999996 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 8.8666666666586, "ticket": 141 }]
+SUMMARY WEST max_stationary=16.866666666667 distance=1353.20363002643 trips=11 lane=1.0 parking=0.0 waiting=0.0
+SUMMARY SCIENCE max_stationary=16.466666666667 distance=1982.43438026682 trips=6 lane=1.0 parking=0.0 waiting=0.0
+SUMMARY GATE_EXPRESS max_stationary=19.6666666666668 distance=1597.02243246138 trips=5 lane=1.0 parking=0.0 waiting=0.0
+SUMMARY HOSTEL_LINK max_stationary=28.683333333333 distance=1596.82499508187 trips=6 lane=1.0 parking=0.0 waiting=0.0
+SUMMARY CENTRAL_LINK max_stationary=15.0500000000003 distance=1587.48026314005 trips=9 lane=0.5 parking=0.0 waiting=5.99999999999996
+LONG TRAFFIC: 13 checks, 0 failures (300s, seed 14014, 60 Hz)
+PASS: long-traffic (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+ROUTE WEST (-118.3, 0.12, -145.9068) -> (-106.7326, 0.12, -53.17) length 109.084234714508
+ROUTE SCIENCE (-106.7326, 0.12, -53.17) -> (87.88, 0.12, -39.65) length 271.657557487488
+ROUTE GATE_EXPRESS (-118.3, 0.12, -145.9068) -> (112.489, 0.12, -153.0345) length 295.735845565796
+ROUTE HOSTEL_LINK (-233.22, 0.12, -83.5614) -> (-106.7326, 0.12, -53.17) length 221.636382579803
+ROUTE CENTRAL_LINK (112.489, 0.12, -153.0345) -> (87.88, 0.12, -39.65) length 158.78697347641
+TIME 60.0 stationary=[0.0, 0.0, 0.0, 0.0, 0.0] trips=[2, 1, 1, 0, 1]
+DETAIL WEST pos (-120.42, 0.12, -83.4318) p 62.4749999999997 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 16, "kind": "junction", "owner": 0, "position": [-130.130004882812, -86.9700012207031], "wait_seconds": 1.56666666666658, "ticket": 30 }]
+DETAIL SCIENCE pos (12.21676, 0.12, -37.82) p 187.424224154153 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 12, "kind": "junction", "owner": 1, "position": [-23.6600017547607, -37.9600067138672], "wait_seconds": 0.05, "ticket": 32 }]
+DETAIL GATE_EXPRESS pos (112.0144, 0.12, -153.2703) p 295.735845565796 dir -1 lane -0.25 park 0.0 wait 7.49999999999995 leases [{ "zone": 3, "kind": "terminal", "owner": 2, "position": [112.489036560059, -153.034545898438], "wait_seconds": 6.23333333333298, "ticket": 28 }, { "zone": 6, "kind": "junction", "owner": 2, "position": [116.609992980957, -174.850006103516], "wait_seconds": 1.44999999999992, "ticket": 31 }]
+DETAIL HOSTEL_LINK pos (-113.1074, 0.12, -51.05319) p 215.145455303197 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 1, "kind": "terminal", "owner": 3, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 4.24999999999976, "ticket": 29 }]
+DETAIL CENTRAL_LINK pos (103.52, 0.12, -89.95476) p 69.6619734764099 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 38, "kind": "junction", "owner": 4, "position": [96.3300018310547, -81.9000015258789], "wait_seconds": 21.2833333333321, "ticket": 22 }]
+TIME 120.0 stationary=[0.0, 0.0, 0.0, 0.0, 0.0] trips=[4, 2, 2, 2, 3]
+DETAIL WEST pos (-120.42, 0.12, -77.76514) p 68.1416666666664 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 16, "kind": "junction", "owner": 0, "position": [-130.130004882812, -86.9700012207031], "wait_seconds": 2.18333333333321, "ticket": 54 }]
+DETAIL SCIENCE pos (-28.97407, 0.12, -17.25) p 127.933333333332 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 12, "kind": "junction", "owner": 1, "position": [-23.6600017547607, -37.9600067138672], "wait_seconds": 1.48333333333325, "ticket": 56 }, { "zone": 13, "kind": "junction", "owner": 1, "position": [-25.3500003814697, -19.3699989318848], "wait_seconds": 3.48333333333314, "ticket": 53 }]
+DETAIL GATE_EXPRESS pos (-118.6357, 0.12, -145.9068) p 0.0 dir 1 lane -0.15833333333333 park 0.0 wait 7.31666666666662 leases [{ "zone": 0, "kind": "terminal", "owner": 2, "position": [-118.300003051758, -145.906799316406], "wait_seconds": 18.7833333333323, "ticket": 50 }]
+DETAIL HOSTEL_LINK pos (-208.8287, 0.12, -89.92) p 54.9599999999996 dir 1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL CENTRAL_LINK pos (86.62, 0.12, -62.73996) p 127.53697347641 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 39, "kind": "junction", "owner": 4, "position": [96.3300018310547, -56.5499992370605], "wait_seconds": 2.08333333333321, "ticket": 55 }]
+TIME 180.0 stationary=[9.46666666666672, 0.6, 0.0, 0.0, 0.0] trips=[6, 4, 3, 3, 5]
+DETAIL WEST pos (-120.42, 0.12, -70.39847) p 75.508333333333 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 1, "kind": "terminal", "owner": 1, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 9.8833333333412, "ticket": 86 }]
+DETAIL SCIENCE pos (-106.7326, 0.12, -58.84) p 0.0 dir 1 lane 1.0 park 1.0 wait 3.06666666666664 leases [{ "zone": 1, "kind": "terminal", "owner": 1, "position": [-106.732597351074, -53.1700019836426], "wait_seconds": 10.0833333333414, "ticket": 85 }]
+DETAIL GATE_EXPRESS pos (103.3893, 0.12, -181.52) p 255.182512232464 dir -1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL HOSTEL_LINK pos (-226.348, 0.12, -99.83572) p 30.7163825797982 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 4, "kind": "terminal", "owner": 3, "position": [-233.219985961914, -83.5614013671875], "wait_seconds": 2.58333333333539, "ticket": 87 }]
+DETAIL CENTRAL_LINK pos (86.62, 0.12, -39.98996) p 150.28697347641 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 17.3833333333472, "ticket": 81 }]
+TIME 240.0 stationary=[0.0, 0.0, 0.0, 0.0, 0.7] trips=[8, 5, 4, 5, 7]
+DETAIL WEST pos (-120.42, 0.12, -138.5401) p 7.36666666666666 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 0, "kind": "terminal", "owner": 0, "position": [-118.300003051758, -145.906799316406], "wait_seconds": 29.783333333357, "ticket": 102 }, { "zone": 9, "kind": "junction", "owner": 0, "position": [-118.300003051758, -120.770004272461], "wait_seconds": 11.1833333333422, "ticket": 110 }]
+DETAIL SCIENCE pos (-43.58318, 0.12, -21.49) p 113.324224154154 dir -1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL GATE_EXPRESS pos (-5.68, 0.12, -172.8518) p 137.444999999998 dir 1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL HOSTEL_LINK pos (-132.2133, 0.12, -38.84558) p 190.796382579802 dir -1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 17, "kind": "junction", "owner": 3, "position": [-133.509994506836, -36.2700004577637], "wait_seconds": 14.5833333333449, "ticket": 108 }]
+DETAIL CENTRAL_LINK pos (83.8707, 0.12, -43.6593) p 158.78697347641 dir -1 lane 1.0 park 1.0 wait 2.96666666666664 leases [{ "zone": 2, "kind": "terminal", "owner": 4, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 11.8833333333428, "ticket": 109 }]
+TIME 300.0 stationary=[2.3, 0.0, 0.0, 0.0, 0.13333333333333] trips=[10, 7, 5, 6, 8]
+DETAIL WEST pos (-123.97, 0.12, -145.9068) p 0.0 dir 1 lane 1.0 park 1.0 wait 1.36666666666664 leases [{ "zone": 0, "kind": "terminal", "owner": 0, "position": [-118.300003051758, -145.906799316406], "wait_seconds": 11.8999999999892, "ticket": 134 }, { "zone": 9, "kind": "junction", "owner": 0, "position": [-118.300003051758, -120.770004272461], "wait_seconds": 7.58333333332644, "ticket": 138 }]
+DETAIL SCIENCE pos (84.12173, 0.12, -43.40828) p 271.657557487488 dir -1 lane 1.0 park 0.9 wait 0.0 leases [{ "zone": 2, "kind": "terminal", "owner": 1, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 13.6499999999876, "ticket": 133 }]
+DETAIL GATE_EXPRESS pos (-67.25401, 0.12, -158.38) p 61.3991788991348 dir -1 lane 1.0 park 0.0 wait 0.0 leases []
+DETAIL HOSTEL_LINK pos (-133.94, 0.12, -56.62877) p 166.800000000003 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 17, "kind": "junction", "owner": 3, "position": [-133.509994506836, -36.2700004577637], "wait_seconds": 2.09999999999809, "ticket": 140 }]
+DETAIL CENTRAL_LINK pos (94.21, 0.12, -60.46679) p 101.25 dir 1 lane 1.0 park 0.0 wait 0.0 leases [{ "zone": 2, "kind": "terminal", "owner": 1, "position": [87.879997253418, -39.6500015258789], "wait_seconds": 0.11666666666656, "ticket": 141 }, { "zone": 39, "kind": "junction", "owner": 4, "position": [96.3300018310547, -56.5499992370605], "wait_seconds": 4.4333333333293, "ticket": 139 }]
+SUMMARY WEST max_stationary=16.866666666667 distance=1223.38626141474 trips=10 lane=1.0 parking=1.0 waiting=1.36666666666664
+SUMMARY SCIENCE max_stationary=16.466666666667 distance=2021.5446241349 trips=7 lane=1.0 parking=0.9 waiting=0.0
+SUMMARY GATE_EXPRESS max_stationary=21.6166666666667 distance=1732.17361443862 trips=5 lane=1.0 parking=0.0 waiting=0.0
+SUMMARY HOSTEL_LINK max_stationary=28.683333333333 distance=1596.82499508187 trips=6 lane=1.0 parking=0.0 waiting=0.0
+SUMMARY CENTRAL_LINK max_stationary=15.0500000000003 distance=1518.14412363991 trips=8 lane=1.0 parking=0.0 waiting=0.0
+LONG TRAFFIC: 14 checks, 0 failures (300s, seed 14014, 60 Hz)
+PASS: occupied-traffic (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+MOBILE GAMEPLAY: 318 checks, 0 failures; max interior children 193
+PASS: mobile-gameplay (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+ARCADE TRAFFIC: 10 checks, 0 failures; max stops [3.66666666666666, 10.6666666666668, 19.6666666666668, 28.683333333333, 3.66666666666666]; trips [13, 7, 5, 6, 9]
+PASS: arcade-traffic (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+PASS: runtime (exit 0)
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+PASS: debug-runtime (exit 0)
+PASS: debug telemetry (3 timestamped samples, all five services)
+ENVIRONMENT CHECKS PASSED

@@ -13,6 +13,7 @@ window/size/window_height_override=720
 window/stretch/mode="disabled"
 
 [rendering]
+textures/vram_compression/import_etc2_astc=true
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.49, 0.72, 0.84, 1)

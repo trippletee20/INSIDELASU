@@ -5,6 +5,7 @@ import functools
 import http.server
 import json
 import os
+import re
 import shutil
 import threading
 import time
@@ -52,6 +53,18 @@ try:
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
+        def legacy_pack_name(route):
+            response = route.fetch()
+            html = response.text()
+            match = re.search(r"const GODOT_CONFIG = (\{[^\n]+\});", html)
+            assert match, "Game launcher config missing"
+            config = json.loads(match.group(1))
+            config["mainPack"] = "index.pck"
+            html = html[:match.start(1)] + json.dumps(config, separators=(",", ":")) + html[match.end(1):]
+            route.fulfill(response=response, body=html)
+        # Start with the previous pack URL, then reload the fingerprinted URL on
+        # the same origin. A release must not change the player's browser save.
+        page.route("**/play/index.html*", legacy_pack_name)
         page.goto(base, wait_until="networkidle")
         assert page.get_by_role("link", name="Enter campus").count() == 1
         page.screenshot(path=str(OUT / "browser-landing.png"), full_page=True)
@@ -107,7 +120,7 @@ try:
         page.screenshot(path=str(OUT / "browser-800.png"))
         assert not errors, "Browser runtime errors: " + json.dumps(errors)
         result = {"result": "passed", "engine": "Godot 4.6.3 single-thread web", "profile_created": True,
-                  "daily_support": award, "browser_save_reloaded": True, "viewports": ["1280x720", "800x600"], "errors": errors}
+                  "daily_support": award, "browser_save_reloaded": True, "pack_filename_upgrade_reloaded": True, "viewports": ["1280x720", "800x600"], "errors": errors}
         (OUT / "browser-results.json").write_text(json.dumps(result, indent=2) + "\n")
         print("BROWSER CHECKS PASSED: landing, profile creation, daily support, receipts, save/reload, keyboard menus, resize")
         browser.close()

@@ -5,6 +5,9 @@ extends CharacterBody3D
 @export var jump_velocity: float = 5.0
 @export var mouse_sensitivity: float = 0.0025
 
+var touch_movement: Vector2 = Vector2.ZERO
+var touch_running: bool = false
+var touch_jump: bool = false
 var gravity: float = 18.0
 var camera_pivot: Node3D
 var camera: Camera3D
@@ -161,7 +164,7 @@ func _create_student_avatar() -> void:
     _avatar_sphere(avatar_right_leg, "RightShoe", Vector3(0, -0.66, -0.09), Vector3(0.62, 0.30, 1.0), shoe)
 
 func _unhandled_input(event: InputEvent) -> void:
-    if OS.has_feature("web") and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+    if not preload("res://scripts/mobile_controls.gd").touch_device() and OS.has_feature("web") and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
         Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
     if event.is_action_pressed("toggle_mouse_capture"):
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
@@ -170,29 +173,38 @@ func _unhandled_input(event: InputEvent) -> void:
         camera_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
         camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-35), deg_to_rad(20))
     if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F:
-        if is_sitting:
-            stand_up_from_seat()
-            get_viewport().set_input_as_handled()
-            return
-        var scene_root: Node = get_tree().current_scene
-        if scene_root != null and scene_root.has_method("try_seat_interaction"):
-            if scene_root.try_seat_interaction(self):
-                get_viewport().set_input_as_handled()
-                return
+        perform_seat_interaction()
+        get_viewport().set_input_as_handled()
     if event.is_action_pressed("interact"):
-        if is_sitting:
-            stand_up_from_seat()
-            get_viewport().set_input_as_handled()
-            return
-        var scene_root := get_tree().current_scene
-        # Transport interactions take priority, followed by seating and campus sites.
-        if scene_root != null and scene_root.has_method("try_vehicle_interaction"):
-            if scene_root.try_vehicle_interaction(self):
-                get_viewport().set_input_as_handled()
-                return
-        if nearby_feature != null and scene_root != null and scene_root.has_method("show_interaction"):
-            scene_root.show_interaction(str(nearby_feature.get_meta("campus_name", "Campus location")))
-            get_viewport().set_input_as_handled()
+        perform_interaction()
+        get_viewport().set_input_as_handled()
+
+func look(relative: Vector2) -> void:
+    rotate_y(-relative.x * mouse_sensitivity)
+    camera_pivot.rotation.x = clampf(camera_pivot.rotation.x - relative.y * mouse_sensitivity, deg_to_rad(-35), deg_to_rad(20))
+
+func perform_seat_interaction() -> void:
+    if is_sitting:
+        stand_up_from_seat()
+        return
+    var scene_root: Node = get_tree().current_scene
+    if scene_root != null and scene_root.has_method("try_seat_interaction"):
+        scene_root.try_seat_interaction(self)
+
+func perform_interaction() -> void:
+    if is_sitting:
+        stand_up_from_seat()
+        return
+    var scene_root: Node = get_tree().current_scene
+    if scene_root == null:
+        return
+    if scene_root.has_method("try_billboard_interaction") and scene_root.try_billboard_interaction(self):
+        return
+    if scene_root.has_method("try_vehicle_interaction") and scene_root.try_vehicle_interaction(self):
+        return
+    _find_nearest_feature()
+    if nearby_feature != null and scene_root.has_method("show_interaction"):
+        scene_root.show_interaction(str(nearby_feature.get_meta("campus_name", "Campus location")))
 
 func sit_on_seat(anchor: Node3D) -> void:
     if anchor == null or is_sitting:
@@ -284,11 +296,14 @@ func _physics_process(delta: float) -> void:
         return
     if not is_on_floor():
         velocity.y -= gravity * delta
-    elif Input.is_action_just_pressed("jump"):
+    elif Input.is_action_just_pressed("jump") or touch_jump:
         velocity.y = jump_velocity
+    touch_jump = false
     var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+    if touch_movement.length_squared() > input_dir.length_squared():
+        input_dir = touch_movement
     var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-    var speed := run_speed if Input.is_key_pressed(KEY_SHIFT) else move_speed
+    var speed := run_speed if Input.is_key_pressed(KEY_SHIFT) or touch_running else move_speed
     if direction.length() > 0.0:
         velocity.x = direction.x * speed
         velocity.z = direction.z * speed

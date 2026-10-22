@@ -2,6 +2,8 @@
 """Export a single-thread browser build that needs no special hosting headers."""
 from pathlib import Path
 import os
+import hashlib
+import json
 import re
 import shutil
 import subprocess
@@ -27,8 +29,24 @@ for args in [["--headless", "--editor", "--path", str(ROOT), "--quit"],
     print(result.stdout, end="")
     if result.returncode or re.search(r"(?m)^(SCRIPT ERROR:|ERROR:)", result.stdout):
         raise SystemExit(result.returncode or 1)
+# A changed game pack gets a new URL, so returning phones do not reuse an old
+# cached keyboard-only pack. Keep index.pck for existing cached launch pages.
+pack = OUT / "play/index.pck"
+pack_name = "campus-" + hashlib.sha256(pack.read_bytes()).hexdigest()[:16] + ".pck"
+for old_pack in (OUT / "play").glob("campus-*.pck"):
+    old_pack.unlink()
+shutil.copy2(pack, OUT / "play" / pack_name)
+html_path = OUT / "play/index.html"
+html = html_path.read_text()
+match = re.search(r"const GODOT_CONFIG = (\{[^\n]+\});", html)
+assert match, "Exported engine config was not found"
+config = json.loads(match.group(1))
+config["mainPack"] = pack_name
+config["fileSizes"][pack_name] = pack.stat().st_size
+html = html[:match.start(1)] + json.dumps(config, separators=(",", ":")) + html[match.end(1):]
+html_path.write_text(html)
 for path in (ROOT / "web").iterdir():
-    if path.is_file() and path.suffix in {".html", ".css", ".svg", ".txt", ".js", ".png"}:
+    if path.is_file() and path.suffix in {".html", ".css", ".svg", ".txt", ".js", ".png", ".json"}:
         shutil.copy2(path, OUT / path.name)
 shutil.copy2(ROOT / "assets/map_reference/Inside_LASU_Master_Map_Vector_Trace_v0.2.png", OUT / "campus.png")
 (OUT / ".nojekyll").write_text("")

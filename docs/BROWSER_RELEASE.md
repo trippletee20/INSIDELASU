@@ -1,6 +1,8 @@
 # Browser beta release
 
-The selected release target is a desktop web browser with keyboard and mouse.
+The current release target is mobile and desktop web browsers. See [MOBILE_EXPANSION.md](MOBILE_EXPANSION.md) for the new touch controls, interiors, activities and advertising preview.
+
+The evidence below records the original desktop browser milestone.
 This milestone is now published at **https://trippletee20.github.io/INSIDELASU/**.
 It produces a playable hosted game, not another source-only ZIP.
 
