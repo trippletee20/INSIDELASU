@@ -64,7 +64,7 @@ func _layout() -> void:
     center = Vector2(88, size.y - 135)
     if size.y < 460:
         center = Vector2(88, size.y - 95)
-    var positions := {"interact": Vector2(size.x - 134, size.y - 150), "jump": Vector2(size.x - 134, size.y - 90), "sit": Vector2(size.x - 252, size.y - 90), "run": Vector2(28, size.y - 64), "map": Vector2(size.x - 98, 25), "view": Vector2(size.x - 174, size.y - 210)}
+    var positions := {"interact": Vector2(size.x - 134, size.y - 150), "jump": Vector2(size.x - 134, size.y - 90), "sit": Vector2(size.x - 252, size.y - 90), "run": Vector2(28, size.y - 64), "map": Vector2(size.x - 98, 212 if size.y >= 500 else 84), "view": Vector2(size.x - 174, size.y - 210)}
     for key in buttons:
         var button: Button = buttons[key]
         button.position = positions[key]

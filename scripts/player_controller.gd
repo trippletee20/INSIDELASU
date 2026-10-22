@@ -38,12 +38,21 @@ func _ready() -> void:
     camera_pivot.position.y = 1.4
     add_child(camera_pivot)
     camera = Camera3D.new()
-    camera.position = Vector3(0, 2.0, 6.8)
-    camera.rotation_degrees.x = -14.0
+    var arm := SpringArm3D.new()
+    arm.name = "CameraCollisionArm"
+    arm.position.y = 1.3
+    arm.rotation_degrees.x = -14.0
+    arm.spring_length = 6.0
+    arm.margin = 0.25
+    var camera_shape := SphereShape3D.new()
+    camera_shape.radius = 0.25
+    arm.shape = camera_shape
+    arm.add_excluded_object(get_rid())
+    camera_pivot.add_child(arm)
     camera.current = true
     if OS.has_feature("web"):
         camera.far = 220.0
-    camera_pivot.add_child(camera)
+    arm.add_child(camera)
     Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if OS.has_feature("web") else Input.MOUSE_MODE_CAPTURED
 
 func _avatar_block(parent: Node3D, name_text: String, pos: Vector3, size: Vector3, color: Color) -> void:
@@ -197,6 +206,8 @@ func perform_interaction() -> void:
         return
     var scene_root: Node = get_tree().current_scene
     if scene_root == null:
+        return
+    if scene_root.has_method("try_campus_interaction") and scene_root.try_campus_interaction(self):
         return
     if scene_root.has_method("try_billboard_interaction") and scene_root.try_billboard_interaction(self):
         return

@@ -29,6 +29,10 @@ jobs:
           echo "$RUNNER_TEMP/godot-bin" >> "$GITHUB_PATH"
       - name: Run engine and gameplay acceptance checks
         run: python3 tools/check_environment.py
+      - name: Verify social server container and persistent storage
+        run: |
+          docker build -t inside-lasu-social:beta server
+          python3 tools/test_social_container.py
       - name: Build browser game
         run: python3 tools/build_web.py
       - name: Install browser test dependency

@@ -236,6 +236,7 @@ func show_floor(site_name: String, floor_title: String, floor_index: int, own_ro
     IDENTITY.new().build(self, current_floor, theme, floor_index, site_name, accent)
     if own_room > 0 and "hostel" in site_name.to_lower():
         _label(current_floor, "ROOM " + str(own_room) + " • INTERACT FOR YOUR ROOM", Vector3(0, 3.18, -11.8), 23)
+    _action_point(current_floor, "rooms", "ROOMS & TASKS · INTERACT", Vector3(0, 0, 6.5))
     return ROOM_BASE + Vector3(0, 0.45, 9.5)
 
 func show_private_room(hostel_name: String, room_number: int, chosen_furniture: Array) -> Vector3:
@@ -315,3 +316,49 @@ func clear_interior() -> void:
         current_floor.queue_free()
         current_floor = null
     visible = false
+
+
+func _action_point(parent: Node3D, action: String, title: String, at: Vector3) -> Node3D:
+    var point := Node3D.new()
+    point.position = at
+    point.set_meta("action", action)
+    point.add_to_group("campus_actions")
+    parent.add_child(point)
+    _shape(point, "InteractionMat", Vector3(0, 0.035, 0), Vector3(1.8, 0.04, 1.6), Color("398e83"))
+    _label(point, title, Vector3(0, 2.3, 0), 22)
+    return point
+
+func show_campus_room(site: String, definition: Array, floor_index: int) -> Vector3:
+    # Create an independent room with its own identity, not a facade in the lobby.
+    var spawn: Vector3 = show_floor(site, str(definition[0]), floor_index)
+    var theme: String = str(definition[1])
+    for child in current_floor.get_children():
+        current_floor.remove_child(child)
+        child.queue_free()
+    var accent := Color.from_hsv(float(absi((site + str(definition[0]) + str(floor_index)).hash()) % 360) / 360.0, 0.46, 0.60)
+    _room_shell(current_floor, str(definition[0]), accent.lightened(0.8), accent, Color("162e3c"), theme)
+    IDENTITY.new().build(self, current_floor, theme, floor_index, site, accent)
+    current_floor.set_meta("room_title", str(definition[0]))
+    _label(current_floor, site + " · " + str(definition[0]), Vector3(0, 3.5, -10), 30)
+    var staff: Node3D = _action_point(current_floor, "staff", str(definition[2]) + " · INTERACT", Vector3(-3.5, 0, 8))
+    staff.set_meta("role", str(definition[2]))
+    var dialogue: String = "Welcome to " + str(definition[0]) + ". I can help you find the activities on this floor."
+    if theme in ["lecture", "education", "library"]:
+        dialogue += " Use the notebook point to take your own notes, and choose a practice activity below."
+    elif theme in ["food", "market", "bank", "laundry"]:
+        dialogue += " Prices and requirements are shown before each service. All purchases use game money."
+    elif theme == "clinic":
+        dialogue += " Visit the wellbeing activities below; these are fictional game services."
+    staff.set_meta("dialogue", dialogue)
+    _shape(staff, "StaffTorso", Vector3(0, 1.05, 0), Vector3(0.65, 0.8, 0.35), accent)
+    _shape(staff, "StaffHead", Vector3(0, 1.65, 0), Vector3(0.43, 0.46, 0.4), Color("865434"))
+    for xx in [-0.18, 0.18]:
+        _shape(staff, "StaffLeg", Vector3(xx, 0.38, 0), Vector3(0.24, 0.75, 0.27), Color("243345"))
+        _shape(staff, "StaffArm", Vector3(xx * 2.4, 1.0, 0), Vector3(0.18, 0.7, 0.25), accent.darkened(0.2))
+    var object_action: String = "notes" if theme in ["lecture", "education", "library", "computing", "science", "arts", "studio"] else "tasks"
+    var object_name: String = "NOTEBOOK · INTERACT" if object_action == "notes" else "SERVICE COUNTER · INTERACT"
+    var point: Node3D = _action_point(current_floor, object_action, object_name, Vector3(3.5, 0, 8))
+    _table(point, Vector3.ZERO, Vector3(1.8, 0, 0.9), Color("94714e"))
+    _shape(point, "NotebookOrTerminal", Vector3(0, 0.91, 0), Vector3(0.6, 0.06, 0.42), Color("e7dab7"))
+    _action_point(current_floor, "rooms", "LOBBY / OTHER ROOMS · INTERACT", Vector3(0, 0, 10))
+    return spawn

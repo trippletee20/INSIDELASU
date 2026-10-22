@@ -2,7 +2,14 @@ extends CanvasLayer
 ## Player-facing HUD and expandable profile/wallet. World simulation stays separate.
 signal modal_changed(open: bool)
 signal reward_requested
+signal phone_requested
+signal places_requested
 signal ad_preview_requested
+var hud_expanded: bool = false
+var hud_toggle: Button
+var phone_button: Button
+var places_button: Button
+var toast: Label
 var student_name: Label
 var balance: Label
 var location: Label
@@ -99,6 +106,12 @@ func _ready() -> void:
     for item in [["Profile · P", "profile"], ["Wallet · B", "wallet"], ["Help · H", "help"]]:
         var key: String = item[1]
         top_buttons.append(_button(item[0], row, func(): toggle(key)))
+    for button in top_buttons:
+        button.visible = false
+    hud_toggle = _button("More ▾", row, func():
+        hud_expanded = not hud_expanded
+        _layout())
+    phone_button = _button("Phone", row, func(): phone_requested.emit())
     var status := _panel(root)
     status_panel = status
     status.position = Vector2(16, 88)
@@ -107,6 +120,9 @@ func _ready() -> void:
     column.add_theme_constant_override("separation", 8)
     status.add_child(column)
     location = _label("Main Gate", column, 14)
+    location.clip_text = true
+    location.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+    places_button = _button("Places & tasks", column, func(): places_requested.emit())
     objective = _label("Create your student profile to begin.", column, 14)
     objective.custom_minimum_size.x = 320
     objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -126,6 +142,11 @@ func _ready() -> void:
     footer.offset_bottom = -12
     prompt = _label("WASD move · Mouse look · E interact · M map · Shift run · Space jump", footer, 14)
     prompt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    toast = _label("", root, 12)
+    toast.position = Vector2(18, 180)
+    toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    toast.max_lines_visible = 3
+    toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
     modal = _panel(root)
     modal.name = "StudentModal"
     modal.focus_mode = Control.FOCUS_ALL
@@ -165,39 +186,48 @@ func _ready() -> void:
 
 func _layout() -> void:
     var viewport: Vector2 = get_viewport().get_visible_rect().size
-    modal.size = Vector2(minf(720, viewport.x - 32), minf(570, viewport.y - 32))
+    modal.size = Vector2(minf(720, viewport.x - 24), minf(570, viewport.y - 24))
     modal.position = (viewport - modal.size) * 0.5
-    var touch: bool = preload("res://scripts/mobile_controls.gd").touch_device()
     var compact: bool = viewport.x < 700
     wallet_summary.add_theme_font_size_override("font_size", 14 if compact else 16)
-    student_name.visible = not compact and not touch
-    clock.visible = not compact and not touch
+    student_name.visible = viewport.x >= 900
+    clock.visible = viewport.x >= 600
+    top_row.add_theme_constant_override("separation", 6)
+    balance.custom_minimum_size = Vector2(72, 44)
+    balance.clip_text = true
+    balance.add_theme_font_size_override("font_size", 14 if compact else 18)
+    balance.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    for button in top_buttons:
+        button.visible = false
+    hud_toggle.text = "Hide -" if hud_expanded else "Expand +"
+    hud_toggle.custom_minimum_size.x = 70
+    phone_button.custom_minimum_size.x = 64
+    status_panel.position = Vector2(16, 86)
     status_panel.custom_minimum_size.x = minf(360, viewport.x - 32)
     status_panel.size = Vector2(minf(360, viewport.x - 32), 0)
-    objective.custom_minimum_size.x = minf(320, viewport.x - 70)
-    objective.size.x = minf(320, viewport.x - 70)
-    objective.visible = not (touch and viewport.y < 500)
-    meters_row.visible = not (touch and viewport.y < 500)
-    if touch:
-        top_row.add_theme_constant_override("separation", 6)
-        balance.visible = viewport.x >= 350
-        balance.custom_minimum_size = Vector2(90, 44)
-        balance.clip_text = true
-        balance.add_theme_font_size_override("font_size", 14)
-        for i in range(top_buttons.size()):
-            top_buttons[i].custom_minimum_size.x = 44 if i == 2 else 56
-            top_buttons[i].visible = i != 2 or viewport.x >= 390 or viewport.x < 350
-        footer_panel.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-        footer_panel.offset_left = 16
-        footer_panel.offset_right = -16
-        footer_panel.offset_top = 130 if viewport.y < 500 else 230
-        footer_panel.offset_bottom = footer_panel.offset_top + 62
-        prompt.add_theme_font_size_override("font_size", 12)
-        prompt.max_lines_visible = 3
-        prompt.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-    for button in top_buttons:
-        button.add_theme_font_size_override("font_size", 12 if compact else 14)
-        button.text = button.text.get_slice(" · ", 0) if viewport.x < 1000 else ["Profile · P", "Wallet · B", "Help · H"][top_buttons.find(button)]
+    objective.custom_minimum_size.x = minf(310, viewport.x - 70)
+    objective.size.x = objective.custom_minimum_size.x
+    objective.visible = hud_expanded
+    meters_row.visible = hud_expanded
+    places_button.text = "Places & tasks  ›"
+    places_button.custom_minimum_size.y = 44
+    footer_panel.visible = hud_expanded
+    footer_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+    footer_panel.offset_left = 16
+    footer_panel.offset_right = -16
+    footer_panel.offset_top = -82
+    footer_panel.offset_bottom = -12
+    # Keep the playing area clear, including on short landscape screens.
+    if viewport.y < 500:
+        status_panel.visible = hud_expanded
+        footer_panel.visible = false
+    else:
+        status_panel.visible = true
+    status_panel.call_deferred("reset_size")
+    toast.size.x = maxf(160, minf(450, viewport.x - 125))
+    toast.position.y = 180 if viewport.y >= 500 else 80
+    prompt.max_lines_visible = 2
+    prompt.add_theme_font_size_override("font_size", 12)
 
 func toggle(kind: String) -> void:
     if current == kind:

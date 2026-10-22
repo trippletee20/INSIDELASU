@@ -17,6 +17,10 @@ const SAVE_PATH = "user://inside_lasu_save.json"
 const SAVE_STORE = preload("res://scripts/save_store.gd")
 const STUDENT_UI = preload("res://scenes/ui/student_ui.tscn")
 var student_ui
+var campus_phone
+var campus_social
+var active_campus_room: int = -1
+const CAMPUS_ROOMS = preload("res://scripts/campus_rooms.gd")
 const MOBILE_CONTROLS = preload("res://scripts/mobile_controls.gd")
 var mobile_controls
 var billboard_slots: Array[Node3D] = []
@@ -150,6 +154,27 @@ func _ready() -> void:
     mobile_controls.look_requested.connect(_look_around)
     mobile_controls.world_tapped.connect(_try_billboard_at)
     _register_billboards(self)
+    campus_social = preload("res://scripts/campus_social.gd").new()
+    campus_social.game = self
+    add_child(campus_social)
+    campus_phone = preload("res://scripts/campus_phone.gd").new()
+    campus_phone.game = self
+    campus_phone.online = campus_social
+    var saved_phone: Variant = save_extras.get("campus_phone", {})
+    if saved_phone is Dictionary:
+        for key in campus_phone.state:
+            if saved_phone.has(key) and typeof(saved_phone[key]) == typeof(campus_phone.state[key]):
+                campus_phone.state[key] = saved_phone[key]
+        if saved_phone.get("societies", []) is Array:
+            campus_phone.state["societies"] = saved_phone.get("societies", [])
+    add_child(campus_phone)
+    campus_phone.opened_changed.connect(_on_student_modal)
+    student_ui.phone_requested.connect(func(): campus_phone.open())
+    student_ui.places_requested.connect(func():
+        if not active_interior_site.is_empty(): _open_task_panel(active_interior_site)
+        elif player.nearby_feature != null: show_interaction(str(player.nearby_feature.get_meta("campus_name", "")))
+        else: campus_phone.open("Places & tasks"))
+    _create_entrance_markers()
 
 func _load_map_data() -> void:
     var file := FileAccess.open(LAYOUT_PATH, FileAccess.READ)
@@ -1434,6 +1459,7 @@ func _save_game() -> void:
         "skills": skills,
         "skill_xp": skill_xp,
         "skill_daily_xp": skill_daily_xp,
+        "campus_phone": campus_phone.state if campus_phone != null else save_extras.get("campus_phone", {}),
         "social_reputation": social_reputation
     }
     var merged: Dictionary = save_extras.duplicate(true)
@@ -1474,6 +1500,15 @@ func _check_hostel_curfew() -> void:
     _save_game()
 
 func _unhandled_input(event: InputEvent) -> void:
+    if campus_phone != null and campus_phone.panel.visible:
+        if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+            campus_phone.close()
+        get_viewport().set_input_as_handled()
+        return
+    if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_T and campus_phone != null:
+        campus_phone.open()
+        get_viewport().set_input_as_handled()
+        return
     if not MOBILE_CONTROLS.touch_device() and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
         if _try_billboard_at(event.position):
             get_viewport().set_input_as_handled()
@@ -1504,7 +1539,8 @@ func _unhandled_input(event: InputEvent) -> void:
                 _enter_private_room()
                 get_viewport().set_input_as_handled()
                 return
-        _open_task_panel(active_interior_site)
+        if not try_campus_interaction(player):
+            _open_task_panel(active_interior_site)
         get_viewport().set_input_as_handled()
         return
     if ride_bus != null and event.is_action_pressed("interact"):
@@ -1576,7 +1612,15 @@ func _update_hud() -> void:
         var nearby: Node3D = player.get("nearby_feature") as Node3D
         if nearby != null:
             location_name = str(nearby.get_meta("campus_name", "Campus"))
+    if active_campus_room >= 0:
+        location_name += " · " + str(CAMPUS_ROOMS.for_site(active_interior_site, building_experiences)[active_campus_room][0])
     student_ui.location.text = location_name
+    if not active_interior_site.is_empty():
+        student_ui.places_button.text = "Rooms, tasks & exit  ›"
+    elif player != null and player.nearby_feature != null:
+        student_ui.places_button.text = "Enter / activities  ›"
+    else:
+        student_ui.places_button.text = "Places & tasks  ›"
     student_ui.objective.text = "Create your student profile to begin." if profile_data.is_empty() else ("Check in at " + str(profile_data.get("hostel_name", "your hostel")) if not profile_data.get("hostel_checked_in", false) else "Explore campus · study, work and build your skills")
     var message: String = "Left stick: move · Swipe right: look · Tap Interact near a building" if MOBILE_CONTROLS.touch_device() else "E interact · F sit · M map · B wallet · P profile · H help"
     if not active_interior_site.is_empty():
@@ -1586,6 +1630,7 @@ func _update_hud() -> void:
     if not notice.is_empty():
         message += "\n" + notice
     hud_label.text = message
+    student_ui.toast.text = notice if not student_ui.hud_expanded else ""
 
 func _nearest_seat_for_hud(position_value: Vector3, radius: float) -> Node3D:
     var nearest: Node3D = null
@@ -1698,8 +1743,11 @@ func _create_task_panel() -> void:
 func _open_task_panel(site_name: String) -> void:
     if task_panel == null or profile_data.is_empty() or ride_bus != null:
         return
-    var entries: Array = task_catalog.get(site_name, [])
-    if entries.is_empty():
+    var entries: Array = task_catalog.get(site_name, []).duplicate(true)
+    if active_interior_site == site_name and active_campus_room >= 0:
+        var room_definition: Array = CAMPUS_ROOMS.for_site(site_name, building_experiences)[active_campus_room]
+        entries.push_front(CAMPUS_ROOMS.activity(site_name, room_definition, active_campus_room, active_interior_floor))
+    if entries.is_empty() and not interior_catalog.has(site_name):
         notice = "No activities are configured at this site yet."
         notice_timer = 4.0
         return
@@ -1732,13 +1780,25 @@ func _open_task_panel(site_name: String) -> void:
                 floor_button.text = ("● " if floor_idx == active_interior_floor else "↗ ") + str(floor_list[floor_idx])
                 floor_button.pressed.connect(_go_to_interior_floor.bind(floor_idx))
                 task_buttons_container.add_child(floor_button)
+            if not active_private_room:
+                var room_list: Array = CAMPUS_ROOMS.for_site(site_name, building_experiences)
+                for room_index in range(room_list.size()):
+                    var room_button := Button.new()
+                    room_button.text = "ENTER ROOM · " + str(room_list[room_index][0])
+                    room_button.pressed.connect(_enter_campus_room.bind(room_index))
+                    task_buttons_container.add_child(room_button)
+                if active_campus_room >= 0:
+                    var lobby_button := Button.new()
+                    lobby_button.text = "RETURN TO FLOOR LOBBY"
+                    lobby_button.pressed.connect(_go_to_interior_floor.bind(active_interior_floor))
+                    task_buttons_container.add_child(lobby_button)
             var exit_button := Button.new()
             exit_button.text = "EXIT BUILDING — BACK TO CAMPUS"
             exit_button.pressed.connect(_leave_interior)
             task_buttons_container.add_child(exit_button)
         else:
             var enter_button := Button.new()
-            enter_button.text = "ENTER STYLISED INTERIOR  •  Explore rooms and floors"
+            enter_button.text = "ENTER BUILDING  •  Rooms, activities and services"
             enter_button.pressed.connect(_enter_interior.bind(site_name))
             task_buttons_container.add_child(enter_button)
     task_status_label.text = "Choose an activity. Press BACK TO CAMPUS to return."
@@ -1972,7 +2032,10 @@ func _go_to_interior_floor(index: int) -> void:
     var floors: Array = interior_catalog.get(active_interior_site, [])
     if index < 0 or index >= floors.size():
         return
+    if player.is_sitting: player.stand_up_from_seat()
     active_interior_floor = index
+    active_campus_room = -1
+    if campus_social != null: campus_social.clear_peers()
     active_private_room = false
     _close_task_panel()
     var room_marker: int = int(profile_data.get("room_number", 0)) if active_interior_site == str(profile_data.get("hostel_name", "")) else -1
@@ -1987,6 +2050,7 @@ func _go_to_interior_floor(index: int) -> void:
 func _leave_interior() -> void:
     if active_interior_site.is_empty():
         return
+    if player.is_sitting: player.stand_up_from_seat()
     _close_task_panel()
     if interior_builder != null:
         interior_builder.clear_interior()
@@ -1997,6 +2061,8 @@ func _leave_interior() -> void:
     player.global_position = outdoor_return_position
     player.velocity = Vector3.ZERO
     active_interior_site = ""
+    active_campus_room = -1
+    if campus_social != null: campus_social.clear_peers()
     active_interior_floor = 0
     active_private_room = false
     notice = "Exited the building."
@@ -2005,7 +2071,10 @@ func _leave_interior() -> void:
 func _enter_private_room() -> void:
     if active_interior_site.is_empty() or active_interior_site != str(profile_data.get("hostel_name", "")):
         return
+    if player.is_sitting: player.stand_up_from_seat()
     active_private_room = true
+    active_campus_room = -1
+    if campus_social != null: campus_social.clear_peers()
     profile_data["hostel_checked_in"] = true
     _close_task_panel()
     var position_value: Vector3 = interior_builder.show_private_room(active_interior_site, int(profile_data.get("room_number", 1)), room_furniture)
@@ -2229,7 +2298,7 @@ func _set_mouse_capture(capture: bool) -> void:
 func _sync_mobile_controls() -> void:
     if mobile_controls == null or player == null:
         return
-    var playable: bool = not profile_data.is_empty() and profile_layer == null and not student_ui.modal.visible and not task_panel.visible and not shuttle_menu.visible
+    var playable: bool = not profile_data.is_empty() and profile_layer == null and not student_ui.modal.visible and not (campus_phone != null and campus_phone.panel.visible) and not task_panel.visible and not shuttle_menu.visible
     mobile_controls.set_enabled(playable, ride_bus != null, overview_on)
     player.touch_movement = mobile_controls.movement if playable and ride_bus == null and not overview_on else Vector2.ZERO
     player.touch_running = mobile_controls.running if playable and ride_bus == null and not overview_on else false
@@ -2237,7 +2306,7 @@ func _sync_mobile_controls() -> void:
         player.touch_jump = false
 
 func _mobile_action(action: String) -> void:
-    if profile_data.is_empty() or student_ui.modal.visible or task_panel.visible or shuttle_menu.visible:
+    if profile_data.is_empty() or student_ui.modal.visible or (campus_phone != null and campus_phone.panel.visible) or task_panel.visible or shuttle_menu.visible:
         return
     match action:
         "interact":
@@ -2248,7 +2317,8 @@ func _mobile_action(action: String) -> void:
                     notice = "Stay seated until the shuttle reaches its stop."
                     notice_timer = 3
             elif not active_interior_site.is_empty():
-                _open_task_panel(active_interior_site)
+                if not try_campus_interaction(player):
+                    _open_task_panel(active_interior_site)
             else:
                 player.perform_interaction()
         "sit":
@@ -2374,7 +2444,7 @@ func _answer_challenge(answer: int) -> void:
     _show_challenge_step()
 
 func _try_billboard_at(at: Vector2) -> bool:
-    if profile_data.is_empty() or student_ui.modal.visible or task_panel.visible or shuttle_menu.visible or ride_bus != null or overview_on:
+    if profile_data.is_empty() or student_ui.modal.visible or (campus_phone != null and campus_phone.panel.visible) or task_panel.visible or shuttle_menu.visible or ride_bus != null or overview_on:
         return false
     var camera: Camera3D = get_viewport().get_camera_3d()
     if camera == null:
@@ -2386,4 +2456,75 @@ func _try_billboard_at(at: Vector2) -> bool:
     if hit.is_empty() or not hit.collider.has_meta("ad_slot_id"):
         return false
     _open_advertising(str(hit.collider.get_meta("ad_slot_id")))
+    return true
+
+
+func is_near_site(site: String) -> bool:
+    if player == null: return false
+    for feature in get_tree().get_nodes_in_group("campus_features"):
+        if str(feature.get_meta("campus_name", "")) != site: continue
+        var offset: Vector3 = player.global_position - feature.global_position
+        return Vector2(maxf(absf(offset.x) - float(feature.get_meta("feature_half_width", 0)), 0), maxf(absf(offset.z) - float(feature.get_meta("feature_half_depth", 0)), 0)).length() <= 12.0
+    return false
+
+func _create_entrance_markers() -> void:
+    for feature in get_tree().get_nodes_in_group("campus_features"):
+        var site: String = str(feature.get_meta("campus_name", ""))
+        if not interior_catalog.has(site): continue
+        var caption := Label3D.new()
+        caption.text = "ENTER · INTERACT\n" + site
+        caption.font_size = 30
+        caption.pixel_size = 0.014
+        caption.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+        caption.position = Vector3(0, 2.2, float(feature.get_meta("feature_half_depth", 0)) + 1.5)
+        caption.modulate = Color("7ce6be")
+        caption.no_depth_test = false
+        feature.add_child(caption)
+
+func _enter_campus_room(index: int) -> void:
+    if active_interior_site.is_empty() or active_private_room: return
+    var rooms: Array = CAMPUS_ROOMS.for_site(active_interior_site, building_experiences)
+    if index < 0 or index >= rooms.size(): return
+    if player.is_sitting: player.stand_up_from_seat()
+    _close_task_panel()
+    active_campus_room = index
+    if campus_social != null: campus_social.clear_peers()
+    player.global_position = interior_builder.show_campus_room(active_interior_site, rooms[index], active_interior_floor)
+    player.velocity = Vector3.ZERO
+    _register_interior_seats()
+    notice = str(rooms[index][0]) + " · Explore, meet the staff or use the marked objects."
+    notice_timer = 6
+
+func social_location() -> String:
+    if active_private_room:
+        return "private:" + str(profile_data.get("hostel_name", "")) + ":" + str(profile_data.get("room_number", ""))
+    if active_interior_site.is_empty(): return "campus"
+    return active_interior_site + ":" + str(active_interior_floor) + ":" + str(active_campus_room)
+
+func try_campus_interaction(walker: Node3D) -> bool:
+    if campus_phone == null: return false
+    for peer in get_tree().get_nodes_in_group("online_students"):
+        if peer.global_position.distance_to(walker.global_position) < 3:
+            campus_phone.open("Contacts")
+            campus_social.conversation(campus_phone, str(peer.get_meta("username", "")))
+            return true
+    var nearest: Node3D = null
+    var distance: float = 2.8
+    for point in get_tree().get_nodes_in_group("campus_actions"):
+        var value: float = point.global_position.distance_to(walker.global_position)
+        if value < distance:
+            nearest = point
+            distance = value
+    if nearest == null: return false
+    var action: String = str(nearest.get_meta("action", "tasks"))
+    if action == "notes":
+        campus_phone.open("Notes")
+    elif action == "rooms":
+        _open_task_panel(active_interior_site)
+    elif action == "staff":
+        _open_task_panel(active_interior_site)
+        task_title_label.text = str(nearest.get_meta("role", "Campus staff"))
+        task_status_label.text = str(nearest.get_meta("dialogue", "Welcome. Choose a service or activity below."))
+    else:
+        _open_task_panel(active_interior_site)
     return true

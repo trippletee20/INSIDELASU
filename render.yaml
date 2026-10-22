@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: inside-lasu-social
+    runtime: docker
+    plan: starter
+    dockerContext: ./server
+    dockerfilePath: ./server/Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: ALLOWED_ORIGIN
+        value: https://trippletee20.github.io
+      - key: DATABASE_PATH
+        value: /data/campus-social.sqlite3
+      - key: PORT
+        value: 8080
+    disk:
+      name: campus-social-data
+      mountPath: /data
+      sizeGB: 1

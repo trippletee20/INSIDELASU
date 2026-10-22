@@ -1,3 +1,9 @@
+## Campus ecosystem update
+
+[Play the browser beta](https://trippletee20.github.io/INSIDELASU/play/index.html?v=campus-phone-v016) · [Phone, rooms and NPC features](docs/CAMPUS_ECOSYSTEM.md) · [Enable real-player messaging](docs/SOCIAL_HOSTING.md)
+
+The Phone button opens 16 campus apps. Expand/Hide controls the HUD. Nearby location actions expose entrances, rooms and tasks. Social server code and a persistent hosting Blueprint are included; messaging stays explicitly offline until a server URL is connected.
+
 # Inside LASU
 
 A single-player campus-life game, now live as a **mobile and desktop browser beta**.

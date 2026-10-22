@@ -1,0 +1,4 @@
+{
+  "server_url": "",
+  "description": "Set to the deployed HTTPS social server URL. Empty means offline; no simulated player accounts."
+}

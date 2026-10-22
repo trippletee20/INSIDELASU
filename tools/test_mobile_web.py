@@ -87,22 +87,26 @@ try:
         page.wait_for_timeout(500)
         assert not page.evaluate('!!document.pointerLockElement'), 'Phone requested mouse lock'
         page.screenshot(path=str(OUT / 'game-after-touch-movement.png'))
-        page.touchscreen.tap(215,47)  # Wallet in the fixed touch toolbar.
+        page.touchscreen.tap(330,47)  # Phone in the compact toolbar.
+        page.wait_for_timeout(800)
+        page.screenshot(path=str(OUT / 'phone-home.png'))
+        page.touchscreen.tap(196,486)  # Wallet app in row 3.
+
         page.wait_for_timeout(1000)
         page.screenshot(path=str(OUT / 'wallet-portrait.png'))
         page.touchscreen.tap(330,185)  # Close; commits current stats to IndexedDB.
         after = saved(page, lambda value: value['energy'] < before['energy'] - 0.01)
         assert after['wallet_balance'] == before['wallet_balance']
-        page.touchscreen.tap(332,50)  # Map.
+        page.touchscreen.tap(332,237)  # Map.
         page.wait_for_timeout(600)
         page.screenshot(path=str(OUT / 'map-portrait.png'))
-        page.touchscreen.tap(332,50)
+        page.touchscreen.tap(332,237)
         page.set_viewport_size({'width':873,'height':393})
         page.wait_for_timeout(1000)
         page.screenshot(path=str(OUT / 'game-landscape.png'))
-        page.touchscreen.tap(824,50)
+        page.touchscreen.tap(824,109)
         page.wait_for_timeout(500)
-        page.touchscreen.tap(824,50)
+        page.touchscreen.tap(824,109)
         page.reload(wait_until='networkidle')
         page.wait_for_timeout(14000)
         reloaded = saved(page)
