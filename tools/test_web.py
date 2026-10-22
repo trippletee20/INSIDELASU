@@ -9,6 +9,7 @@ import re
 import shutil
 import threading
 import time
+import urllib.request
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -54,14 +55,24 @@ try:
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.on("console", lambda message: errors.append(message.text) if message.type == "error" else None)
         def legacy_pack_name(route):
-            response = route.fetch()
-            html = response.text()
+            # Node's route.fetch can bypass this cloud's HTTPS proxy/DNS path.
+            # urllib uses its verified system CA and configured proxy for HTTPS.
+            response = None
+            if route.request.url.startswith("https://"):
+                with urllib.request.urlopen(route.request.url, timeout=60) as hosted_response:
+                    html = hosted_response.read().decode("utf-8")
+            else:
+                response = route.fetch()
+                html = response.text()
             match = re.search(r"const GODOT_CONFIG = (\{[^\n]+\});", html)
             assert match, "Game launcher config missing"
             config = json.loads(match.group(1))
             config["mainPack"] = "index.pck"
             html = html[:match.start(1)] + json.dumps(config, separators=(",", ":")) + html[match.end(1):]
-            route.fulfill(response=response, body=html)
+            if response is None:
+                route.fulfill(status=200, content_type="text/html; charset=utf-8", body=html)
+            else:
+                route.fulfill(response=response, body=html)
         # Start with the previous pack URL, then reload the fingerprinted URL on
         # the same origin. A release must not change the player's browser save.
         page.route("**/play/index.html*", legacy_pack_name)

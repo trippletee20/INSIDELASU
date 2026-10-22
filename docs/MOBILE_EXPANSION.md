@@ -41,3 +41,9 @@ Local acceptance passed **467 engine checks** plus the desktop, touch-browser an
 The engine checks additionally exercise menu bounds at 393×873, 873×393, 360×640, 640×360 and 320×568. Chromium tests use software WebGL and mobile emulation; they do not establish physical Android performance or compatibility with every phone/browser. Real-device acceptance remains necessary.
 
 The requested reference, `https://lagoslife.app`, returned 403 Forbidden from the execution environment (including the www host and activity path). No activity or visual design in this update is represented as an observed or copied feature of that site.
+
+## Published release
+
+The game source `5760467` passed [GitHub's build and deployment](https://github.com/trippletee20/INSIDELASU/actions/runs/39770349957). The actual public game then passed the high-density touch-browser, desktop-browser and advertising-preview checks. [Hosted evidence](validation/mobile/hosted/) records the results.
+
+[Open the updated game](https://trippletee20.github.io/INSIDELASU/play/index.html?v=5760467). This versioned link fetches the current launcher while retaining the same browser/device save.
