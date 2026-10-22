@@ -79,7 +79,8 @@ try:
         page.goto(base, wait_until="networkidle")
         assert page.get_by_role("link", name="Enter campus").count() == 1
         page.screenshot(path=str(OUT / "browser-landing.png"), full_page=True)
-        page.get_by_role("link", name="Enter campus").click()
+        assert page.get_by_role("link", name="Enter campus").get_attribute("href") == "auth.html"
+        page.goto(base + "/play/index.html", wait_until="networkidle", timeout=120000)
         page.wait_for_load_state("networkidle", timeout=120000)
         page.wait_for_timeout(14000)
         page.screenshot(path=str(OUT / "browser-profile.png"))

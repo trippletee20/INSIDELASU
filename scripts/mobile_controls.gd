@@ -18,6 +18,7 @@ var button_fingers: Dictionary = {}
 var riding: bool = false
 var map_view: bool = false
 var available: bool = false
+var secondary_open: bool = false
 
 static var _touch_available: int = -1
 static func touch_device() -> bool:
@@ -37,18 +38,15 @@ func _ready() -> void:
     surface.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     surface.draw.connect(_draw_stick)
     add_child(surface)
-    for item in [["interact", "Interact"], ["jump", "Jump"], ["sit", "Sit / stand"], ["run", "Run: off"], ["map", "Map"], ["view", "Inside / outside"]]:
+    for item in [["more", "..."], ["interact", "Interact"], ["jump", "Up"], ["sit", "Sit / stand"], ["run", "Run: off"], ["map", "Map"], ["view", "Inside / outside"]]:
         var button := Button.new()
         button.name = "Touch_" + item[0]
         button.text = item[1]
         button.focus_mode = Control.FOCUS_NONE
         button.mouse_filter = Control.MOUSE_FILTER_IGNORE
         button.add_theme_font_size_override("font_size", 14)
-        var style := StyleBoxFlat.new()
-        style.bg_color = Color(0.04, 0.16, 0.21, 0.88)
-        style.border_color = Color(0.46, 0.81, 0.71)
-        style.set_border_width_all(2)
-        style.set_corner_radius_all(16)
+        var style := preload("res://scripts/ui_theme.gd").surface(Color(0.98, 0.99, 0.96, 0.94), 26, 10)
+        button.add_theme_color_override("font_color", Color("17332e"))
         button.add_theme_stylebox_override("normal", style)
         var action: String = item[0]
         button.pressed.connect(_activate.bind(action))
@@ -61,22 +59,24 @@ func _ready() -> void:
 func _layout() -> void:
     reset_fingers()
     var size: Vector2 = get_viewport().get_visible_rect().size
-    center = Vector2(88, size.y - 135)
-    if size.y < 460:
-        center = Vector2(88, size.y - 95)
-    var positions := {"interact": Vector2(size.x - 134, size.y - 150), "jump": Vector2(size.x - 134, size.y - 90), "sit": Vector2(size.x - 252, size.y - 90), "run": Vector2(28, size.y - 64), "map": Vector2(size.x - 98, 212 if size.y >= 500 else 84), "view": Vector2(size.x - 174, size.y - 210)}
+    stick_radius = 40.0
+    center = Vector2(72, size.y - 192)
+    if size.y < 460: center = Vector2(72, size.y - 143)
+    var positions := {"interact": Vector2(size.x - 134, size.y - 190), "jump": Vector2(size.x - 66, size.y - 252), "more": Vector2(size.x - 124, size.y - 252), "sit": Vector2(size.x - 134, size.y - 310), "run": Vector2(16, size.y - 288), "map": Vector2(size.x - 80, 80), "view": Vector2(size.x - 170, size.y - 252)}
     for key in buttons:
         var button: Button = buttons[key]
         button.position = positions[key]
-        button.size = Vector2(108, 50)
-        if key == "map":
-            button.size.x = 74
-        elif key == "view":
-            button.size.x = 150
+        button.size = Vector2(118, 48)
+        if key in ["jump", "more", "map"]: button.size = Vector2(50, 50)
+        elif key == "view": button.size.x = 154
     surface.queue_redraw()
 
 func _activate(action: String) -> void:
-    if action == "run":
+    if action == "more":
+        secondary_open = not secondary_open
+        buttons.sit.visible = secondary_open
+        buttons.run.visible = secondary_open
+    elif action == "run":
         running = not running
         buttons.run.text = "Run: on" if running else "Run: off"
     else:
@@ -103,12 +103,14 @@ func set_enabled(value: bool, on_bus: bool = false, map_open: bool = false) -> v
     if surface == null:
         return
     surface.visible = enabled
-    for key in ["jump", "sit", "run"]:
+    for key in ["jump", "more"]:
         buttons[key].visible = not riding and not map_open
+    for key in ["sit", "run"]:
+        buttons[key].visible = secondary_open and not riding and not map_open
     buttons.view.visible = riding
     buttons.interact.text = "Alight" if riding else "Interact"
     buttons.interact.visible = not map_open
-    buttons.map.visible = not riding
+    buttons.map.visible = false
     buttons.map.text = "Back" if map_view else "Map"
     surface.queue_redraw()
 
@@ -122,9 +124,9 @@ func _notification(what: int) -> void:
 func _draw_stick() -> void:
     if riding or map_view or not enabled:
         return
-    surface.draw_circle(center, stick_radius + 9, Color(0.03, 0.12, 0.17, 0.72))
-    surface.draw_arc(center, stick_radius + 9, 0, TAU, 40, Color(0.47, 0.81, 0.73), 2)
-    surface.draw_circle(center + knob, 23, Color(0.55, 0.86, 0.76, 0.9))
+    surface.draw_circle(center, stick_radius + 9, Color(1, 1, 1, 0.20))
+    surface.draw_arc(center, stick_radius + 9, 0, TAU, 40, Color(1, 1, 1, 0.45), 2)
+    surface.draw_circle(center + knob, 19, Color(1, 1, 1, 0.65))
 
 func _input(event: InputEvent) -> void:
     if not enabled:
@@ -158,11 +160,14 @@ func _input(event: InputEvent) -> void:
                 return
         if map_view:
             return
+        # Let the HUD dock and location strip receive their own touch events.
+        if event.position.y >= get_viewport().get_visible_rect().size.y - 126:
+            return
         if not riding and move_finger < 0 and event.position.distance_to(center) <= stick_radius + 32:
             move_finger = event.index
             _move_stick(event.position)
             get_viewport().set_input_as_handled()
-        elif look_finger < 0 and event.position.x > get_viewport().get_visible_rect().size.x * 0.43 and event.position.y > 195:
+        elif look_finger < 0 and event.position.x > get_viewport().get_visible_rect().size.x * 0.43 and event.position.y > (90 if get_viewport().get_visible_rect().size.y < 500 else 110):
             look_finger = event.index
             look_travel = 0
             get_viewport().set_input_as_handled()

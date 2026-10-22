@@ -10,6 +10,7 @@ request=urllib.request.Request(config['supabase_url']+'/auth/v1/settings',header
 with urllib.request.urlopen(request,timeout=30) as response:
  settings=json.load(response)
  assert settings.get('external',{}).get('email'), 'Email authentication is disabled'
+print('GOOGLE PROVIDER:', 'enabled' if settings.get('external',{}).get('google') else 'owner setup required')
 print('SUPABASE PUBLIC CONNECTION PASSED: project URL and publishable key accepted; email authentication enabled')
 request=urllib.request.Request(config['supabase_url']+'/rest/v1/rpc/lasu_health',data=b'{}',headers=headers)
 try:

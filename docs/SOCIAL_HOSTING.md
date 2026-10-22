@@ -1,3 +1,5 @@
+> Updated account flow: [modern UI and account changes](MODERN_UI_AND_AUTH.md). New users sign in on `auth.html`, then choose their username. Add `https://trippletee20.github.io/INSIDELASU/auth/callback.html` to Supabase Redirect URLs. [Google provider setup](https://trippletee20.github.io/INSIDELASU/setup-google.html) requires the owner's private provider configuration. No new database migration is needed.
+
 # Free social hosting with Supabase
 
 The selected deployment is now the owner's new **INSIDE LASU** Supabase Free project. The older Base44 project is unrelated and must not be modified. The game stays on GitHub Pages; no Render service, card or separate Python hosting is needed for this path.

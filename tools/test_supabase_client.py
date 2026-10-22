@@ -15,7 +15,7 @@ class Handler(BaseHTTPRequestHandler):
   if self.path.startswith('/missing/'):
    code=404;result={'message':'Function not found'}
   elif self.path=='/rest/v1/rpc/lasu_health': result={'service':'Inside LASU Supabase social','version':1}
-  elif self.path=='/auth/v1/signup': result={'user':{'id':'confirmation-required'}}
+  elif self.path.startswith('/auth/v1/signup'): result={'user':{'id':'confirmation-required'}}
   elif self.path.startswith('/auth/v1/token?'):
    refresh='refresh_token' in self.path
    if refresh: assert payload['refresh_token']=='refresh-fixture'
@@ -48,7 +48,7 @@ try:
   result=subprocess.run(['godot','--headless','--path',str(ROOT),'--script','tools/supabase_client_regression.gd'],env=env,cwd=ROOT,text=True,capture_output=True,timeout=90)
   print(result.stdout+result.stderr)
   assert result.returncode==0 and 'SCRIPT ERROR:' not in result.stdout+result.stderr and 'SUPABASE CLIENT: 12 checks, 0 failures' in result.stdout
-  assert sum(path=='/auth/v1/signup' for path,_ in CALLS)==1,'missing migration must not create Auth users'
+  assert sum(path.startswith('/auth/v1/signup') for path,_ in CALLS)==1,'missing migration must not create Auth users'
   print('SUPABASE HTTP PROTOCOL PASSED')
 finally:
  server.shutdown();server.server_close()

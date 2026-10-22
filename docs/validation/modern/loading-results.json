@@ -1,0 +1,19 @@
+{
+  "cold": {
+    "startedAt": 313.20000000298023,
+    "downloadsFinishedAt": 2267.2999999970198,
+    "worldReadyAt": 7272.9000000059605,
+    "engineStartedAt": 9667.70000000298
+  },
+  "warm": {
+    "startedAt": 1686.199999988079,
+    "downloadsFinishedAt": 2110.7999999970198,
+    "worldReadyAt": 4792.699999988079,
+    "engineStartedAt": 7159.899999991059
+  },
+  "compressed_engine_bytes": 9382282,
+  "raw_engine_bytes": 37700666,
+  "warm_asset_network_requests": 0,
+  "errors": [],
+  "target": "local Chromium software-rendered mobile emulation, not physical Android or mobile-network timing"
+}

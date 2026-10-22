@@ -25,9 +25,9 @@ func _ready() -> void:
     panel = PanelContainer.new()
     panel.name = "CampusPhone"
     var style := StyleBoxFlat.new()
-    style.bg_color = Color("101f31")
+    style.bg_color = Color("f9fbf5")
     style.border_color = Color("428f89")
-    style.set_border_width_all(3)
+    style.set_border_width_all(0)
     style.set_corner_radius_all(26)
     style.set_content_margin_all(16)
     panel.add_theme_stylebox_override("panel", style)
@@ -160,6 +160,10 @@ func home() -> void:
         tile.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
         tile.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
         tile.add_theme_font_size_override("font_size", 12)
+        tile.add_theme_color_override("font_color", Color("ffffff"))
+        tile.add_theme_color_override("font_hover_color", Color("ffffff"))
+        tile.add_theme_color_override("font_pressed_color", Color("ffffff"))
+        tile.add_theme_color_override("font_focus_color", Color("ffffff"))
         var style := StyleBoxFlat.new()
         style.bg_color = Color(item[2]).darkened(0.18)
         style.set_corner_radius_all(18)

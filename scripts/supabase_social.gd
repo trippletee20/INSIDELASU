@@ -5,6 +5,7 @@ var publishable_key: String = ""
 var refresh_token: String = ""
 var expires_at: int = 0
 var ready: bool = false
+const CALLBACK_URL: String = "https://trippletee20.github.io/INSIDELASU/auth/callback.html"
 
 func wire(client: Node, path: String, payload: Dictionary, authenticated: bool = false) -> Dictionary:
     var http := HTTPRequest.new()
@@ -36,12 +37,17 @@ func keep_session(client: Node, response: Dictionary) -> void:
     client.token = str(response.get("access_token", ""))
     refresh_token = str(response.get("refresh_token", ""))
     expires_at = int(Time.get_unix_time_from_system()) + int(response.get("expires_in", 3600))
+    if OS.has_feature("web"):
+        var saved: Dictionary = {"access_token": client.token, "refresh_token": refresh_token, "expires_at": expires_at, "username": client.username}
+        JavaScriptBridge.eval("sessionStorage.setItem('lasu.social.session', " + JSON.stringify(JSON.stringify(saved)) + ")")
 
 func clear_session(client: Node) -> void:
     client.token = ""
     refresh_token = ""
     expires_at = 0
     client.clear_peers()
+    if OS.has_feature("web"):
+        JavaScriptBridge.eval("sessionStorage.removeItem('lasu.social.session')")
 
 func request(client: Node, path: String, data: Variant) -> Dictionary:
     if client.busy:
@@ -70,7 +76,7 @@ func perform(client: Node, path: String, data: Variant) -> Dictionary:
             if username_rule.search(name_value) == null:
                 return {"error": "Choose a username: 3–24 letters, numbers or underscores; start with a letter"}
             credentials["data"] = {"username": name_value}
-        var auth: Dictionary = await wire(client, "/auth/v1/signup" if path == "/register" else "/auth/v1/token?grant_type=password", credentials)
+        var auth: Dictionary = await wire(client, "/auth/v1/signup?redirect_to=" + CALLBACK_URL.uri_encode() if path == "/register" else "/auth/v1/token?grant_type=password", credentials)
         if auth.has("error"): return auth
         if not auth.has("access_token"):
             return {"error": "Check your email to confirm your account, then return here and sign in. If nothing arrives, check spam or try again later."}
@@ -106,3 +112,21 @@ func perform(client: Node, path: String, data: Variant) -> Dictionary:
     if path == "/account/delete" and response.get("ok", false):
         clear_session(client)
     return response
+
+func import_browser_session(client: Node) -> void:
+    if not OS.has_feature("web"): return
+    var raw: Variant = JavaScriptBridge.eval("sessionStorage.getItem('lasu.social.session') || ''")
+    if not raw is String or str(raw).is_empty(): return
+    var value: Variant = JSON.parse_string(str(raw))
+    if not value is Dictionary or not value.get("access_token", "") is String or not value.get("refresh_token", "") is String: return
+    if str(value.get("access_token", "")).is_empty() or str(value.get("refresh_token", "")).is_empty(): return
+    client.token = str(value.access_token)
+    refresh_token = str(value.refresh_token)
+    expires_at = int(value.get("expires_at", 0))
+    var response: Dictionary = await request(client, "/profile", {})
+    if response.has("username"):
+        client.username = str(response.username)
+        client.status = "Signed in as @" + client.username
+    else:
+        client.token = ""
+        client.status = str(response.get("error", "Reconnect to your campus account"))

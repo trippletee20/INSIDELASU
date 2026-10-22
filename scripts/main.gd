@@ -57,6 +57,8 @@ var hud_time_chip: Label
 var notice: String = ""
 var notice_timer: float = 0.0
 var campus_data: Dictionary = {}
+var architecture_queue: Array = []
+var architecture_queue_sorted: bool = false
 var road_network: Dictionary = {}
 var transit_system
 var ride_bus: Node3D = null
@@ -78,6 +80,7 @@ var total_earned: int = 0
 var total_spent: int = 0
 var last_curfew_notice_key: String = ""
 var last_clock_stamp: String = ""
+var last_accessibility_view: String = ""
 var profile_layer: CanvasLayer
 var profile_error_label: Label
 var profile_name_input: LineEdit
@@ -124,6 +127,7 @@ func _ready() -> void:
     var interface_font: Font = load("res://assets/fonts/NotoSans.ttf")
     ThemeDB.get_default_theme().default_font = interface_font
     ThemeDB.fallback_font = interface_font
+    ThemeDB.get_default_theme().merge_with(preload("res://scripts/ui_theme.gd").make(interface_font))
     rng.randomize()
     _create_environment()
     _load_map_data()
@@ -169,12 +173,20 @@ func _ready() -> void:
             campus_phone.state["societies"] = saved_phone.get("societies", [])
     add_child(campus_phone)
     campus_phone.opened_changed.connect(_on_student_modal)
-    student_ui.phone_requested.connect(func(): campus_phone.open())
+    student_ui.phone_requested.connect(func():
+        student_ui.set_expanded(false)
+        campus_phone.open())
+    student_ui.dashboard_changed.connect(_on_student_modal)
+    student_ui.navigation_requested.connect(func(action):
+        student_ui.set_expanded(false)
+        _mobile_action(action))
     student_ui.places_requested.connect(func():
         if not active_interior_site.is_empty(): _open_task_panel(active_interior_site)
         elif player.nearby_feature != null: show_interaction(str(player.nearby_feature.get_meta("campus_name", "")))
         else: campus_phone.open("Places & tasks"))
     _create_entrance_markers()
+    if OS.has_feature("web"):
+        JavaScriptBridge.eval("window.dispatchEvent(new Event('lasu:world-ready'))")
 
 func _load_map_data() -> void:
     var file := FileAccess.open(LAYOUT_PATH, FileAccess.READ)
@@ -439,7 +451,10 @@ func _add_feature(item: Dictionary) -> void:
             node.add_child(marker)
             _add_label(node, name, 1.5)
         return
-    architect.build(node, item, w, depth, height)
+    if OS.has_feature("web"):
+        architecture_queue.append({"node": node, "item": item, "w": w, "depth": depth, "height": height})
+    else:
+        architect.build(node, item, w, depth, height)
     # Only solid, completed buildings receive the original full-footprint collider.
     # Open-air markets, gardens, fields and incomplete hostels remain walkable.
     var is_incomplete := name.to_lower().contains("incomplete") or name.to_lower().contains("almost complete")
@@ -609,7 +624,7 @@ func _create_shuttle_menu() -> void:
     shuttle_menu.custom_minimum_size = Vector2.ZERO
     shuttle_menu.visible = false
     var style: StyleBoxFlat = StyleBoxFlat.new()
-    style.bg_color = Color(0.055, 0.12, 0.17, 0.97)
+    style.bg_color = Color("f9fbf5")
     style.corner_radius_top_left = 12
     style.corner_radius_top_right = 12
     style.corner_radius_bottom_left = 12
@@ -628,12 +643,12 @@ func _create_shuttle_menu() -> void:
     column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     shuttle_menu_title = Label.new()
     shuttle_menu_title.add_theme_font_size_override("font_size", 17)
-    shuttle_menu_title.add_theme_color_override("font_color", Color.WHITE)
+    shuttle_menu_title.add_theme_color_override("font_color", Color("17332e"))
     shuttle_menu_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(shuttle_menu_title)
     var destination_label: Label = Label.new()
     destination_label.text = "Choose your destination. Every destination has a designated roadside stop."
-    destination_label.add_theme_color_override("font_color", Color(0.88, 0.94, 0.97))
+    destination_label.add_theme_color_override("font_color", Color("345a4d"))
     destination_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(destination_label)
     destination_option = OptionButton.new()
@@ -645,7 +660,7 @@ func _create_shuttle_menu() -> void:
     column.add_child(destination_option)
     _populate_shuttle_destinations()
     shuttle_fare_label = Label.new()
-    shuttle_fare_label.add_theme_color_override("font_color", Color(0.80, 0.92, 0.83))
+    shuttle_fare_label.add_theme_color_override("font_color", Color("345a4d"))
     shuttle_fare_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(shuttle_fare_label)
     _refresh_shuttle_fare_label()
@@ -1015,7 +1030,7 @@ func _on_student_modal(open: bool) -> void:
         _update_wallet_panel()
     if player == null or profile_data.is_empty():
         return
-    var can_walk: bool = not open and ride_bus == null and (task_panel == null or not task_panel.visible) and (shuttle_menu == null or not shuttle_menu.visible)
+    var can_walk: bool = not open and not student_ui.hud_expanded and ride_bus == null and (task_panel == null or not task_panel.visible) and (shuttle_menu == null or not shuttle_menu.visible)
     player.set_physics_process(can_walk)
     player.set_process_unhandled_input(can_walk)
     if open:
@@ -1122,7 +1137,7 @@ func _create_profile_ui() -> void:
     profile_scroll.add_child(column)
     column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     var title: Label = Label.new()
-    title.text = "WELCOME TO INSIDE LASU"
+    title.text = "Make yourself at home"
     title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     title.add_theme_color_override("font_color", Color(0.06, 0.19, 0.29))
@@ -1570,6 +1585,7 @@ func _unhandled_input(event: InputEvent) -> void:
         _set_mouse_capture(not overview_on)
 
 func _process(delta: float) -> void:
+    _build_queued_architecture()
     _sync_mobile_controls()
     autosave_timer += delta
     if autosave_timer >= 30.0:
@@ -1630,7 +1646,21 @@ func _update_hud() -> void:
     if not notice.is_empty():
         message += "\n" + notice
     hud_label.text = message
-    student_ui.toast.text = notice if not student_ui.hud_expanded else ""
+    student_ui.toast.text = notice.get_slice("! ", 0).get_slice(". ", 0).left(88) if not student_ui.hud_expanded else ""
+    student_ui.toast.visible = not student_ui.toast.text.is_empty()
+    student_ui.map_button.text = "Back" if overview_on else "Map"
+    student_ui.update_context()
+    if OS.has_feature("web"):
+        var view: String = "campus"
+        if profile_layer != null: view = "onboarding"
+        elif campus_phone != null and campus_phone.panel.visible: view = "phone"
+        elif student_ui.modal.visible: view = student_ui.current
+        elif task_panel.visible: view = "activities"
+        elif student_ui.hud_expanded: view = "dashboard"
+        elif overview_on: view = "map"
+        if view != last_accessibility_view:
+            last_accessibility_view = view
+            JavaScriptBridge.eval("document.getElementById('canvas').dataset.view = " + JSON.stringify(view) + ";document.getElementById('canvas').setAttribute('aria-label', " + JSON.stringify("Inside LASU: " + view) + ")")
 
 func _nearest_seat_for_hud(position_value: Vector3, radius: float) -> Node3D:
     var nearest: Node3D = null
@@ -1696,7 +1726,7 @@ func _create_task_panel() -> void:
     get_viewport().size_changed.connect(_layout_action_menus)
     call_deferred("_layout_action_menus")
     var background: StyleBoxFlat = StyleBoxFlat.new()
-    background.bg_color = Color(0.06, 0.14, 0.20, 0.98)
+    background.bg_color = Color("f9fbf5")
     background.corner_radius_top_left = 15
     background.corner_radius_top_right = 15
     background.corner_radius_bottom_left = 15
@@ -1713,12 +1743,12 @@ func _create_task_panel() -> void:
     task_title_label = Label.new()
     task_title_label.add_theme_font_size_override("font_size", 20)
     task_title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    task_title_label.add_theme_color_override("font_color", Color(0.95, 0.98, 0.97))
+    task_title_label.add_theme_color_override("font_color", Color("345a4d"))
     column.add_child(task_title_label)
     var help: Label = Label.new()
     help.text = "Services, errands and activities are location-specific. Prices are illustrative in-game prices."
     help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    help.add_theme_color_override("font_color", Color(0.67, 0.85, 0.85))
+    help.add_theme_color_override("font_color", Color("345a4d"))
     column.add_child(help)
     var scroll: ScrollContainer = ScrollContainer.new()
     scroll.custom_minimum_size = Vector2(0, 80)
@@ -1732,7 +1762,7 @@ func _create_task_panel() -> void:
     task_status_label = Label.new()
     task_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     task_status_label.custom_minimum_size = Vector2(0, 48)
-    task_status_label.add_theme_color_override("font_color", Color(0.98, 0.83, 0.55))
+    task_status_label.add_theme_color_override("font_color", Color("345a4d"))
     column.add_child(task_status_label)
     var close_button: Button = Button.new()
     close_button.text = "BACK TO CAMPUS"
@@ -1837,7 +1867,7 @@ func _open_task_panel(site_name: String) -> void:
         action.add_child(task_label)
         task_label.resized.connect(func(): action.custom_minimum_size.y = maxf(72, task_label.get_minimum_size().y + 16))
         var task_box: StyleBoxFlat = StyleBoxFlat.new()
-        task_box.bg_color = Color(0.105, 0.25, 0.31)
+        task_box.bg_color = Color("e8f3e9")
         task_box.border_color = Color(0.22, 0.53, 0.53)
         task_box.set_border_width_all(1)
         task_box.set_corner_radius_all(8)
@@ -1846,7 +1876,7 @@ func _open_task_panel(site_name: String) -> void:
         task_box.content_margin_bottom = 8
         action.add_theme_stylebox_override("normal", task_box)
         var hover_box: StyleBoxFlat = task_box.duplicate()
-        hover_box.bg_color = Color(0.17, 0.38, 0.42)
+        hover_box.bg_color = Color("d3eadc")
         action.add_theme_stylebox_override("hover", hover_box)
         action.add_theme_font_size_override("font_size", 13)
         action.pressed.connect(_run_location_task.bind(site_name, entry))
@@ -2298,7 +2328,7 @@ func _set_mouse_capture(capture: bool) -> void:
 func _sync_mobile_controls() -> void:
     if mobile_controls == null or player == null:
         return
-    var playable: bool = not profile_data.is_empty() and profile_layer == null and not student_ui.modal.visible and not (campus_phone != null and campus_phone.panel.visible) and not task_panel.visible and not shuttle_menu.visible
+    var playable: bool = not profile_data.is_empty() and profile_layer == null and not student_ui.modal.visible and not student_ui.hud_expanded and not (campus_phone != null and campus_phone.panel.visible) and not task_panel.visible and not shuttle_menu.visible
     mobile_controls.set_enabled(playable, ride_bus != null, overview_on)
     player.touch_movement = mobile_controls.movement if playable and ride_bus == null and not overview_on else Vector2.ZERO
     player.touch_running = mobile_controls.running if playable and ride_bus == null and not overview_on else false
@@ -2528,3 +2558,18 @@ func try_campus_interaction(walker: Node3D) -> bool:
     else:
         _open_task_panel(active_interior_site)
     return true
+
+
+func _build_queued_architecture() -> void:
+    if architecture_queue.is_empty() or player == null: return
+    if not architecture_queue_sorted:
+        architecture_queue.sort_custom(func(a, b): return a.node.global_position.distance_squared_to(player.global_position) < b.node.global_position.distance_squared_to(player.global_position))
+        architecture_queue_sorted = true
+    # Collision bodies and site metadata already exist. Only visuals are delayed.
+    var entry: Dictionary = architecture_queue.pop_front()
+    if is_instance_valid(entry.node):
+        architect.build(entry.node, entry.item, entry.w, entry.depth, entry.height)
+    if architecture_queue.is_empty():
+        _register_interactive_seats()
+        if OS.has_feature("web"):
+            JavaScriptBridge.eval("window.dispatchEvent(new Event('lasu:architecture-ready'))")

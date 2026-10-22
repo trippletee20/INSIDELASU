@@ -1,0 +1,2 @@
+/* Older confirmation emails may still target the landing page. */
+(()=>{const hash=new URLSearchParams(location.hash.slice(1));const query=new URLSearchParams(location.search);if(hash.has('access_token')||hash.has('error_description')||query.has('code')||query.has('error_description')){const target=new URL('auth/callback.html',location.href);target.search=location.search;target.hash=location.hash;history.replaceState(null,'',location.pathname);location.replace(target.href);}})();

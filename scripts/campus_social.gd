@@ -30,6 +30,8 @@ func _ready() -> void:
             supabase.url = configured_url
             supabase.publishable_key = key
             url = configured_url
+    if supabase != null and OS.has_feature("web"):
+        call_deferred("_resume_browser_account")
     if not url.begins_with("https://") and not url.begins_with("http://127.0.0.1:"):
         url = ""
 
@@ -69,6 +71,14 @@ func render(phone: CanvasLayer, target: String) -> void:
         phone.label("Relationships: Friends, Dating, BFFs, Gs, Reading partners, Project teammates, Roommates and Mentor buddies. Both players must agree; either can end a relationship.")
         return
     phone.label(status)
+    if token.is_empty() and supabase != null and OS.has_feature("web"):
+        phone.label("Meet your campus people")
+        phone.label("Google or email sign-in opens on a lightweight account page. Choose your username after signing in.")
+        phone.button("Continue to sign-in", func():
+            game._save_game()
+            JavaScriptBridge.eval("location.assign(new URL('../auth.html', location.href).href)"))
+        phone.label("Your local game progress stays on this browser. Account messages are shared; your email stays private.")
+        return
     if token.is_empty():
         phone.label("Create a social account to find real players. Use a new password, not your LASU or bank password. Messages are stored by the game server; they are not end-to-end encrypted. Session signs out when you reload.")
         var name_field: LineEdit = phone.input("Username (3–24 characters)", 24)
@@ -300,3 +310,8 @@ func _process(delta: float) -> void:
         if not found.has(key):
             avatars[key].queue_free()
             avatars.erase(key)
+
+
+func _resume_browser_account() -> void:
+    if supabase != null:
+        await supabase.import_browser_session(self)

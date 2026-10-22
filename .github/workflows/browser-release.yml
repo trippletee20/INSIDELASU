@@ -45,6 +45,10 @@ jobs:
           "$RUNNER_TEMP/browser-venv/bin/pip" install playwright==1.58.0
           "$RUNNER_TEMP/browser-venv/bin/python" -m playwright install --with-deps chromium
           echo "$RUNNER_TEMP/browser-venv/bin" >> "$GITHUB_PATH"
+      - name: Test lightweight accounts and callbacks
+        run: python3 tools/test_auth_web.py
+      - name: Test compressed cold and warm game loading
+        run: python3 tools/test_loading_web.py
       - name: Test exported browser game
         run: python3 tools/test_web.py
       - name: Test mobile touch gameplay

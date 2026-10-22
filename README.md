@@ -1,3 +1,9 @@
+## Modern interface and account loading
+
+[Join campus](https://trippletee20.github.io/INSIDELASU/auth.html) · [Explore](https://trippletee20.github.io/INSIDELASU/play/index.html?v=modern-v018) · [Owner Google setup](https://trippletee20.github.io/INSIDELASU/setup-google.html) · [Changes and validation](docs/MODERN_UI_AND_AUTH.md)
+
+Compact floating controls and a bottom dock replace the old large HUD. Account sign-in loads separately from the 3D engine. Google sign-in becomes available after provider setup; email remains available. The game uses a compressed/cached runtime where supported, with a fallback and visible loading progress.
+
 ## Campus ecosystem update
 
 [Play the browser beta](https://trippletee20.github.io/INSIDELASU/play/index.html?v=campus-phone-v016) · [Phone, rooms and NPC features](docs/CAMPUS_ECOSYSTEM.md) · [Enable real-player messaging](docs/SOCIAL_HOSTING.md)

@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Inside LASU · Campus</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="../play-loader.css"></head><body><canvas id="canvas" tabindex="0">A WebGL-capable browser is needed to play.</canvas><section id="boot"><div class="card"><p class="brand">INSIDE LASU</p><h1>Your campus.<br>Your next chapter.</h1><p id="stage" role="status">Getting ready…</p><progress id="progress"></progress><p id="detail">First visits download the game engine. Returning visits reuse supported browser caches.</p><button id="retry" hidden>Try again</button><p><a href="../auth.html">Sign in while the game is closed →</a></p></div></section><script src="__RUNTIME_JS__"></script><script>
+const GODOT_CONFIG = __GODOT_CONFIG__;
+
+window.lasuBootMetrics={startedAt:performance.now()};
+window.addEventListener('lasu:world-ready',()=>{window.lasuBootMetrics.worldReadyAt=performance.now();});
+window.addEventListener('lasu:architecture-ready',()=>{window.lasuBootMetrics.architectureReadyAt=performance.now();});
+(async()=>{
+ const stage=document.getElementById('stage'),detail=document.getElementById('detail'),progress=document.getElementById('progress');
+ document.getElementById('retry').onclick=()=>location.reload();
+ const slow=setTimeout(()=>{detail.textContent='This is taking longer than usual. Keep this tab open, or use account sign-in without loading the 3D game.';},25000);
+ try{
+  if(typeof Engine === 'undefined')throw new Error('The engine download was interrupted. Check your connection and try again.');
+  const engine = new Engine(GODOT_CONFIG);
+  const missing=Engine.getMissingFeatures({threads:false});if(missing.length)throw new Error('This browser is missing: '+missing.join(', ')+'. Try an updated Chrome or Edge with hardware acceleration enabled.');
+  if('serviceWorker' in navigator){try{await Promise.race([navigator.serviceWorker.register('../runtime-cache.js',{scope:'../'}).then(()=>navigator.serviceWorker.ready),new Promise(resolve=>setTimeout(resolve,1200))]);}catch(_){}
+   if(!navigator.serviceWorker.controller){await Promise.race([new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true})),new Promise(resolve=>setTimeout(resolve,600))]);}
+  }
+  stage.textContent='Loading your campus';
+  await engine.startGame({onProgress(current,total){
+   if(total>0){progress.max=total;progress.value=current;stage.textContent=current>=total?'Preparing campus…':'Downloading game · '+Math.round(current/total*100)+'%';detail.textContent=(current/1048576).toFixed(1)+' / '+(total/1048576).toFixed(1)+' MB';if(current>=total&&!window.lasuBootMetrics.downloadsFinishedAt)window.lasuBootMetrics.downloadsFinishedAt=performance.now();}
+  }});
+  window.lasuBootMetrics.engineStartedAt=performance.now();clearTimeout(slow);document.getElementById('boot').hidden=true;
+ }catch(error){clearTimeout(slow);stage.textContent='Let’s get you back on campus';detail.textContent=error.message||'The game could not load. Check your connection and retry.';progress.hidden=true;document.getElementById('retry').hidden=false;}
+})();
+</script></body></html>

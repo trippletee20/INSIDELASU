@@ -46,7 +46,8 @@ try:
         page.on('pageerror', lambda error: errors.append(str(error)))
         page.on('console', lambda message: errors.append(message.text) if message.type == 'error' else None)
         page.goto(base + '/play/index.html', wait_until='networkidle', timeout=120000)
-        page.wait_for_timeout(14000)
+        page.wait_for_function("window.lasuBootMetrics?.worldReadyAt && document.querySelector('#boot').hidden", timeout=120000)
+        page.wait_for_timeout(1000)
         assert page.locator('canvas').evaluate('(x)=>x.width === 393 && x.height === 873'), 'High-DPI display changed logical control size'
         page.screenshot(path=str(OUT / 'profile-portrait.png'))
         page.touchscreen.tap(160,300)
@@ -71,44 +72,56 @@ try:
         assert before['profile']['first_session_rent_paid']
         assert before['wallet_balance'] == before['profile']['starting_balance']
         page.screenshot(path=str(OUT / 'game-portrait.png'))
-        fingers('touchStart', [(0,88,738)])
-        fingers('touchMove', [(0,88,684)])
-        fingers('touchStart', [(0,88,684),(1,220,440)])
+        page.touchscreen.tap(196,37)
+        page.screenshot(path=str(OUT / 'dashboard-touch.png'))
+        page.wait_for_function("document.getElementById('canvas').dataset.view === 'dashboard'", timeout=10000)
+        assert page.locator('canvas').get_attribute('data-view') == 'dashboard'
+        page.screenshot(path=str(OUT / 'dashboard-portrait.png'))
+        page.touchscreen.tap(196,37)
+        page.wait_for_function("document.getElementById('canvas').dataset.view === 'campus'", timeout=10000)
+        assert page.locator('canvas').get_attribute('data-view') == 'campus'
+        fingers('touchStart', [(0,72,681)])
+        fingers('touchMove', [(0,72,641)])
+        fingers('touchStart', [(0,72,641),(1,220,440)])
         for x in range(225,290,5):
-            fingers('touchMove', [(0,88,684),(1,x,440)])
+            fingers('touchMove', [(0,72,641),(1,x,440)])
             page.wait_for_timeout(30)
         # A third finger can press Jump while movement and looking remain held.
-        fingers('touchStart', [(0,88,684),(1,285,440),(2,313,808)])
+        fingers('touchStart', [(0,72,641),(1,285,440),(2,352,646)])
         page.wait_for_timeout(100)
-        fingers('touchEnd', [(0,88,684),(1,285,440)])
-        fingers('touchEnd', [(0,88,684)])
+        fingers('touchEnd', [(0,72,641),(1,285,440)])
+        fingers('touchEnd', [(0,72,641)])
         page.wait_for_timeout(5000)
         fingers('touchEnd', [])
         page.wait_for_timeout(500)
         assert not page.evaluate('!!document.pointerLockElement'), 'Phone requested mouse lock'
         page.screenshot(path=str(OUT / 'game-after-touch-movement.png'))
-        page.touchscreen.tap(330,47)  # Phone in the compact toolbar.
+        page.touchscreen.tap(330,831)  # Phone in the compact toolbar.
         page.wait_for_timeout(800)
+        assert page.locator('canvas').get_attribute('data-view') == 'phone', 'Phone dock touch did not open the phone'
         page.screenshot(path=str(OUT / 'phone-home.png'))
         page.touchscreen.tap(196,486)  # Wallet app in row 3.
 
         page.wait_for_timeout(1000)
+        assert page.locator('canvas').get_attribute('data-view') == 'wallet', 'Wallet app did not open'
         page.screenshot(path=str(OUT / 'wallet-portrait.png'))
         page.touchscreen.tap(330,185)  # Close; commits current stats to IndexedDB.
         after = saved(page, lambda value: value['energy'] < before['energy'] - 0.01)
         assert after['wallet_balance'] == before['wallet_balance']
-        page.touchscreen.tap(332,237)  # Map.
+        page.touchscreen.tap(196,831)  # Map.
         page.wait_for_timeout(600)
+        assert page.locator('canvas').get_attribute('data-view') == 'map', 'Map dock touch did not open overview'
         page.screenshot(path=str(OUT / 'map-portrait.png'))
-        page.touchscreen.tap(332,237)
+        page.touchscreen.tap(196,831)
         page.set_viewport_size({'width':873,'height':393})
         page.wait_for_timeout(1000)
         page.screenshot(path=str(OUT / 'game-landscape.png'))
-        page.touchscreen.tap(824,109)
+        page.touchscreen.tap(436,351)
         page.wait_for_timeout(500)
-        page.touchscreen.tap(824,109)
+        page.touchscreen.tap(436,351)
         page.reload(wait_until='networkidle')
-        page.wait_for_timeout(14000)
+        page.wait_for_function("window.lasuBootMetrics?.worldReadyAt && document.querySelector('#boot').hidden", timeout=120000)
+        page.wait_for_timeout(1000)
         reloaded = saved(page)
         assert reloaded['profile'] == after['profile']
         assert reloaded['wallet_balance'] == after['wallet_balance']

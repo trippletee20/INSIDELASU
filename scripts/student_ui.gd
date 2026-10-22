@@ -1,10 +1,19 @@
 extends CanvasLayer
 ## Player-facing HUD and expandable profile/wallet. World simulation stays separate.
 signal modal_changed(open: bool)
+signal dashboard_changed(open: bool)
+signal navigation_requested(action: String)
 signal reward_requested
 signal phone_requested
 signal places_requested
 signal ad_preview_requested
+const APP_THEME = preload("res://scripts/ui_theme.gd")
+var clock_pill: PanelContainer
+var wallet_pill: PanelContainer
+var dock: PanelContainer
+var map_button: Button
+var vitals_chip: Label
+var location_chip: Button
 var hud_expanded: bool = false
 var hud_toggle: Button
 var phone_button: Button
@@ -40,12 +49,7 @@ var ad_preview: Button
 
 func _panel(parent: Node) -> PanelContainer:
     var panel := PanelContainer.new()
-    var style := StyleBoxFlat.new()
-    style.bg_color = Color("102835")
-    style.border_color = Color("3c7777")
-    style.set_border_width_all(1)
-    style.set_corner_radius_all(12)
-    style.set_content_margin_all(14)
+    var style := APP_THEME.surface(Color("f9fbf5"), 26, 16)
     panel.add_theme_stylebox_override("panel", style)
     parent.add_child(panel)
     return panel
@@ -54,7 +58,7 @@ func _label(text: String, parent: Node, size: int = 16) -> Label:
     var label := Label.new()
     label.text = text
     label.add_theme_font_size_override("font_size", size)
-    label.add_theme_color_override("font_color", Color("edf4eb"))
+    label.add_theme_color_override("font_color", Color("17332e"))
     parent.add_child(label)
     return label
 
@@ -86,66 +90,70 @@ func _ready() -> void:
     root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     root.mouse_filter = Control.MOUSE_FILTER_IGNORE
     add_child(root)
-    var margin := MarginContainer.new()
-    margin.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
-    margin.offset_left = 16
-    margin.offset_right = -16
-    margin.offset_top = 12
-    root.add_child(margin)
-    var top: PanelContainer = _panel(margin)
-    var row := HBoxContainer.new()
-    top_row = row
-    row.add_theme_constant_override("separation", 16)
-    top.add_child(row)
-    student_name = _label("INSIDE LASU", row, 18)
-    student_name.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    student_name.clip_text = true
-    student_name.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-    balance = _label("", row, 18)
-    clock = _label("", row)
-    for item in [["Profile · P", "profile"], ["Wallet · B", "wallet"], ["Help · H", "help"]]:
-        var key: String = item[1]
-        top_buttons.append(_button(item[0], row, func(): toggle(key)))
-    for button in top_buttons:
-        button.visible = false
-    hud_toggle = _button("More ▾", row, func():
-        hud_expanded = not hud_expanded
-        _layout())
-    phone_button = _button("Phone", row, func(): phone_requested.emit())
-    var status := _panel(root)
-    status_panel = status
-    status.position = Vector2(16, 88)
-    status.custom_minimum_size.x = 360
+    clock_pill = _panel(root)
+    clock = _label("--:--", clock_pill, 16)
+    clock.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    clock_pill.add_theme_stylebox_override("panel", APP_THEME.surface(Color("f9fbf5"), 26, 10))
+    wallet_pill = _panel(root)
+    wallet_pill.add_theme_stylebox_override("panel", APP_THEME.surface(Color("f9fbf5"), 26, 4))
+    var wallet_row := HBoxContainer.new()
+    wallet_pill.add_child(wallet_row)
+    balance = _label("", wallet_row, 15)
+    balance.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    balance.clip_text = true
+    balance.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+    _button("+", wallet_row, func(): toggle("wallet"))
+    student_name = _label("INSIDE LASU", root, 16)
+    student_name.visible = false
+    hud_toggle = _button("v", root, func(): set_expanded(not hud_expanded))
+    hud_toggle.tooltip_text = "Expand or minimise campus dashboard"
+    vitals_chip = _label("Energy 92%", root, 13)
+    vitals_chip.add_theme_color_override("font_color", Color("17332e"))
+    location_chip = _button("Main Gate  /  Open", root, func(): set_expanded(true))
+    location_chip.clip_text = true
+    dock = _panel(root)
+    var nav := HBoxContainer.new()
+    nav.add_theme_constant_override("separation", 6)
+    dock.add_child(nav)
+    var home := _button("Explore", nav, func(): places_requested.emit())
+    home.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    _nav_style(home, "places")
+    map_button = _button("Map", nav, func(): navigation_requested.emit("map"))
+    map_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    _nav_style(map_button, "map")
+    phone_button = _button("Phone", nav, func(): phone_requested.emit())
+    phone_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    _nav_style(phone_button, "phone")
+    status_panel = _panel(root)
     var column := VBoxContainer.new()
-    column.add_theme_constant_override("separation", 8)
-    status.add_child(column)
-    location = _label("Main Gate", column, 14)
+    column.add_theme_constant_override("separation", 12)
+    status_panel.add_child(column)
+    var head := HBoxContainer.new()
+    column.add_child(head)
+    location = _label("Main Gate", head, 20)
+    location.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     location.clip_text = true
     location.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-    places_button = _button("Places & tasks", column, func(): places_requested.emit())
+    _button("Close", head, func(): set_expanded(false))
     objective = _label("Create your student profile to begin.", column, 14)
-    objective.custom_minimum_size.x = 320
     objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    var meters := HBoxContainer.new()
-    meters_row = meters
-    meters.add_theme_constant_override("separation", 12)
-    column.add_child(meters)
-    energy = _meter("Energy", meters, Color("5db688"))
-    stamina = _meter("Stamina", meters, Color("5596cf"))
-    stress = _meter("Stress", meters, Color("e39a62"))
-    var footer := _panel(root)
-    footer_panel = footer
-    footer.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-    footer.offset_left = 16
-    footer.offset_right = -16
-    footer.offset_top = -86
-    footer.offset_bottom = -12
-    prompt = _label("WASD move · Mouse look · E interact · M map · Shift run · Space jump", footer, 14)
+    places_button = _button("Explore here", column, func():
+        set_expanded(false)
+        places_requested.emit())
+    meters_row = HBoxContainer.new()
+    meters_row.add_theme_constant_override("separation", 10)
+    column.add_child(meters_row)
+    energy = _meter("Energy", meters_row, Color("3da478"))
+    stamina = _meter("Stamina", meters_row, Color("6b98c0"))
+    stress = _meter("Stress", meters_row, Color("d79a69"))
+    footer_panel = _panel(column)
+    prompt = _label("", footer_panel, 12)
     prompt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+    prompt.max_lines_visible = 2
     toast = _label("", root, 12)
-    toast.position = Vector2(18, 180)
     toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    toast.max_lines_visible = 3
+    toast.max_lines_visible = 2
+    toast.add_theme_stylebox_override("normal", APP_THEME.surface(Color(0.98, 0.99, 0.96, 0.94), 18, 10))
     toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
     modal = _panel(root)
     modal.name = "StudentModal"
@@ -184,50 +192,52 @@ func _ready() -> void:
     get_viewport().size_changed.connect(_layout)
     _layout()
 
+func set_expanded(value: bool) -> void:
+    if hud_expanded == value: return
+    hud_expanded = value
+    _layout()
+    dashboard_changed.emit(value)
+
 func _layout() -> void:
-    var viewport: Vector2 = get_viewport().get_visible_rect().size
-    modal.size = Vector2(minf(720, viewport.x - 24), minf(570, viewport.y - 24))
-    modal.position = (viewport - modal.size) * 0.5
-    var compact: bool = viewport.x < 700
-    wallet_summary.add_theme_font_size_override("font_size", 14 if compact else 16)
-    student_name.visible = viewport.x >= 900
-    clock.visible = viewport.x >= 600
-    top_row.add_theme_constant_override("separation", 6)
-    balance.custom_minimum_size = Vector2(72, 44)
-    balance.clip_text = true
-    balance.add_theme_font_size_override("font_size", 14 if compact else 18)
-    balance.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    for button in top_buttons:
-        button.visible = false
-    hud_toggle.text = "Hide -" if hud_expanded else "Expand +"
-    hud_toggle.custom_minimum_size.x = 70
-    phone_button.custom_minimum_size.x = 64
-    status_panel.position = Vector2(16, 86)
-    status_panel.custom_minimum_size.x = minf(360, viewport.x - 32)
-    status_panel.size = Vector2(minf(360, viewport.x - 32), 0)
-    objective.custom_minimum_size.x = minf(310, viewport.x - 70)
-    objective.size.x = objective.custom_minimum_size.x
-    objective.visible = hud_expanded
-    meters_row.visible = hud_expanded
-    places_button.text = "Places & tasks  ›"
-    places_button.custom_minimum_size.y = 44
-    footer_panel.visible = hud_expanded
-    footer_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-    footer_panel.offset_left = 16
-    footer_panel.offset_right = -16
-    footer_panel.offset_top = -82
-    footer_panel.offset_bottom = -12
-    # Keep the playing area clear, including on short landscape screens.
-    if viewport.y < 500:
-        status_panel.visible = hud_expanded
-        footer_panel.visible = false
-    else:
-        status_panel.visible = true
-    status_panel.call_deferred("reset_size")
-    toast.size.x = maxf(160, minf(450, viewport.x - 125))
-    toast.position.y = 180 if viewport.y >= 500 else 80
-    prompt.max_lines_visible = 2
-    prompt.add_theme_font_size_override("font_size", 12)
+    var view: Vector2 = get_viewport().get_visible_rect().size
+    var short: bool = view.y < 500
+    modal.size = Vector2(minf(680, view.x - 24), minf(570, view.y - 24))
+    modal.position = (view - modal.size) * 0.5
+    clock_pill.position = Vector2(12, 12)
+    clock_pill.size = Vector2(104, 48)
+    var wallet_width: float = clampf(view.x * 0.36, 115, 154)
+    wallet_pill.position = Vector2(view.x - wallet_width - 12, 12)
+    wallet_pill.size = Vector2(wallet_width, 48)
+    # No full-width top panels: the centre of the view remains open.
+    hud_toggle.position = Vector2((view.x - 44) * 0.5, 14)
+    hud_toggle.size = Vector2(44, 44)
+    hud_toggle.text = ""
+    hud_toggle.icon = load("res://assets/phone/chevron-up.svg" if hud_expanded else "res://assets/phone/chevron-down.svg")
+    hud_toggle.add_theme_color_override("icon_normal_color", Color("315a4c"))
+    vitals_chip.position = Vector2(20, 72)
+    dock.position = Vector2(maxf(12, (view.x - 440) * 0.5), view.y - 72)
+    dock.size = Vector2(minf(440, view.x - 24), 60)
+    var dock_style := APP_THEME.surface(Color("f9fbf5"), 30, 6)
+    dock.add_theme_stylebox_override("panel", dock_style)
+    location_chip.position = Vector2(maxf(12, (view.x - 440) * 0.5), view.y - 122)
+    location_chip.size = Vector2(minf(440, view.x - 24), 42)
+    location_chip.visible = not hud_expanded and not short
+    status_panel.visible = hud_expanded
+    var height: float = 160 if short else minf(282, view.y - 100)
+    status_panel.position = Vector2(maxf(12, (view.x - 480) * 0.5), view.y - 82 - height)
+    status_panel.size = Vector2(minf(480, view.x - 24), height)
+    objective.custom_minimum_size.x = maxf(100, minf(430, view.x - 72))
+    objective.visible = not short
+    meters_row.visible = not short
+    footer_panel.visible = false
+    wallet_summary.add_theme_font_size_override("font_size", 14)
+    toast.position = Vector2(20, 100)
+    toast.size.x = minf(350, view.x - 40)
+    status_panel.set_deferred("size", Vector2(minf(480, view.x - 24), height))
+
+func update_context() -> void:
+    location_chip.text = location.text + "  /  Open"
+    vitals_chip.text = "Energy %d%%" % int(energy.value)
 
 func toggle(kind: String) -> void:
     if current == kind:
@@ -252,7 +262,8 @@ func close() -> void:
 func update_student(profile: Dictionary, skills: Dictionary, amount: int, journal: Array, last_reward: int, claimed: bool, formatter: Callable) -> void:
     money_formatter = formatter
     student_name.text = str(profile.get("student_name", "INSIDE LASU"))
-    balance.text = formatter.call(amount)
+    balance.text = ("₦%.1fm" % (float(amount) / 1000000.0)) if amount >= 1000000 else formatter.call(amount)
+    balance.tooltip_text = formatter.call(amount)
     records = journal
     if current not in ["help", "advertise"]:
         var lines: Array[String] = []
@@ -290,3 +301,20 @@ func _render_transactions() -> void:
         var amount: int = int(record.get("amount", 0))
         lines.append(str(record.get("time", "")) + "  " + ("+" if amount >= 0 else "−") + str(money_formatter.call(absi(amount))) + "\n" + description + "\n")
     wallet_text.text = "\n".join(lines) if not lines.is_empty() else "No matching receipts yet. New earnings and purchases appear here.\nOlder saves keep their balance and totals; historical receipts were not recorded before this update."
+
+
+func _nav_style(button: Button, icon_name: String) -> void:
+    button.icon = load("res://assets/phone/" + icon_name + ".svg")
+    button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+    button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+    button.add_theme_constant_override("icon_max_width", 18)
+    button.add_theme_color_override("icon_normal_color", Color("315a4c"))
+    button.add_theme_color_override("icon_hover_color", Color("18734e"))
+    button.add_theme_font_size_override("font_size", 12)
+    var normal := APP_THEME.surface(Color.TRANSPARENT, 22, 4)
+    normal.shadow_size = 0
+    var hover := normal.duplicate()
+    hover.bg_color = Color("e1f1e6")
+    button.add_theme_stylebox_override("normal", normal)
+    button.add_theme_stylebox_override("hover", hover)
+    button.add_theme_stylebox_override("pressed", hover)
