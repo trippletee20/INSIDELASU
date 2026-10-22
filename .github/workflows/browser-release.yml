@@ -29,6 +29,10 @@ jobs:
           echo "$RUNNER_TEMP/godot-bin" >> "$GITHUB_PATH"
       - name: Run engine and gameplay acceptance checks
         run: python3 tools/check_environment.py
+      - name: Verify free Supabase database rules
+        run: python3 tools/test_supabase_database.py
+      - name: Verify public Supabase connection
+        run: python3 tools/check_supabase_connection.py
       - name: Verify social server container and persistent storage
         run: |
           docker build -t inside-lasu-social:beta server
@@ -45,6 +49,8 @@ jobs:
         run: python3 tools/test_web.py
       - name: Test mobile touch gameplay
         run: python3 tools/test_mobile_web.py
+      - name: Test Supabase owner setup page
+        run: python3 tools/test_supabase_setup.py
       - name: Test billboard advertising preview
         run: python3 tools/test_advertising_preview.py
       - name: Upload test evidence

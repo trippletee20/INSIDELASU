@@ -1,5 +1,6 @@
 extends Node
 ## Real HTTP accounts/messages. Empty deployment config deliberately stays offline.
+var supabase
 var game: Node
 var url: String = ""
 var token: String = "" # Session only: never placed in the game save or URL.
@@ -19,10 +20,22 @@ func _ready() -> void:
     var config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/social_config.json"))
     if config is Dictionary:
         url = str(config.get("server_url", "")).trim_suffix("/")
+    if config is Dictionary and str(config.get("provider", "")) == "supabase":
+        var configured_url: String = str(config.get("supabase_url", "")).trim_suffix("/")
+        var key: String = str(config.get("publishable_key", ""))
+        var rule := RegEx.new()
+        rule.compile("^https://[a-z0-9]{20}[.]supabase[.]co$")
+        if rule.search(configured_url) != null and key.begins_with("sb_publishable_"):
+            supabase = preload("res://scripts/supabase_social.gd").new()
+            supabase.url = configured_url
+            supabase.publishable_key = key
+            url = configured_url
     if not url.begins_with("https://") and not url.begins_with("http://127.0.0.1:"):
         url = ""
 
 func request(path: String, data: Variant = null) -> Dictionary:
+    if supabase != null:
+        return await supabase.request(self, path, data)
     if busy or url.is_empty():
         return {"error": "Social server is not connected" if url.is_empty() else "Please wait for the current request"}
     busy = true
@@ -59,13 +72,19 @@ func render(phone: CanvasLayer, target: String) -> void:
     if token.is_empty():
         phone.label("Create a social account to find real players. Use a new password, not your LASU or bank password. Messages are stored by the game server; they are not end-to-end encrypted. Session signs out when you reload.")
         var name_field: LineEdit = phone.input("Username (3–24 characters)", 24)
+        var email: LineEdit = null
+        if supabase != null:
+            phone.label("Use email and password to sign in. Your username is public; your email is private. Confirm your email before the first sign-in. Username is needed only for new accounts.")
+            email = phone.input("Email address", 254)
         var password: LineEdit = phone.input("Password (at least 10 characters)", 128)
         password.secret = true
         for route in ["login", "register"]:
             var endpoint: String = route
             phone.button("Sign in" if route == "login" else "Create account", func():
                 if busy: return
-                var reply: Dictionary = await request("/" + endpoint, {"username": name_field.text.strip_edges().to_lower(), "password": password.text})
+                var credentials: Dictionary = {"username": name_field.text.strip_edges().to_lower(), "password": password.text}
+                if email != null: credentials["email"] = email.text.strip_edges()
+                var reply: Dictionary = await request("/" + endpoint, credentials)
                 password.text = ""
                 if reply.has("token"):
                     token = reply.token

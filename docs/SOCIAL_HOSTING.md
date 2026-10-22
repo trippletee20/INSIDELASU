@@ -1,32 +1,46 @@
-# Connect real-player social features
+# Free social hosting with Supabase
 
-The browser game continues to run on GitHub Pages. Pages cannot host a database or messaging process. The repository now includes a separate Python social server and a Render Blueprint with a persistent disk.
+The selected deployment is now the owner's new **INSIDE LASU** Supabase Free project. The older Base44 project is unrelated and must not be modified. The game stays on GitHub Pages; no Render service, card or separate Python hosting is needed for this path.
 
-## One-time hosting action
+## Owner setup
 
-1. Create/sign in to a Render account and open [Deploy this repository](https://render.com/deploy?repo=https://github.com/trippletee20/INSIDELASU).
-2. Select the repository's `render.yaml` Blueprint. Review Render's displayed price before creating resources. The configured `starter` web service and 1 GB persistent disk are paid resources; nothing has been purchased or provisioned by Codex. A free ephemeral disk would lose accounts/messages on restart, so it is not configured here.
-3. Render builds `server/Dockerfile`, attaches `/data`, runs the service and checks `/health`. Default allowed browser origin is `https://trippletee20.github.io` (no `/INSIDELASU` path). Keep it exact; update it if using a custom domain.
-4. Send the public `https://…onrender.com` service URL to Codex. Do not send passwords, API keys or database contents. Codex can verify it and connect the game with `python3 tools/configure_social_server.py https://YOUR-SERVICE.onrender.com`, then rebuild, test and push.
-5. Test with two separate browsers/accounts: search username, send/reply, accept/decline/end relationship, see public-room presence, block/report, delete a test account. Private hostel rooms must not show other players.
+Open [the guided setup page](https://trippletee20.github.io/INSIDELASU/setup-social.html). Copy the SQL, open the linked **INSIDE LASU** SQL Editor, paste and Run. The authoritative migration is `supabase/migrations/001_campus_social.sql`. It is repeatable and creates a dedicated `inside_lasu` schema plus `public.lasu_api` and `public.lasu_health`; it does not reset the project or touch other apps' tables.
 
-Only after step 4 is deployed will the game's Messages/Contacts apps expose account sign-in. Existing local game profiles are not social accounts and are not automatically assigned public usernames.
+Then open Authentication → URL Configuration and set Site URL to `https://trippletee20.github.io/INSIDELASU/`. Leave email confirmation enabled. This prevents confirmation emails redirecting to localhost. Keep the project on Free. If the dashboard asks for a paid upgrade, stop and check the selected plan/project.
 
-## Operator responsibilities for a beta
+The supplied `sb_publishable_…` key is intentionally public in the browser. It cannot install schemas or act as an administrator. Never supply the database password, secret API key, service_role key or management access token in the chat or game. The project owner must run the SQL through the dashboard because the public key cannot do that.
 
-- Use HTTPS through the hosting platform. The server's HTTP port stays behind that proxy.
-- Keep the persistent disk and take regular SQLite backups (`sqlite3.Connection.backup`); never commit the database.
-- Review reports from the hosting shell: `python moderate.py reports`. Remove a message with `python moderate.py remove-message MESSAGE_ID`; suspend an account with `python moderate.py suspend username`. No public administrator endpoint is exposed.
-- Messages and reports contain player data. Publish a privacy notice/contact before inviting a broad audience; the service provides social account deletion, but no email/password recovery yet. Password sessions expire after 24 hours and are deliberately not persisted in the browser save.
-- The small service stores up to 80 messages per conversation response and 50 same-location presence entries per response; storage retention/archival remains an operator task. It does not implement push notifications, attachments, voice calls, read receipts, public chat channels or WhatsApp integration.
-- This SQLite/polling configuration is a small beta deployment. Load test and move to a managed database and websocket gateway before promising large concurrent crowds. IP-based login limits may be shared behind a reverse proxy; tune carefully using trusted proxy metadata, never arbitrary client headers.
+## Player sign-in
 
-## Local verification
+Players create a social account with a real email, a new password (at least 10 characters) and a unique public username. They confirm their email, then sign in with email/password. Existing usernames cannot be reassigned by changing the login field. Other players search public usernames; emails never appear in the game directory or presence feed.
 
+Supabase Auth handles credentials and email confirmation. Access and refresh tokens stay only in memory; the game refreshes expiring sessions and signs out on page reload. Local game money/profile/room progress stays in the existing device save, separately from the shared social account. Password recovery UI is not implemented in this beta; do not promise cross-device game-save syncing or recovery through the phone yet.
+
+The client checks the schema-version health RPC before creating an account or signing in. Missing setup produces a clear pending-setup message while local gameplay remains available. The setup page's Check connection verifies only installation/version, not a full two-player test.
+
+## Database access and moderation
+
+All six social tables have row-level security enabled with no public/client table policies, and raw schema/table/sequence privileges are revoked from `anon` and `authenticated`. The only social data API is an explicitly granted SECURITY DEFINER RPC with an empty search path. It checks the caller's Supabase identity, derives senders from that identity, limits data to relevant participants, validates payloads, enforces rate limits and relationship consent, and excludes blocked users/private-room presence. No privileged key is shipped.
+
+Account deletion removes the caller's Auth user and cascades through only their dedicated social rows. Sign-out deletes visible presence. Polling removes old presence rows. Messages are stored in the database and are not end-to-end encrypted. Operators can inspect `inside_lasu.reports` in the owner's SQL Editor and moderate as needed; do not grant browser clients access to reports.
+
+Example owner-only report query:
+
+```sql
+select r.id, reporter.username as reporter, reported.username as reported, r.reason, r.created
+from inside_lasu.reports r
+join inside_lasu.profiles reporter on reporter.id=r.owner
+join inside_lasu.profiles reported on reported.id=r.target
+order by r.id desc limit 100;
 ```
-python3 server/test_app.py
-python3 tools/test_social_client.py
-DATABASE_PATH=/tmp/inside-lasu-social-test.sqlite3 PORT=8080 python3 server/app.py
-```
 
-For a local web test set `ALLOWED_ORIGIN` to that web test's exact origin. The shipped game accepts only HTTPS service URLs, with a loopback exception for automated local tests. No merchant credentials or real payment processing belongs in this server.
+Free has changing storage, Auth email and API/egress quotas, and inactive projects may pause. Review current limits in the dashboard and maintain backups. No automatic upgrades are configured here. Before a broad launch, complete two-account live testing, establish moderation/privacy support, configure adequate Auth email delivery and assess load. Presence remains a polling beta with client-reported positions and simple avatars; shared physics, game-economy authority and full multiplayer simulation are not implemented.
+
+## Validation
+
+- `python3 tools/test_supabase_database.py`: real disposable PostgreSQL; repeatable migration, revoked direct access, private conversations, relationship consent, blocks, private presence, limits and account deletion.
+- `python3 tools/test_supabase_client.py`: actual Godot HTTP client against a protocol fixture; confirmation flow, login/profile, refresh, RPC mapping, logout and absent-schema gate. This fixture does not claim to test the live Supabase Auth service.
+- `python3 tools/check_supabase_connection.py`: read-only live public-key/project check; never creates users. CI can run this when workspace egress cannot reach the project.
+- Existing engine, legacy server and desktop/mobile browser checks remain in the release workflow.
+
+The previous `server/` Python implementation and `render.yaml` are retained for compatibility/tests and are optional paid-hosting alternatives, not the selected setup. Their credentials/accounts are not migrated into Supabase.

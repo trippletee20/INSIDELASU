@@ -25,6 +25,8 @@ func run() -> void:
     client.set_process(false)
     var second = preload("res://scripts/campus_social.gd").new()
     root.add_child(second)
+    client.supabase = null
+    second.supabase = null
     client.url = OS.get_environment("INSIDE_LASU_SOCIAL_TEST_URL")
     second.url = client.url
     var reply: Dictionary = await client.request("/register", {"username": "godot_student", "password": "test-only-strong-password"})

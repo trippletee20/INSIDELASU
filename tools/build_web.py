@@ -48,6 +48,7 @@ html_path.write_text(html)
 for path in (ROOT / "web").iterdir():
     if path.is_file() and path.suffix in {".html", ".css", ".svg", ".txt", ".js", ".png", ".json"}:
         shutil.copy2(path, OUT / path.name)
+shutil.copy2(ROOT / "supabase/migrations/001_campus_social.sql", OUT / "setup-social.sql")
 shutil.copy2(ROOT / "assets/map_reference/Inside_LASU_Master_Map_Vector_Trace_v0.2.png", OUT / "campus.png")
 (OUT / ".nojekyll").write_text("")
 for name in ["index.html", "index.js", "index.wasm", "index.pck"]:

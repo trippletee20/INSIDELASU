@@ -75,6 +75,7 @@ run("occupied-traffic", ["godot", "--headless", "--path", str(ROOT), "--script",
     "14 checks, 0 failures (300s, seed 14014, 60 Hz)", timeout=300)
 run("mobile-gameplay", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/mobile_gameplay_regression.gd"], "MOBILE GAMEPLAY:", fresh_save=True)
 run("ecosystem", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/ecosystem_regression.gd"], "ECOSYSTEM:", fresh_save=True)
+run("supabase-client", [sys.executable, "tools/test_supabase_client.py"], "SUPABASE CLIENT: 12 checks, 0 failures")
 run("social-service", [sys.executable, "server/test_app.py"], "OK")
 run("social-client", [sys.executable, "tools/test_social_client.py"], "SOCIAL CLIENT: 15 checks, 0 failures")
 run("arcade-traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/arcade_traffic_regression.gd"], "ARCADE TRAFFIC:", timeout=300)

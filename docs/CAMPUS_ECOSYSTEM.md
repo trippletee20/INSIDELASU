@@ -35,11 +35,11 @@ The supplied Lagos Life screenshots inform the compact status controls, expandab
 
 Phone data is added to the existing versioned browser save. Existing money, profiles and rooms are preserved. Local data does not synchronise across devices; clearing browser storage removes local progress.
 
-## Social service: implemented, not publicly connected yet
+## Social service: Supabase Free selected; database installation pending
 
-`data/social_config.json` intentionally has an empty URL until hosting exists. The game never shows invented usernames, online counts, conversations or accepted relationships. See [SOCIAL_HOSTING.md](SOCIAL_HOSTING.md) for the prepared deployment.
+`data/social_config.json` selects the new INSIDE LASU Supabase project with its public publishable key. The health/version gate blocks sign-in until the owner installs the dedicated schema. The game never shows invented usernames, online counts, conversations or accepted relationships. See [SOCIAL_HOSTING.md](SOCIAL_HOSTING.md) for the prepared deployment.
 
-When connected: unique case-insensitive usernames, scrypt password hashes, expiring bearer sessions kept only in runtime memory, search, text conversations with automatic refresh, inbox, eight mutual relationship labels, block/report and permanent social account deletion. Relationships are Friends, Dating, BFFs, Gs, Reading partners, Project teammates, Roommates and Mentor buddies. Either participant can withdraw or end a relationship.
+When connected: Supabase Auth email/password sign-in and email confirmation, unique case-insensitive public usernames, expiring access/refresh sessions kept only in runtime memory, search, text conversations with automatic refresh, inbox, eight mutual relationship labels, block/report and permanent social account deletion. Relationships are Friends, Dating, BFFs, Gs, Reading partners, Project teammates, Roommates and Mentor buddies. Either participant can withdraw or end a relationship.
 
 Presence updates every few seconds and renders lightweight labelled student placeholders in the same public location/floor/room. Interact within three metres to open that player's conversation. This is a polling beta, not authoritative real-time multiplayer: avatars can jump between samples, movement is client-reported, player appearance/animations are not replicated, and there is no shared physics, group quest state or synchronised economy. Private-room presence is excluded entirely; the existing visitor setting does not grant network entry.
 

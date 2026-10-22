@@ -2,7 +2,7 @@
 
 [Play the browser beta](https://trippletee20.github.io/INSIDELASU/play/index.html?v=campus-phone-v016) · [Phone, rooms and NPC features](docs/CAMPUS_ECOSYSTEM.md) · [Enable real-player messaging](docs/SOCIAL_HOSTING.md)
 
-The Phone button opens 16 campus apps. Expand/Hide controls the HUD. Nearby location actions expose entrances, rooms and tasks. Social server code and a persistent hosting Blueprint are included; messaging stays explicitly offline until a server URL is connected.
+The Phone button opens 16 campus apps. Expand/Hide controls the HUD. Nearby location actions expose entrances, rooms and tasks. Free Supabase social hosting is configured; the project owner must install the tested database rules before messaging can connect. Use the linked setup guide; no paid Render service is needed.
 
 # Inside LASU
 

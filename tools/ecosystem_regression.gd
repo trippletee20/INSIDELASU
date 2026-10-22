@@ -58,7 +58,7 @@ func run() -> void:
     var saved: Dictionary = preload("res://scripts/save_store.gd").load_profile()
     check(saved.get("campus_phone", {}).get("notes", []).size() == 1, "existing versioned save stores phone content")
     check(game.player.is_physics_processing(), "closing phone restores walking")
-    check(game.campus_social.url.is_empty() and game.campus_social.peers.is_empty(), "unconfigured social service never invents online players")
+    check(game.campus_social.peers.is_empty() and (game.campus_social.supabase == null or not game.campus_social.supabase.ready), "unconfigured social service never invents online players")
     var count: int = 0
     for site in game.interior_catalog:
         # Test completed buildings only; radio access remains programme restricted.
