@@ -41,12 +41,13 @@ try:
         if not executable and not os.environ.get('GITHUB_ACTIONS'):
             executable = shutil.which('chromium')
         browser = p.chromium.launch(executable_path=executable, args=['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
-        page = browser.new_page(viewport={'width':393,'height':873}, is_mobile=True, has_touch=True, device_scale_factor=1)
+        page = browser.new_page(viewport={'width':393,'height':873}, is_mobile=True, has_touch=True, device_scale_factor=3)
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
         page.on('console', lambda message: errors.append(message.text) if message.type == 'error' else None)
         page.goto(base + '/play/index.html', wait_until='networkidle', timeout=120000)
         page.wait_for_timeout(14000)
+        assert page.locator('canvas').evaluate('(x)=>x.width === 393 && x.height === 873'), 'High-DPI display changed logical control size'
         page.screenshot(path=str(OUT / 'profile-portrait.png'))
         page.touchscreen.tap(160,300)
         page.wait_for_timeout(500)
@@ -110,7 +111,7 @@ try:
         assert not page.evaluate('!!document.pointerLockElement')
         page.screenshot(path=str(OUT / 'reloaded-landscape.png'))
         assert not errors, errors
-        result = {'target':'Chromium mobile touch emulation; physical Android testing still required', 'viewports':['393x873','873x393'], 'profile_created_with_software_text_input':True, 'simultaneous_move_look_and_action':True, 'movement_energy_before':before['energy'], 'movement_energy_after':after['energy'], 'save_reloaded':True, 'pointer_lock':False, 'errors':errors}
+        result = {'target':'Chromium mobile touch emulation; physical Android testing still required', 'device_pixel_ratio':3, 'viewports':['393x873','873x393'], 'profile_created_with_software_text_input':True, 'simultaneous_move_look_and_action':True, 'movement_energy_before':before['energy'], 'movement_energy_after':after['energy'], 'save_reloaded':True, 'pointer_lock':False, 'errors':errors}
         (OUT / 'results.json').write_text(json.dumps(result, indent=2))
         print('MOBILE BROWSER PASSED: profile form, touch scroll, multi-finger gameplay, movement stats, menus, map, rotation, save/reload, no mouse lock')
         browser.close()

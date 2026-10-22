@@ -6,7 +6,7 @@ This update addresses the reported Android-browser failure: profile creation wor
 
 On touch devices a left thumbstick moves the player, right-side dragging turns the camera, and separate touch buttons handle Interact, Jump, Sit/stand, Run and Map. Run is a toggle. Each finger has independent ownership; movement, looking and an action can be held together. Touch controls reset when a modal opens, the viewport changes or the application loses focus. The map's Back button returns to the walking camera.
 
-Browser touch detection also checks `navigator.maxTouchPoints` and coarse-pointer media support, because the engine's display-server flag alone was false in a touch-capable web browser. Touch devices never request mouse capture. Native browser text input is enabled for the profile name; the portrait form scrolls and option labels clip rather than forcing a wider panel. Menus adapt to portrait and landscape, and the shuttle menu scrolls on short screens.
+Browser touch detection also checks `navigator.maxTouchPoints` and coarse-pointer media support, because the engine's display-server flag alone was false in a touch-capable web browser. Touch devices never request mouse capture. The web canvas uses CSS-pixel resolution rather than multiplying both dimensions by device pixel ratio, keeping controls the same usable size on dense phone screens and avoiding a ninefold pixel workload at DPR 3. Native browser text input is enabled for the profile name; the portrait form scrolls and option labels clip rather than forcing a wider panel. Menus adapt to portrait and landscape, and the shuttle menu scrolls on short screens.
 
 Desktop keyboard/mouse controls remain available. Mobile-first changes are separate from the fictional student wallet and retain existing saves.
 
@@ -35,7 +35,7 @@ Local acceptance passed **467 engine checks** plus the desktop, touch-browser an
 - `python3 tools/check_environment.py`: previous gameplay/save and blocking-traffic regressions, touch gameplay and five viewport layouts, all-building identity/activity coverage, challenge reward checks, and a 300-second nonblocking traffic run.
 - `python3 tools/build_web.py`: desktop/mobile texture support, native web text input, single-thread export and content-fingerprinted game pack URLs to avoid reusing an old cached pack.
 - `python3 tools/test_web.py`: actual exported desktop browser profile, wallet, receipt, saving and UI checks.
-- `python3 tools/test_mobile_web.py`: 393×873 and 873×393 touch Chromium, profile typing/scrolling, simultaneous movement/look/action, movement-related stat change, touch menus/map, orientation changes, save/reload and no pointer lock.
+- `python3 tools/test_mobile_web.py`: 393×873 and 873×393 touch Chromium at device pixel ratio 3, profile typing/scrolling, simultaneous movement/look/action, movement-related stat change, touch menus/map, orientation changes, save/reload and no pointer lock.
 - `python3 tools/test_advertising_preview.py`: mobile preview, slot selection, artwork validation, both provider choices, safe text handling and no upload/payment requests.
 
 The engine checks additionally exercise menu bounds at 393×873, 873×393, 360×640, 640×360 and 320×568. Chromium tests use software WebGL and mobile emulation; they do not establish physical Android performance or compatibility with every phone/browser. Real-device acceptance remains necessary.
