@@ -1,7 +1,8 @@
 # Browser beta release
 
 The selected release target is a desktop web browser with keyboard and mouse.
-This milestone produces a hosted-game artifact, not another source-only ZIP.
+This milestone is now published at **https://trippletee20.github.io/INSIDELASU/**.
+It produces a playable hosted game, not another source-only ZIP.
 
 ## Implemented
 
@@ -55,8 +56,8 @@ screenshots/builds from being imported back into the game.
 
 The browser test uses software WebGL in Chromium. It validates functionality, not
 hardware performance on every player's device. Firefox, Safari, touch controls,
-Windows native export, controller-only use and public-server execution are not
-represented as tested by these local checks.
+Windows native export and controller-only use are not represented as tested.
+After deployment, the same browser flow also passed against the actual public site.
 
 ## Reproduce the web build
 
@@ -80,14 +81,29 @@ served over HTTP(S), not opened as a local file.
 
 For browser acceptance, install Playwright 1.58.0 and its Chromium browser, then
 run `python3 tools/test_web.py`. This starts and stops its own internal test server.
+To repeat hosted acceptance, set `INSIDE_LASU_TEST_URL=https://trippletee20.github.io/INSIDELASU/`
+and optionally `INSIDE_LASU_TEST_OUTPUT` to a separate writable evidence directory.
 
 ## Publication and remaining work
 
-The intended public address is `https://trippletee20.github.io/INSIDELASU/`.
-It was returning HTTP 404 before deployment. The cloud's GitHub settings API
-returns Forbidden, so it cannot enable Pages on the owner's behalf. The owner must
-choose **GitHub Actions** at the repository's **Settings → Pages → Source** once.
-The workflow can then publish without an additional secret or real-money service.
+The public address is `https://trippletee20.github.io/INSIDELASU/`.
+GitHub workflow [39756421772](https://github.com/trippletee20/INSIDELASU/actions/runs/39756421772)
+completed successfully for game commit `d7af4f450927ef528c79f533da383da0861d9d7b`:
+build/test/export succeeded in 6m 31s and deployment in 9s. Both test-evidence and
+ready-to-host artifacts were uploaded. The game is live; no Pages-setting action
+is currently required from the owner.
+
+All ten checked public resources returned HTTP 200, including the landing, game
+HTML/JS/WASM/pack, CSS, map image, credits and licence notices. The WASM MIME type
+is `application/wasm`. Actual hosted Chromium checks then passed profile creation,
+daily support, receipts, browser-storage reload, keyboard menus and 800×600 layout
+with zero browser runtime errors. HTTPS verification remained enabled; the cloud
+browser used its existing platform proxy certificate trust.
+
+The cloud's settings API remains Forbidden, but that did not prevent publishing
+through the repository workflow. Pages is now configured. For another repository,
+choose **GitHub Actions** at **Settings → Pages → Source** once; deployment needs no
+additional game secret or real-money service.
 
 A successful source push, saved cloud draft or exported site is not publication.
 Verify the public landing, game HTML, WASM and pack responses and a real hosted

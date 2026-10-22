@@ -1,0 +1,12 @@
+{
+  "result": "passed",
+  "engine": "Godot 4.6.3 single-thread web",
+  "profile_created": true,
+  "daily_support": 1042,
+  "browser_save_reloaded": true,
+  "viewports": [
+    "1280x720",
+    "800x600"
+  ],
+  "errors": []
+}

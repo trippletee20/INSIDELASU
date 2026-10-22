@@ -1,0 +1,11 @@
+{
+  "game_commit": "d7af4f450927ef528c79f533da383da0861d9d7b",
+  "workflow_run": "https://github.com/trippletee20/INSIDELASU/actions/runs/39756421772",
+  "build": "success",
+  "deploy": "success",
+  "public_url": "https://trippletee20.github.io/INSIDELASU/",
+  "public_resources_checked": 10,
+  "public_resource_status": 200,
+  "hosted_browser": "passed",
+  "https_verification": "enabled"
+}

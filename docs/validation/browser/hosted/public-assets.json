@@ -1,0 +1,62 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "length": "3620"
+  },
+  {
+    "path": "play/index.html",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "length": "5437"
+  },
+  {
+    "path": "play/index.js",
+    "status": 200,
+    "content_type": "application/javascript; charset=utf-8",
+    "length": "315759"
+  },
+  {
+    "path": "play/index.wasm",
+    "status": 200,
+    "content_type": "application/wasm",
+    "length": "37700666"
+  },
+  {
+    "path": "play/index.pck",
+    "status": 200,
+    "content_type": "application/octet-stream",
+    "length": "1924596"
+  },
+  {
+    "path": "site.css",
+    "status": 200,
+    "content_type": "text/css; charset=utf-8",
+    "length": "3586"
+  },
+  {
+    "path": "campus.png",
+    "status": 200,
+    "content_type": "image/png",
+    "length": "990622"
+  },
+  {
+    "path": "credits.html",
+    "status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "length": "2252"
+  },
+  {
+    "path": "godot-license.txt",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "length": "1149"
+  },
+  {
+    "path": "font-license.txt",
+    "status": 200,
+    "content_type": "text/plain; charset=utf-8",
+    "length": "4396"
+  }
+]

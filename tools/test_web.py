@@ -11,7 +11,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "test-results"
+OUT = Path(os.environ.get("INSIDE_LASU_TEST_OUTPUT", str(ROOT / "test-results")))
 OUT.mkdir(exist_ok=True)
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
@@ -20,7 +20,7 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
 
 server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(QuietHandler, directory=str(ROOT / "build/web")))
 threading.Thread(target=server.serve_forever, daemon=True).start()
-base = f"http://127.0.0.1:{server.server_port}"
+base = os.environ.get("INSIDE_LASU_TEST_URL", f"http://127.0.0.1:{server.server_port}").rstrip("/")
 SAVE = """async () => {
  const databases = await indexedDB.databases();
  for (const info of databases) {

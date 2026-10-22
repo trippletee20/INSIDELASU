@@ -1,28 +1,29 @@
 # Inside LASU
 
-A single-player campus-life game, now prepared as a **desktop browser beta**.
+A single-player campus-life game, now live as a **desktop browser beta**.
 Players use a keyboard and mouse; they do not need Godot or a source ZIP.
 
-**Browser address after deployment:** https://trippletee20.github.io/INSIDELASU/
+**[Play Inside LASU in your browser](https://trippletee20.github.io/INSIDELASU/)**
 
 This is a playable beta, not a content-complete release. Campus activities are
 simplified and NPC campus life and richer interior content remain in development.
 The game is independent and is not an official university service.
 
-## Publish the browser game
+## Release updates
 
 The `Build and publish browser beta` workflow tests the game, builds the site,
 uploads a ready-to-host artifact, and deploys it to GitHub Pages.
 
-The repository owner must enable Pages once:
+Pages is configured and the first deployment succeeded. For a new repository or fork, the owner enables hosting once:
 
 1. Open [Settings → Pages](https://github.com/trippletee20/INSIDELASU/settings/pages).
 2. Under **Build and deployment → Source**, choose **GitHub Actions**.
 3. If a deployment ran before Pages was enabled, rerun the workflow from the
    [Actions tab](https://github.com/trippletee20/INSIDELASU/actions).
 
-The configured address is not live until deployment succeeds. Do not treat a
-successful source push or local export as proof the public game is available.
+The public landing and game files return HTTP 200, and the hosted game has passed
+player creation, wallet receipts, save/reload, keyboard-menu and resize checks.
+Future game updates run the same build/test/deployment pipeline.
 
 ## Play and save
 
