@@ -38,8 +38,10 @@ func _ready() -> void:
     camera.position = Vector3(0, 2.0, 6.8)
     camera.rotation_degrees.x = -14.0
     camera.current = true
+    if OS.has_feature("web"):
+        camera.far = 220.0
     camera_pivot.add_child(camera)
-    Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if OS.has_feature("web") else Input.MOUSE_MODE_CAPTURED
 
 func _avatar_block(parent: Node3D, name_text: String, pos: Vector3, size: Vector3, color: Color) -> void:
     var node := MeshInstance3D.new()
@@ -159,6 +161,8 @@ func _create_student_avatar() -> void:
     _avatar_sphere(avatar_right_leg, "RightShoe", Vector3(0, -0.66, -0.09), Vector3(0.62, 0.30, 1.0), shoe)
 
 func _unhandled_input(event: InputEvent) -> void:
+    if OS.has_feature("web") and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+        Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
     if event.is_action_pressed("toggle_mouse_capture"):
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
     if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:

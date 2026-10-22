@@ -20,6 +20,7 @@ var _destination_stop_visuals: Array = []
 var _destination_footprints: Array = []
 var _shared_stand_positions: Array = []
 var _junction_positions: Array = []
+var _lane_offset_cache: Dictionary = {}
 var _reservations = preload("res://scripts/traffic_reservations.gd").new()
 const LANE_OFFSET_METRES: float = 2.12
 const LANE_MERGE_DISTANCE: float = 9.0
@@ -196,6 +197,7 @@ func _build_terminal_bays() -> void:
             add_child(bay)
 
 func _physics_process(delta: float) -> void:
+    _lane_offset_cache.clear()
     # Batch requests before movement so service iteration cannot steal a lease.
     _reservations.update(self, delta)
     # Drive on fixed physics ticks; project physics interpolation smooths the render.
@@ -642,6 +644,7 @@ func _vehicle_rectangles_overlap(a_position: Vector2, a_heading: float, b_positi
     return true
 
 func _cache_road_obstacles(campus_features: Array) -> void:
+    _lane_offset_cache.clear()
     _destination_footprints.clear()
     for feature_variant in campus_features:
         var feature: Dictionary = feature_variant
@@ -1194,6 +1197,11 @@ func _point_and_heading(service: Dictionary) -> Array:
     return [lane_position, atan2(-travel.z, travel.x)]
 
 func _safe_lane_offset_at(point: Vector3) -> float:
+    # Reuse only exact positions within this physics tick; no quantisation or
+    # approximation changes the validated clearance at tight campus corridors.
+    var cache_key: Vector2 = Vector2(point.x, point.z)
+    if _lane_offset_cache.has(cache_key):
+        return float(_lane_offset_cache[cache_key])
     # Keep opposing lanes apart while preventing the outside wheel from
     # leaving the two tight corridors identified in the protected-map audit.
     var raw: Vector2 = Vector2(point.x / _scale, point.z / _scale)
@@ -1202,7 +1210,9 @@ func _safe_lane_offset_at(point: Vector3) -> float:
         if _segment_clear_of_campus_features(raw, raw + Vector2(0.000001, 0), margin_world / _scale):
             local_width = margin_world * 2.0
             break
-    return clampf(local_width * 0.5 - BUS_WIDTH * 0.5 - COLLISION_BUFFER - 0.20, 1.55, LANE_OFFSET_METRES)
+    var result: float = clampf(local_width * 0.5 - BUS_WIDTH * 0.5 - COLLISION_BUFFER - 0.20, 1.55, LANE_OFFSET_METRES)
+    _lane_offset_cache[cache_key] = result
+    return result
 
 func _place_service(service: Dictionary, smoothing_delta: float = 0.0) -> void:
     var bus: Node3D = service["node"]

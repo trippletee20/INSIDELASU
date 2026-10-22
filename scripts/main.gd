@@ -14,6 +14,13 @@ const TASK_CATALOG_PATH: String = "res://data/task_catalog_v0.9.json"
 const INTERIOR_CATALOG_PATH: String = "res://data/interior_catalog_v0.10.json"
 const INTERIOR_SCRIPT = preload("res://scripts/interior_builder.gd")
 const SAVE_PATH = "user://inside_lasu_save.json"
+const SAVE_STORE = preload("res://scripts/save_store.gd")
+const STUDENT_UI = preload("res://scenes/ui/student_ui.tscn")
+var student_ui
+var transactions: Array = []
+var save_extras: Dictionary = {}
+var autosave_timer: float = 0.0
+var ui_timer: float = 0.0
 const HOSTEL_RENT_AMOUNT: int = 525000
 const SHUTTLE_FARE: int = 150
 const FACULTY_DEPARTMENTS: Dictionary = {
@@ -102,6 +109,9 @@ var last_room_rest_unix: int = 0
 var outdoor_return_position: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
+    var interface_font: Font = load("res://assets/fonts/NotoSans.ttf")
+    ThemeDB.get_default_theme().default_font = interface_font
+    ThemeDB.fallback_font = interface_font
     rng.randomize()
     _create_environment()
     _load_map_data()
@@ -156,7 +166,7 @@ func _create_environment() -> void:
     var sun := DirectionalLight3D.new()
     sun.rotation_degrees = Vector3(-60, -40, 0)
     sun.light_energy = 1.2
-    sun.shadow_enabled = true
+    sun.shadow_enabled = not OS.has_feature("web")
     add_child(sun)
 
 func _create_ground() -> void:
@@ -556,7 +566,7 @@ func _create_shuttle_menu() -> void:
     add_child(layer)
     shuttle_menu = PanelContainer.new()
     shuttle_menu.name = "DestinationBoardingMenu"
-    shuttle_menu.position = Vector2(650, 35)
+    shuttle_menu.position = Vector2(340, 80)
     shuttle_menu.custom_minimum_size = Vector2(600, 300)
     shuttle_menu.visible = false
     var style: StyleBoxFlat = StyleBoxFlat.new()
@@ -750,8 +760,7 @@ func _confirm_board_shuttle() -> void:
         notice_timer = 4.0
         return
     _decline_board_shuttle()
-    wallet_balance -= SHUTTLE_FARE
-    total_spent += SHUTTLE_FARE
+    _change_balance(-SHUTTLE_FARE, "Shuttle", "Travel to " + destination_name)
     _save_game()
     ride_bus = selected_bus
     player.visible = false
@@ -792,8 +801,7 @@ func _confirm_quick_travel() -> void:
     # watching the trip. This prevents a hidden bus teleport or broken return path.
     transit_system.finish_quick_travel(selected_bus)
     _decline_board_shuttle()
-    wallet_balance -= SHUTTLE_FARE
-    total_spent += SHUTTLE_FARE
+    _change_balance(-SHUTTLE_FARE, "Shuttle", "Travel to " + destination_name)
     player.global_position = stand_position
     player.velocity = Vector3.ZERO
     var building_raw: Vector2 = destination_building_positions.get(destination_name, target_raw)
@@ -938,134 +946,71 @@ func _hud_meter(row_parent: VBoxContainer, text_value: String, tint: Color) -> P
     return meter
 
 func _create_hud() -> void:
-    var layer: CanvasLayer = CanvasLayer.new()
-    layer.name = "LASUCampusHUD"
-    layer.layer = 2
-    add_child(layer)
-    var panel: PanelContainer = PanelContainer.new()
-    panel.name = "CampusStatusDashboard"
-    panel.position = Vector2(16, 14)
-    panel.custom_minimum_size = Vector2(545, 190)
-    var style: StyleBoxFlat = StyleBoxFlat.new()
-    style.bg_color = Color(0.035, 0.105, 0.17, 0.94)
-    style.border_color = Color(0.23, 0.65, 0.67, 0.75)
-    style.set_border_width_all(1)
-    style.set_corner_radius_all(15)
-    style.content_margin_left = 18
-    style.content_margin_right = 18
-    style.content_margin_top = 12
-    style.content_margin_bottom = 12
-    panel.add_theme_stylebox_override("panel", style)
-    layer.add_child(panel)
-    var col: VBoxContainer = VBoxContainer.new()
-    col.add_theme_constant_override("separation", 5)
-    panel.add_child(col)
-    var top: HBoxContainer = HBoxContainer.new()
-    col.add_child(top)
-    var title_label: Label = Label.new()
-    title_label.text = "◈  INSIDE LASU  /  CAMPUS LIFE"
-    title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    title_label.add_theme_font_size_override("font_size", 19)
-    title_label.add_theme_color_override("font_color", Color(0.92, 0.95, 0.89))
-    top.add_child(title_label)
-    hud_time_chip = Label.new()
-    hud_time_chip.text = "--:--"
-    hud_time_chip.add_theme_font_size_override("font_size", 16)
-    hud_time_chip.add_theme_color_override("font_color", Color(0.97, 0.83, 0.48))
-    top.add_child(hud_time_chip)
-    var divider: HSeparator = HSeparator.new()
-    col.add_child(divider)
-    hud_energy_meter = _hud_meter(col, "ENERGY", Color(0.25, 0.76, 0.55))
-    hud_stamina_meter = _hud_meter(col, "STAMINA", Color(0.27, 0.62, 0.89))
-    hud_stress_meter = _hud_meter(col, "STRESS", Color(0.94, 0.50, 0.31))
-    hud_label = Label.new()
-    hud_label.name = "CampusPrompt"
-    hud_label.custom_minimum_size = Vector2(505, 54)
-    hud_label.add_theme_color_override("font_color", Color(0.85, 0.94, 0.94))
-    hud_label.add_theme_font_size_override("font_size", 13)
-    hud_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    col.add_child(hud_label)
-    _update_hud()
+    student_ui = STUDENT_UI.instantiate()
+    add_child(student_ui)
+    student_ui.modal_changed.connect(_on_student_modal)
+    student_ui.reward_requested.connect(_claim_daily_reward)
+    hud_label = student_ui.prompt
+    hud_time_chip = student_ui.clock
+    hud_energy_meter = student_ui.energy
+    hud_stamina_meter = student_ui.stamina
+    hud_stress_meter = student_ui.stress
 
 func _create_wallet_panel() -> void:
-    var layer: CanvasLayer = CanvasLayer.new()
-    layer.name = "StudentWalletLayer"
-    layer.layer = 3
-    add_child(layer)
-    wallet_panel = PanelContainer.new()
-    wallet_panel.name = "StudentWalletPanel"
-    wallet_panel.position = Vector2(850, 15)
-    wallet_panel.custom_minimum_size = Vector2(415, 180)
-    wallet_panel.visible = false
-    var style: StyleBoxFlat = StyleBoxFlat.new()
-    style.bg_color = Color(0.055, 0.12, 0.17, 0.92)
-    style.corner_radius_top_left = 10
-    style.corner_radius_top_right = 10
-    style.corner_radius_bottom_left = 10
-    style.corner_radius_bottom_right = 10
-    style.content_margin_left = 13
-    style.content_margin_right = 13
-    style.content_margin_top = 10
-    style.content_margin_bottom = 10
-    wallet_panel.add_theme_stylebox_override("panel", style)
-    var column: VBoxContainer = VBoxContainer.new()
-    column.add_theme_constant_override("separation", 5)
-    wallet_panel.add_child(column)
-    wallet_summary_label = Label.new()
-    wallet_summary_label.add_theme_color_override("font_color", Color(0.93, 0.96, 0.98))
-    wallet_summary_label.add_theme_font_size_override("font_size", 13)
-    wallet_summary_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    column.add_child(wallet_summary_label)
-    wallet_balance_label = Label.new()
-    wallet_balance_label.add_theme_color_override("font_color", Color(0.58, 0.93, 0.69))
-    wallet_balance_label.add_theme_font_size_override("font_size", 22)
-    column.add_child(wallet_balance_label)
-    daily_reward_button = Button.new()
-    daily_reward_button.text = "CLAIM DAILY REWARD"
-    daily_reward_button.custom_minimum_size = Vector2(370, 37)
-    daily_reward_button.pressed.connect(_claim_daily_reward)
-    column.add_child(daily_reward_button)
-    layer.add_child(wallet_panel)
+    daily_reward_button = student_ui.reward
+    wallet_balance_label = student_ui.balance
+    wallet_summary_label = student_ui.wallet_summary
+
+func _on_student_modal(open: bool) -> void:
+    if open:
+        _update_wallet_panel()
+    if player == null or profile_data.is_empty():
+        return
+    var can_walk: bool = not open and ride_bus == null and (task_panel == null or not task_panel.visible) and (shuttle_menu == null or not shuttle_menu.visible)
+    player.set_physics_process(can_walk)
+    player.set_process_unhandled_input(can_walk)
+    if open:
+        player.velocity = Vector3.ZERO
+    Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if open else Input.MOUSE_MODE_CAPTURED
+    if not open:
+        _save_game()
 
 func _initialise_student_profile() -> void:
-    if FileAccess.file_exists(SAVE_PATH):
-        var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
-        if file != null:
-            var parsed: Variant = JSON.parse_string(file.get_as_text())
-            file.close()
-            if typeof(parsed) == TYPE_DICTIONARY:
-                var save_data: Dictionary = parsed
-                var raw_profile: Variant = save_data.get("profile", {})
-                if typeof(raw_profile) == TYPE_DICTIONARY:
-                    profile_data = raw_profile
-                wallet_balance = int(save_data.get("wallet_balance", 0))
-                last_daily_reward_date = str(save_data.get("last_daily_reward_date", ""))
-                last_daily_reward_amount = int(save_data.get("last_daily_reward_amount", 0))
-                total_earned = int(save_data.get("total_earned", 0))
-                total_spent = int(save_data.get("total_spent", 0))
-                var raw_visits: Variant = save_data.get("location_visits", {})
-                if typeof(raw_visits) == TYPE_DICTIONARY:
-                    location_visits = raw_visits
-                last_curfew_notice_key = str(save_data.get("last_curfew_notice_key", ""))
-                task_completion_counts = save_data.get("task_completion_counts", {})
-                task_daily_completions = save_data.get("task_daily_completions", {})
-                task_inventory = save_data.get("task_inventory", [])
-                room_furniture = save_data.get("room_furniture", [])
-                room_visitors_allowed = bool(save_data.get("room_visitors_allowed", false))
-                last_room_rest_unix = int(save_data.get("last_room_rest_unix", 0))
-                social_reputation = int(save_data.get("social_reputation", 0))
-                energy = clampf(float(save_data.get("energy", 92.0)), 0.0, 100.0)
-                stamina = clampf(float(save_data.get("stamina", 90.0)), 0.0, 100.0)
-                stress = clampf(float(save_data.get("stress", 8.0)), 0.0, 100.0)
-                var saved_skills: Variant = save_data.get("skills", {})
-                if typeof(saved_skills) == TYPE_DICTIONARY:
-                    skills = saved_skills
-                var saved_xp: Variant = save_data.get("skill_xp", {})
-                if typeof(saved_xp) == TYPE_DICTIONARY:
-                    skill_xp = saved_xp
-                var saved_claims: Variant = save_data.get("skill_daily_xp", {})
-                if typeof(saved_claims) == TYPE_DICTIONARY:
-                    skill_daily_xp = saved_claims
+    var save_data: Dictionary = SAVE_STORE.load_profile()
+    save_extras = save_data.duplicate(true)
+    transactions = save_data.get("transactions", []).duplicate(true)
+    if not save_data.is_empty():
+        var raw_profile: Variant = save_data.get("profile", {})
+        if typeof(raw_profile) == TYPE_DICTIONARY:
+            profile_data = raw_profile
+        wallet_balance = int(save_data.get("wallet_balance", 0))
+        last_daily_reward_date = str(save_data.get("last_daily_reward_date", ""))
+        last_daily_reward_amount = int(save_data.get("last_daily_reward_amount", 0))
+        total_earned = int(save_data.get("total_earned", 0))
+        total_spent = int(save_data.get("total_spent", 0))
+        var raw_visits: Variant = save_data.get("location_visits", {})
+        if typeof(raw_visits) == TYPE_DICTIONARY:
+            location_visits = raw_visits
+        last_curfew_notice_key = str(save_data.get("last_curfew_notice_key", ""))
+        task_completion_counts = save_data.get("task_completion_counts", {})
+        task_daily_completions = save_data.get("task_daily_completions", {})
+        task_inventory = save_data.get("task_inventory", [])
+        room_furniture = save_data.get("room_furniture", [])
+        room_visitors_allowed = bool(save_data.get("room_visitors_allowed", false))
+        last_room_rest_unix = int(save_data.get("last_room_rest_unix", 0))
+        social_reputation = int(save_data.get("social_reputation", 0))
+        energy = clampf(float(save_data.get("energy", 92.0)), 0.0, 100.0)
+        stamina = clampf(float(save_data.get("stamina", 90.0)), 0.0, 100.0)
+        stress = clampf(float(save_data.get("stress", 8.0)), 0.0, 100.0)
+        var saved_skills: Variant = save_data.get("skills", {})
+        if typeof(saved_skills) == TYPE_DICTIONARY:
+            skills = saved_skills
+        var saved_xp: Variant = save_data.get("skill_xp", {})
+        if typeof(saved_xp) == TYPE_DICTIONARY:
+            skill_xp = saved_xp
+        var saved_claims: Variant = save_data.get("skill_daily_xp", {})
+        if typeof(saved_claims) == TYPE_DICTIONARY:
+            skill_daily_xp = saved_claims
     if not profile_data.is_empty() and skills.is_empty():
         _roll_initial_skills()
         _save_game()
@@ -1081,7 +1026,7 @@ func _initialise_student_profile() -> void:
             player.set_process_unhandled_input(true)
         if player.has_method("apply_profile_appearance"):
             player.call("apply_profile_appearance", str(profile_data.get("gender", "Prefer not to say")), str(profile_data.get("student_name", "Student")))
-        Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+        Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if OS.has_feature("web") else Input.MOUSE_MODE_CAPTURED
         if wallet_panel != null:
             wallet_panel.visible = true
         _update_wallet_panel()
@@ -1097,12 +1042,17 @@ func _create_profile_ui() -> void:
     backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
     profile_layer.add_child(backdrop)
     var panel: PanelContainer = PanelContainer.new()
-    panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-    panel.offset_left = -370
-    panel.offset_top = -310
-    panel.offset_right = 370
-    panel.offset_bottom = 310
-    panel.custom_minimum_size = Vector2(740, 620)
+    panel.name = "CreateStudentPanel"
+    panel.custom_minimum_size = Vector2(0, 0)
+    var layout_profile: Callable = func():
+        var viewport: Vector2 = get_viewport().get_visible_rect().size
+        panel.size = Vector2(minf(740, viewport.x - 32), minf(620, viewport.y - 32))
+        panel.position = (viewport - panel.size) * 0.5
+    get_viewport().size_changed.connect(layout_profile)
+    panel.tree_exiting.connect(func():
+        if get_viewport().size_changed.is_connected(layout_profile):
+            get_viewport().size_changed.disconnect(layout_profile))
+    layout_profile.call()
     var panel_style: StyleBoxFlat = StyleBoxFlat.new()
     panel_style.bg_color = Color(0.94, 0.96, 0.97, 0.99)
     panel_style.corner_radius_top_left = 16
@@ -1117,7 +1067,11 @@ func _create_profile_ui() -> void:
     profile_layer.add_child(panel)
     var column: VBoxContainer = VBoxContainer.new()
     column.add_theme_constant_override("separation", 8)
-    panel.add_child(column)
+    var profile_scroll := ScrollContainer.new()
+    profile_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+    panel.add_child(profile_scroll)
+    profile_scroll.add_child(column)
+    column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     var title: Label = Label.new()
     title.text = "WELCOME TO INSIDE LASU"
     title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -1133,6 +1087,8 @@ func _create_profile_ui() -> void:
     column.add_child(subtitle)
 
     profile_name_input = LineEdit.new()
+    profile_name_input.max_length = 40
+    profile_name_input.call_deferred("grab_focus")
     profile_name_input.placeholder_text = "Enter your student's name"
     profile_name_input.custom_minimum_size = Vector2(440, 36)
     _add_profile_row(column, "Student name", profile_name_input)
@@ -1202,7 +1158,9 @@ func _add_profile_row(parent: VBoxContainer, label_text: String, control: Contro
     label.add_theme_color_override("font_color", Color(0.09, 0.17, 0.22))
     label.add_theme_font_size_override("font_size", 14)
     row.add_child(label)
-    control.custom_minimum_size = Vector2(control.custom_minimum_size.x, maxf(control.custom_minimum_size.y, 36.0))
+    control.custom_minimum_size = Vector2(0, maxf(control.custom_minimum_size.y, 36.0))
+    if control is OptionButton:
+        control.fit_to_longest_item = false
     control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     row.add_child(control)
     parent.add_child(row)
@@ -1305,6 +1263,8 @@ func _create_student_profile() -> void:
     room_furniture.clear()
     room_visitors_allowed = false
     last_room_rest_unix = 0
+    transactions.clear()
+    save_extras.clear()
     wallet_balance = int(background_data.get("balance", 50000))
     last_daily_reward_date = ""
     last_daily_reward_amount = 0
@@ -1374,14 +1334,7 @@ func _roll_starting_cgpa() -> float:
     return roundf(value * 100.0) / 100.0
 
 func _roll_daily_reward() -> int:
-    var roll: float = rng.randf()
-    if roll < 0.75:
-        return rng.randi_range(5000, 25000)
-    if roll < 0.95:
-        return rng.randi_range(25001, 100000)
-    if roll < 0.995:
-        return rng.randi_range(100001, 500000)
-    return rng.randi_range(500001, 2000000)
+    return rng.randi_range(500, 1500)
 
 func _claim_daily_reward() -> void:
     if profile_data.is_empty():
@@ -1393,8 +1346,7 @@ func _claim_daily_reward() -> void:
         _update_wallet_panel()
         return
     last_daily_reward_amount = _roll_daily_reward()
-    wallet_balance += last_daily_reward_amount
-    total_earned += last_daily_reward_amount
+    _change_balance(last_daily_reward_amount, "Daily support", "Daily campus living allowance")
     last_daily_reward_date = today
     _save_game()
     notice = "DAILY REWARD: You received " + _format_naira(last_daily_reward_amount) + "!"
@@ -1414,22 +1366,26 @@ func _format_naira(amount: int) -> String:
     return "₦" + formatted
 
 func _update_wallet_panel() -> void:
-    if wallet_panel == null or profile_data.is_empty():
+    if student_ui == null:
         return
-    wallet_panel.visible = true
-    var cgpa_text: String = "N/A — 100 Level starts from scratch" if int(profile_data.get("level", 100)) == 100 else str(profile_data.get("cgpa", "N/A"))
-    wallet_summary_label.text = str(profile_data.get("student_name", "Student")) + " • " + str(profile_data.get("level", 100)) + " Level • " + str(profile_data.get("study_mode", "Full-time")) + "\n" + str(profile_data.get("department", "Department")) + "\n" + str(profile_data.get("background", "Student")) + " • Hostel: " + str(profile_data.get("hostel_name", "Unassigned")) + " (Room " + str(profile_data.get("room_number", "?")) + ")\nCGPA: " + cgpa_text + " • First-session rent prepaid"
-    wallet_balance_label.text = "WALLET  " + _format_naira(wallet_balance)
-    var today: String = Time.get_date_string_from_system()
-    var already_claimed: bool = last_daily_reward_date == today
-    daily_reward_button.disabled = already_claimed
-    daily_reward_button.text = "REWARD CLAIMED TODAY" if already_claimed else "CLAIM DAILY REWARD (₦5K–₦2M)"
+    student_ui.update_student(profile_data, skills, wallet_balance, transactions, last_daily_reward_amount,
+        last_daily_reward_date == Time.get_date_string_from_system(), _format_naira)
+
+func _change_balance(amount: int, source: String, description: String) -> void:
+    wallet_balance += amount
+    total_earned += maxi(0, amount)
+    total_spent += maxi(0, -amount)
+    transactions.append({"amount": amount, "source": source, "description": description,
+        "date": Time.get_date_string_from_system(), "time": Time.get_datetime_string_from_system(false, true)})
+    if transactions.size() > 500:
+        transactions.pop_front()
 
 func _save_game() -> void:
     if profile_data.is_empty():
         return
     var save_data: Dictionary = {
-        "save_version": 1,
+        "save_version": SAVE_STORE.VERSION,
+        "transactions": transactions,
         "profile": profile_data,
         "wallet_balance": wallet_balance,
         "last_daily_reward_date": last_daily_reward_date,
@@ -1452,12 +1408,13 @@ func _save_game() -> void:
         "skill_daily_xp": skill_daily_xp,
         "social_reputation": social_reputation
     }
-    var file: FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-    if file == null:
-        push_warning("Could not save Inside LASU profile to user data.")
-        return
-    file.store_string(JSON.stringify(save_data, "\t"))
-    file.close()
+    var merged: Dictionary = save_extras.duplicate(true)
+    merged.merge(save_data, true)
+    var result: Error = SAVE_STORE.save_profile(merged)
+    if result != OK:
+        notice = "Your browser could not save progress. Keep this page open and allow site storage."
+        notice_timer = 10.0
+        push_warning("Could not save Inside LASU profile to user data: " + error_string(result))
 
 func _check_hostel_curfew() -> void:
     if profile_data.is_empty():
@@ -1489,6 +1446,20 @@ func _check_hostel_curfew() -> void:
     _save_game()
 
 func _unhandled_input(event: InputEvent) -> void:
+    if student_ui != null and profile_layer == null and event is InputEventKey and event.pressed and not event.echo:
+        if event.keycode == KEY_ESCAPE and student_ui.modal.visible:
+            student_ui.close()
+            get_viewport().set_input_as_handled()
+            return
+        if (task_panel == null or not task_panel.visible) and (shuttle_menu == null or not shuttle_menu.visible):
+            var key: String = {KEY_P: "profile", KEY_B: "wallet", KEY_H: "help"}.get(event.keycode, "")
+            if not key.is_empty():
+                student_ui.toggle(key)
+                _update_wallet_panel()
+                get_viewport().set_input_as_handled()
+                return
+    if student_ui != null and student_ui.modal.visible:
+        return
     if task_panel != null and task_panel.visible:
         if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
             _close_task_panel()
@@ -1527,6 +1498,10 @@ func _unhandled_input(event: InputEvent) -> void:
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if overview_on else Input.MOUSE_MODE_CAPTURED
 
 func _process(delta: float) -> void:
+    autosave_timer += delta
+    if autosave_timer >= 30.0:
+        autosave_timer = 0.0
+        _save_game()
     if notice_timer > 0.0:
         notice_timer -= delta
         if notice_timer <= 0.0:
@@ -1545,60 +1520,35 @@ func _process(delta: float) -> void:
             stress = minf(100.0, stress + delta * 0.007)
         else:
             stamina = minf(100.0, stamina + delta * 0.16)
-    _update_hud()
+    ui_timer += delta
+    if ui_timer >= 0.2:
+        ui_timer = 0.0
+        _update_hud()
 
 func _update_hud() -> void:
-    if hud_label == null:
+    if student_ui == null:
         return
-    if hud_energy_meter != null:
-        hud_energy_meter.value = energy
-    if hud_stamina_meter != null:
-        hud_stamina_meter.value = stamina
-    if hud_stress_meter != null:
-        hud_stress_meter.value = stress
-    if hud_time_chip != null:
-        hud_time_chip.text = Time.get_time_string_from_system().substr(0, 5)
-    var nearby_stop_name_for_hud: String = ""
-    var header: String = "E  INTERACT    /    F  SIT    /    M  MAP    /    SHIFT  RUN"
-    header += "\nCURFEW 23:00  •  " + Time.get_date_string_from_system()
-    if profile_data.is_empty():
-        header += "\nCreate your student profile to begin."
-    else:
-        header += "\nSKILLS  INT " + str(int(skills.get("intellect", 1))) + "  SOC " + str(int(skills.get("social", 1))) + "  GAME " + str(int(skills.get("gaming", 1))) + "  MEDIA " + str(int(skills.get("media", 1)))
-        if not active_interior_site.is_empty():
-            header += "\nINSIDE: " + active_interior_site + " • press E for tasks, floors and EXIT"
-        if not bool(profile_data.get("hostel_checked_in", false)):
-            header += "\nFIRST OBJECTIVE: Check in at " + str(profile_data.get("hostel_name", "your assigned hostel"))
+    hud_energy_meter.value = energy
+    hud_stamina_meter.value = stamina
+    hud_stress_meter.value = stress
+    hud_time_chip.text = Time.get_time_string_from_system().substr(0, 5)
+    var location_name: String = "Main Gate / Campus"
+    if not active_interior_site.is_empty():
+        location_name = active_interior_site + (" · My room" if active_private_room else " · Floor " + str(active_interior_floor + 1))
+    elif player != null:
+        var nearby: Node3D = player.get("nearby_feature") as Node3D
+        if nearby != null:
+            location_name = str(nearby.get_meta("campus_name", "Campus"))
+    student_ui.location.text = location_name
+    student_ui.objective.text = "Create your student profile to begin." if profile_data.is_empty() else ("Check in at " + str(profile_data.get("hostel_name", "your hostel")) if not profile_data.get("hostel_checked_in", false) else "Explore campus · study, work and build your skills")
+    var message: String = "E interact · F sit · M map · B wallet · P profile · H help"
+    if not active_interior_site.is_empty():
+        message = "E — Activities, room access, floors and exit"
     if ride_bus != null and transit_system != null:
-        if transit_system.has_arrived(ride_bus):
-            header += "\nARRIVED: " + transit_system.current_stop_name(ride_bus) + " — PRESS E TO DISEMBARK"
-        else:
-            header += "\nONBOARD: " + transit_system.line_name(ride_bus) + " → " + transit_system.next_stop_name(ride_bus)
-    elif shuttle_menu != null and shuttle_menu.visible:
-        header += "\nChoose Ride & Watch, Quick Travel or Pass / Walk."
-    elif transit_system != null and player != null and not overview_on:
-        var available_bus: Node3D = transit_system.nearest_boardable_bus(player.global_position, 7.0)
-        if available_bus != null:
-            header += "\nSHUTTLE WAITING: " + transit_system.next_stop_name(available_bus) + " — press E to choose a destination"
-        else:
-            nearby_stop_name_for_hud = transit_system.nearest_destination_stop_name(player.global_position, 3.0)
-            if not nearby_stop_name_for_hud.is_empty():
-                header += "\nBUS STOP: " + nearby_stop_name_for_hud + " — press E to call a shuttle"
-    if overview_on:
-        header += "\nOVERVIEW MAP: press M to return to walking"
-    elif player != null and ride_bus == null and (shuttle_menu == null or not shuttle_menu.visible):
-        if bool(player.get("is_sitting")):
-            header += "\nSITTING: press F or E to stand up"
-        else:
-            var seat_hint: Node3D = _nearest_seat_for_hud(player.global_position, 3.5)
-            if seat_hint != null:
-                header += "\nSEAT NEARBY: press F to sit down"
-            var nearby := player.get("nearby_feature") as Node3D
-            if nearby != null and nearby_stop_name_for_hud.is_empty():
-                header += "\nNearby: " + str(nearby.get_meta("campus_name")) + " — press E"
+        message = "Arrived — press E to leave the shuttle" if transit_system.has_arrived(ride_bus) else "Onboard: " + transit_system.next_stop_name(ride_bus)
     if not notice.is_empty():
-        header += "\n" + notice
-    hud_label.text = header
+        message += "\n" + notice
+    hud_label.text = message
 
 func _nearest_seat_for_hud(position_value: Vector3, radius: float) -> Node3D:
     var nearest: Node3D = null
@@ -1640,6 +1590,12 @@ func _load_task_catalog() -> void:
     else:
         push_error("Invalid task catalogue JSON.")
 
+func _layout_action_menus() -> void:
+    var viewport: Vector2 = get_viewport().get_visible_rect().size
+    for panel in [task_panel, shuttle_menu]:
+        if panel != null:
+            panel.position = Vector2(maxf(16, (viewport.x - panel.size.x) * 0.5), maxf(16, (viewport.y - panel.size.y) * 0.5))
+
 func _create_task_panel() -> void:
     task_panel_layer = CanvasLayer.new()
     task_panel_layer.name = "CampusActivitiesUI"
@@ -1650,6 +1606,8 @@ func _create_task_panel() -> void:
     task_panel.visible = false
     task_panel.custom_minimum_size = Vector2(660, 560)
     task_panel.position = Vector2(310, 80)
+    get_viewport().size_changed.connect(_layout_action_menus)
+    call_deferred("_layout_action_menus")
     var background: StyleBoxFlat = StyleBoxFlat.new()
     background.bg_color = Color(0.06, 0.14, 0.20, 0.98)
     background.corner_radius_top_left = 15
@@ -1891,11 +1849,9 @@ func _run_location_task(site_name: String, entry: Dictionary) -> void:
     if kind in ["purchase", "laundry", "print", "service", "arcade_match", "arcade_solo"]:
         task_inventory.append({"date": today, "site": site_name, "item": title, "amount": cost})
     if cost > 0:
-        wallet_balance -= cost
-        total_spent += cost
+        _change_balance(-cost, site_name, title)
     if reward > 0:
-        wallet_balance += reward
-        total_earned += reward
+        _change_balance(reward, site_name, title)
     if kind != "information" and kind != "review":
         task_completion_counts[task_id] = int(task_completion_counts.get(task_id, 0)) + 1
     if bool(entry.get("once_daily", false)):
@@ -2065,8 +2021,7 @@ func _buy_room_furniture(furniture_id: String, price: int) -> void:
     if wallet_balance < price:
         task_status_label.text = "Insufficient funds. This costs " + _format_naira(price) + "."
         return
-    wallet_balance -= price
-    total_spent += price
+    _change_balance(-price, "Hostel furniture", furniture_id.replace("_", " "))
     room_furniture.append(furniture_id)
     interior_builder.show_private_room(active_interior_site, int(profile_data.get("room_number", 1)), room_furniture)
     _register_interior_seats()

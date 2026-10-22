@@ -2,3 +2,4 @@
 *.gd.uid
 *.import
 test-results/
+build/

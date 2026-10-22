@@ -1,0 +1,63 @@
+name: Build and publish browser beta
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: browser-release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      XDG_CONFIG_HOME: /tmp/inside-lasu/config
+      XDG_CACHE_HOME: /tmp/inside-lasu/cache
+      XDG_DATA_HOME: /tmp/inside-lasu/data
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install verified official Godot web toolchain
+        run: |
+          python3 tools/install_web_toolchain.py --downloads "$RUNNER_TEMP/godot-downloads" --bin "$RUNNER_TEMP/godot-bin"
+          echo "$RUNNER_TEMP/godot-bin" >> "$GITHUB_PATH"
+      - name: Run engine and gameplay acceptance checks
+        run: python3 tools/check_environment.py
+      - name: Build browser game
+        run: python3 tools/build_web.py
+      - name: Install browser test dependency
+        run: |
+          python3 -m venv "$RUNNER_TEMP/browser-venv"
+          "$RUNNER_TEMP/browser-venv/bin/pip" install playwright==1.58.0
+          "$RUNNER_TEMP/browser-venv/bin/python" -m playwright install --with-deps chromium
+          echo "$RUNNER_TEMP/browser-venv/bin" >> "$GITHUB_PATH"
+      - name: Test exported browser game
+        run: python3 tools/test_web.py
+      - name: Upload test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-beta-test-results
+          path: test-results/
+      - name: Upload ready-to-host site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Publish tested site
+        id: deployment
+        uses: actions/deploy-pages@v4
