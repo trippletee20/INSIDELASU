@@ -1,0 +1,4 @@
+campus_idle: FPS regression >5%
+phone: max_frame_ms regression >5%
+interior: max_frame_ms regression >5%
+browser_pss_peak_bytes: exceeds recorded gate

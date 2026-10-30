@@ -52,6 +52,7 @@ except Exception as error:
 for old_pack in (OUT / "play").glob("campus-*.pck"):
     old_pack.unlink()
 shutil.copy2(pack, OUT / "play" / pack_name)
+(OUT / "play" / (pack_name + ".gz")).write_bytes(gzip.compress(pack.read_bytes(), compresslevel=9, mtime=0))
 if previous_pack is not None and previous_pack[0] != pack_name:
     (OUT / "play" / previous_pack[0]).write_bytes(previous_pack[1])
 html_path = OUT / "play/index.html"

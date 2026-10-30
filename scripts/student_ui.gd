@@ -4,6 +4,7 @@ signal modal_changed(open: bool)
 signal dashboard_changed(open: bool)
 signal navigation_requested(action: String)
 signal reward_requested
+signal settings_requested
 signal phone_requested
 signal places_requested
 signal ad_preview_requested
@@ -49,8 +50,6 @@ var ad_preview: Button
 
 func _panel(parent: Node) -> PanelContainer:
     var panel := PanelContainer.new()
-    var style := APP_THEME.surface(Color("f9fbf5"), 26, 16)
-    panel.add_theme_stylebox_override("panel", style)
     parent.add_child(panel)
     return panel
 
@@ -58,7 +57,6 @@ func _label(text: String, parent: Node, size: int = 16) -> Label:
     var label := Label.new()
     label.text = text
     label.add_theme_font_size_override("font_size", size)
-    label.add_theme_color_override("font_color", Color("17332e"))
     parent.add_child(label)
     return label
 
@@ -70,7 +68,7 @@ func _button(text: String, parent: Node, action: Callable) -> Button:
     parent.add_child(button)
     return button
 
-func _meter(text: String, parent: Node, tint: Color) -> ProgressBar:
+func _meter(text: String, parent: Node) -> ProgressBar:
     var box := VBoxContainer.new()
     box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     parent.add_child(box)
@@ -78,10 +76,7 @@ func _meter(text: String, parent: Node, tint: Color) -> ProgressBar:
     var bar := ProgressBar.new()
     bar.custom_minimum_size = Vector2(80, 16)
     bar.show_percentage = false
-    var fill := StyleBoxFlat.new()
-    fill.bg_color = tint
-    fill.set_corner_radius_all(6)
-    bar.add_theme_stylebox_override("fill", fill)
+    bar.theme_type_variation = text + "Meter"
     box.add_child(bar)
     return bar
 
@@ -93,9 +88,9 @@ func _ready() -> void:
     clock_pill = _panel(root)
     clock = _label("--:--", clock_pill, 16)
     clock.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    clock_pill.add_theme_stylebox_override("panel", APP_THEME.surface(Color("f9fbf5"), 26, 10))
+    clock_pill.theme_type_variation = "CompactPanel"
     wallet_pill = _panel(root)
-    wallet_pill.add_theme_stylebox_override("panel", APP_THEME.surface(Color("f9fbf5"), 26, 4))
+    wallet_pill.theme_type_variation = "CompactPanel"
     var wallet_row := HBoxContainer.new()
     wallet_pill.add_child(wallet_row)
     balance = _label("", wallet_row, 15)
@@ -108,12 +103,12 @@ func _ready() -> void:
     hud_toggle = _button("v", root, func(): set_expanded(not hud_expanded))
     hud_toggle.tooltip_text = "Expand or minimise campus dashboard"
     vitals_chip = _label("Energy 92%", root, 13)
-    vitals_chip.add_theme_color_override("font_color", Color("17332e"))
     location_chip = _button("Main Gate  /  Open", root, func(): set_expanded(true))
     location_chip.clip_text = true
     dock = _panel(root)
     var nav := HBoxContainer.new()
-    nav.add_theme_constant_override("separation", 6)
+    nav.add_theme_constant_override("separation", APP_THEME.SPACE)
+    nav.alignment = BoxContainer.ALIGNMENT_CENTER
     dock.add_child(nav)
     var home := _button("Explore", nav, func(): places_requested.emit())
     home.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -126,14 +121,16 @@ func _ready() -> void:
     _nav_style(phone_button, "phone")
     status_panel = _panel(root)
     var column := VBoxContainer.new()
-    column.add_theme_constant_override("separation", 12)
+    column.add_theme_constant_override("separation", APP_THEME.SPACE)
     status_panel.add_child(column)
     var head := HBoxContainer.new()
     column.add_child(head)
     location = _label("Main Gate", head, 20)
+    location.custom_minimum_size.x = 0
     location.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     location.clip_text = true
     location.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+    _button("Settings", head, func(): settings_requested.emit())
     _button("Close", head, func(): set_expanded(false))
     objective = _label("Create your student profile to begin.", column, 14)
     objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -141,11 +138,11 @@ func _ready() -> void:
         set_expanded(false)
         places_requested.emit())
     meters_row = HBoxContainer.new()
-    meters_row.add_theme_constant_override("separation", 10)
+    meters_row.add_theme_constant_override("separation", APP_THEME.SPACE)
     column.add_child(meters_row)
-    energy = _meter("Energy", meters_row, Color("3da478"))
-    stamina = _meter("Stamina", meters_row, Color("6b98c0"))
-    stress = _meter("Stress", meters_row, Color("d79a69"))
+    energy = _meter("Energy", meters_row)
+    stamina = _meter("Stamina", meters_row)
+    stress = _meter("Stress", meters_row)
     footer_panel = _panel(column)
     prompt = _label("", footer_panel, 12)
     prompt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -153,14 +150,14 @@ func _ready() -> void:
     toast = _label("", root, 12)
     toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     toast.max_lines_visible = 2
-    toast.add_theme_stylebox_override("normal", APP_THEME.surface(Color(0.98, 0.99, 0.96, 0.94), 18, 10))
+    toast.theme_type_variation = "Toast"
     toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
     modal = _panel(root)
     modal.name = "StudentModal"
     modal.focus_mode = Control.FOCUS_ALL
     modal.visible = false
     var content := VBoxContainer.new()
-    content.add_theme_constant_override("separation", 12)
+    content.add_theme_constant_override("separation", APP_THEME.SPACE)
     modal.add_child(content)
     var heading := HBoxContainer.new()
     content.add_child(heading)
@@ -213,12 +210,10 @@ func _layout() -> void:
     hud_toggle.size = Vector2(44, 44)
     hud_toggle.text = ""
     hud_toggle.icon = load("res://assets/phone/chevron-up.svg" if hud_expanded else "res://assets/phone/chevron-down.svg")
-    hud_toggle.add_theme_color_override("icon_normal_color", Color("315a4c"))
     vitals_chip.position = Vector2(20, 72)
     dock.position = Vector2(maxf(12, (view.x - 440) * 0.5), view.y - 72)
     dock.size = Vector2(minf(440, view.x - 24), 60)
-    var dock_style := APP_THEME.surface(Color("f9fbf5"), 30, 6)
-    dock.add_theme_stylebox_override("panel", dock_style)
+    dock.theme_type_variation = "DockPanel"
     location_chip.position = Vector2(maxf(12, (view.x - 440) * 0.5), view.y - 122)
     location_chip.size = Vector2(minf(440, view.x - 24), 42)
     location_chip.visible = not hud_expanded and not short
@@ -245,6 +240,7 @@ func toggle(kind: String) -> void:
         return
     current = kind
     modal.visible = true
+    preload("res://scripts/ui_motion.gd").reveal(modal)
     modal_title.text = {"profile": "Student profile", "wallet": "Wallet & activity", "help": "How to play", "advertise": "Billboard advertising"}[kind]
     ad_preview.visible = kind == "advertise"
     wallet_box.visible = kind == "wallet"
@@ -308,13 +304,6 @@ func _nav_style(button: Button, icon_name: String) -> void:
     button.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
     button.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
     button.add_theme_constant_override("icon_max_width", 18)
-    button.add_theme_color_override("icon_normal_color", Color("315a4c"))
-    button.add_theme_color_override("icon_hover_color", Color("18734e"))
     button.add_theme_font_size_override("font_size", 12)
-    var normal := APP_THEME.surface(Color.TRANSPARENT, 22, 4)
-    normal.shadow_size = 0
-    var hover := normal.duplicate()
-    hover.bg_color = Color("e1f1e6")
-    button.add_theme_stylebox_override("normal", normal)
-    button.add_theme_stylebox_override("hover", hover)
-    button.add_theme_stylebox_override("pressed", hover)
+    button.theme_type_variation = "DockButton"
+    button.expand_icon = true

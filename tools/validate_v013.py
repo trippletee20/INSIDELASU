@@ -69,5 +69,5 @@ with zipfile.ZipFile(baseline) as z:
         current=(root/name).read_bytes()
         must(current==z.read(name),f'protected asset unchanged: {name}')
 
-(root/'RELEASE_AUDIT_v0.13.txt').write_text('\n'.join(audit)+'\n\nNOTE: These are static tests only; no Godot executable was available.\n')
+(root/'docs/archive/RELEASE_AUDIT_v0.13.txt').write_text('\n'.join(audit)+'\n\nNOTE: These are static tests only; no Godot executable was available.\n')
 print('STATIC RELEASE CHECKS:',len(audit),'passed')

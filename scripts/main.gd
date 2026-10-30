@@ -16,6 +16,11 @@ const INTERIOR_SCRIPT = preload("res://scripts/interior_builder.gd")
 const SAVE_PATH = "user://inside_lasu_save.json"
 const SAVE_STORE = preload("res://scripts/save_store.gd")
 const STUDENT_UI = preload("res://scenes/ui/student_ui.tscn")
+const APP_THEME = preload("res://scripts/ui_theme.gd")
+const SETTINGS = preload("res://scripts/game_settings.gd")
+var preferences: Dictionary = SETTINGS.validated({})
+var preference_timer: float = 0.0
+var world_labels
 var student_ui
 var campus_phone
 var campus_social
@@ -124,10 +129,12 @@ var last_room_rest_unix: int = 0
 var outdoor_return_position: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
-    var interface_font: Font = load("res://assets/fonts/NotoSans.ttf")
-    ThemeDB.get_default_theme().default_font = interface_font
-    ThemeDB.fallback_font = interface_font
-    ThemeDB.get_default_theme().merge_with(preload("res://scripts/ui_theme.gd").make(interface_font))
+    var saved_preferences: Dictionary = SAVE_STORE.load_profile()
+    preferences = SETTINGS.validated(saved_preferences.get("settings", {}))
+    APP_THEME.make(preload("res://assets/fonts/NotoSans.ttf"), SETTINGS.device_dark() if preferences.theme == "system" else preferences.theme == "dark")
+    ThemeDB.fallback_font = preload("res://assets/fonts/NotoSans.ttf")
+    get_tree().node_added.connect(func(node: Node):
+        if node is Control: APP_THEME.bind.call_deferred(node))
     rng.randomize()
     _create_environment()
     _load_map_data()
@@ -185,6 +192,13 @@ func _ready() -> void:
         elif player.nearby_feature != null: show_interaction(str(player.nearby_feature.get_meta("campus_name", "")))
         else: campus_phone.open("Places & tasks"))
     _create_entrance_markers()
+    APP_THEME.bind(self)
+    SETTINGS.apply(self)
+    world_labels = preload("res://scripts/world_labels.gd").new()
+    world_labels.game = self
+    add_child(world_labels)
+    student_ui.settings_requested.connect(open_settings)
+    add_child(preload("res://scripts/performance_probe.gd").new())
     if OS.has_feature("web"):
         JavaScriptBridge.eval("window.dispatchEvent(new Event('lasu:world-ready'))")
 
@@ -355,25 +369,22 @@ func _draw_path(points: Array, width: float, color: Color, y_level: float) -> vo
     if points.size() < 2:
         return
     var material := _make_material(color)
+    var transforms: Array[Transform3D] = []
     for i in range(points.size() - 1):
         var a := Vector3(float(points[i][0]) * WORLD_SCALE, y_level, float(points[i][1]) * WORLD_SCALE)
         var b := Vector3(float(points[i + 1][0]) * WORLD_SCALE, y_level, float(points[i + 1][1]) * WORLD_SCALE)
         var length := a.distance_to(b)
         if length < 0.05:
             continue
-        var segment := MeshInstance3D.new()
-        var mesh := BoxMesh.new()
-        mesh.size = Vector3(length + 0.15, 0.07, width)
-        segment.mesh = mesh
-        segment.position = (a + b) * 0.5
-        segment.rotation.y = atan2(-(b.z - a.z), b.x - a.x)
-        segment.material_override = material
-        add_child(segment)
+        var basis := Basis(Vector3.UP, atan2(-(b.z - a.z), b.x - a.x)) * Basis.from_scale(Vector3(length + 0.15, 0.07, width))
+        transforms.append(Transform3D(basis, (a + b) * 0.5))
+    preload("res://scripts/render_budget.gd").road_boxes(self, transforms, material)
 
 func _draw_road_dashes(points: Array) -> void:
     if points.size() < 2:
         return
     var yellow := _make_material(Color(0.94, 0.83, 0.46))
+    var transforms: Array[Transform3D] = []
     for i in range(points.size() - 1):
         var a := Vector3(float(points[i][0]) * WORLD_SCALE, 0.13, float(points[i][1]) * WORLD_SCALE)
         var b := Vector3(float(points[i + 1][0]) * WORLD_SCALE, 0.13, float(points[i + 1][1]) * WORLD_SCALE)
@@ -383,15 +394,10 @@ func _draw_road_dashes(points: Array) -> void:
         var direction := (b - a).normalized()
         var t := 1.0
         while t + 1.8 < distance:
-            var dash := MeshInstance3D.new()
-            var mesh := BoxMesh.new()
-            mesh.size = Vector3(1.8, 0.018, 0.12)
-            dash.mesh = mesh
-            dash.position = a + direction * (t + 0.9)
-            dash.rotation.y = atan2(-direction.z, direction.x)
-            dash.material_override = yellow
-            add_child(dash)
+            var basis := Basis(Vector3.UP, atan2(-direction.z, direction.x)) * Basis.from_scale(Vector3(1.8, 0.018, 0.12))
+            transforms.append(Transform3D(basis, a + direction * (t + 0.9)))
             t += 5.0
+    preload("res://scripts/render_budget.gd").road_boxes(self, transforms, yellow)
 
 func _create_features() -> void:
     for item in campus_data.get("features", []):
@@ -455,6 +461,7 @@ func _add_feature(item: Dictionary) -> void:
         architecture_queue.append({"node": node, "item": item, "w": w, "depth": depth, "height": height})
     else:
         architect.build(node, item, w, depth, height)
+        preload("res://scripts/render_budget.gd").batch(node)
     # Only solid, completed buildings receive the original full-footprint collider.
     # Open-air markets, gardens, fields and incomplete hostels remain walkable.
     var is_incomplete := name.to_lower().contains("incomplete") or name.to_lower().contains("almost complete")
@@ -623,19 +630,8 @@ func _create_shuttle_menu() -> void:
     shuttle_menu.position = Vector2(340, 80)
     shuttle_menu.custom_minimum_size = Vector2.ZERO
     shuttle_menu.visible = false
-    var style: StyleBoxFlat = StyleBoxFlat.new()
-    style.bg_color = Color("f9fbf5")
-    style.corner_radius_top_left = 12
-    style.corner_radius_top_right = 12
-    style.corner_radius_bottom_left = 12
-    style.corner_radius_bottom_right = 12
-    style.content_margin_left = 16
-    style.content_margin_top = 14
-    style.content_margin_right = 16
-    style.content_margin_bottom = 14
-    shuttle_menu.add_theme_stylebox_override("panel", style)
     var column: VBoxContainer = VBoxContainer.new()
-    column.add_theme_constant_override("separation", 10)
+    column.add_theme_constant_override("separation", APP_THEME.SPACE)
     var boarding_scroll := ScrollContainer.new()
     boarding_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     shuttle_menu.add_child(boarding_scroll)
@@ -643,12 +639,10 @@ func _create_shuttle_menu() -> void:
     column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     shuttle_menu_title = Label.new()
     shuttle_menu_title.add_theme_font_size_override("font_size", 17)
-    shuttle_menu_title.add_theme_color_override("font_color", Color("17332e"))
     shuttle_menu_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(shuttle_menu_title)
     var destination_label: Label = Label.new()
     destination_label.text = "Choose your destination. Every destination has a designated roadside stop."
-    destination_label.add_theme_color_override("font_color", Color("345a4d"))
     destination_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(destination_label)
     destination_option = OptionButton.new()
@@ -660,12 +654,11 @@ func _create_shuttle_menu() -> void:
     column.add_child(destination_option)
     _populate_shuttle_destinations()
     shuttle_fare_label = Label.new()
-    shuttle_fare_label.add_theme_color_override("font_color", Color("345a4d"))
     shuttle_fare_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     column.add_child(shuttle_fare_label)
     _refresh_shuttle_fare_label()
     var travel_buttons: BoxContainer = VBoxContainer.new() if MOBILE_CONTROLS.touch_device() else HBoxContainer.new()
-    travel_buttons.add_theme_constant_override("separation", 12)
+    travel_buttons.add_theme_constant_override("separation", APP_THEME.SPACE)
     column.add_child(travel_buttons)
     var ride_button: Button = Button.new()
     ride_button.text = "RIDE & WATCH • ₦150"
@@ -680,7 +673,7 @@ func _create_shuttle_menu() -> void:
     quick_button.pressed.connect(_confirm_quick_travel)
     travel_buttons.add_child(quick_button)
     var pass_row: HBoxContainer = HBoxContainer.new()
-    pass_row.add_theme_constant_override("separation", 12)
+    pass_row.add_theme_constant_override("separation", APP_THEME.SPACE)
     column.add_child(pass_row)
     var pass_button: Button = Button.new()
     pass_button.text = "PASS / WALK"
@@ -976,15 +969,14 @@ func _create_overview_camera() -> void:
     overview_camera.current = false
     add_child(overview_camera)
 
-func _hud_meter(row_parent: VBoxContainer, text_value: String, tint: Color) -> ProgressBar:
+func _hud_meter(row_parent: VBoxContainer, text_value: String, _tint: Color) -> ProgressBar:
     var row: HBoxContainer = HBoxContainer.new()
-    row.add_theme_constant_override("separation", 12)
+    row.add_theme_constant_override("separation", APP_THEME.SPACE)
     row_parent.add_child(row)
     var name_label: Label = Label.new()
     name_label.text = text_value
     name_label.custom_minimum_size = Vector2(90, 18)
     name_label.add_theme_font_size_override("font_size", 12)
-    name_label.add_theme_color_override("font_color", Color(0.78, 0.86, 0.90))
     row.add_child(name_label)
     var meter: ProgressBar = ProgressBar.new()
     meter.custom_minimum_size = Vector2(268, 15)
@@ -992,16 +984,8 @@ func _hud_meter(row_parent: VBoxContainer, text_value: String, tint: Color) -> P
     meter.min_value = 0.0
     meter.max_value = 100.0
     meter.show_percentage = true
-    var empty_box: StyleBoxFlat = StyleBoxFlat.new()
-    empty_box.bg_color = Color(0.14, 0.22, 0.27)
-    empty_box.set_corner_radius_all(7)
-    meter.add_theme_stylebox_override("background", empty_box)
-    var fill_box: StyleBoxFlat = StyleBoxFlat.new()
-    fill_box.bg_color = tint
-    fill_box.set_corner_radius_all(7)
-    meter.add_theme_stylebox_override("fill", fill_box)
+    meter.theme_type_variation = text_value + "Meter"
     meter.add_theme_font_size_override("font_size", 11)
-    meter.add_theme_color_override("font_color", Color.WHITE)
     row.add_child(meter)
     return meter
 
@@ -1117,20 +1101,9 @@ func _create_profile_ui() -> void:
         if get_viewport().size_changed.is_connected(layout_profile):
             get_viewport().size_changed.disconnect(layout_profile))
     layout_profile.call()
-    var panel_style: StyleBoxFlat = StyleBoxFlat.new()
-    panel_style.bg_color = Color(0.94, 0.96, 0.97, 0.99)
-    panel_style.corner_radius_top_left = 16
-    panel_style.corner_radius_top_right = 16
-    panel_style.corner_radius_bottom_left = 16
-    panel_style.corner_radius_bottom_right = 16
-    panel_style.content_margin_left = 22
-    panel_style.content_margin_right = 22
-    panel_style.content_margin_top = 20
-    panel_style.content_margin_bottom = 18
-    panel.add_theme_stylebox_override("panel", panel_style)
     profile_layer.add_child(panel)
     var column: VBoxContainer = VBoxContainer.new()
-    column.add_theme_constant_override("separation", 8)
+    column.add_theme_constant_override("separation", APP_THEME.SPACE)
     var profile_scroll := ScrollContainer.new()
     profile_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
     panel.add_child(profile_scroll)
@@ -1140,14 +1113,12 @@ func _create_profile_ui() -> void:
     title.text = "Make yourself at home"
     title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    title.add_theme_color_override("font_color", Color(0.06, 0.19, 0.29))
     title.add_theme_font_size_override("font_size", 18 if MOBILE_CONTROLS.touch_device() else 25)
     column.add_child(title)
     var subtitle: Label = Label.new()
     subtitle.text = "Create your student profile. Your level, CGPA, background and starting money will be assigned randomly."
     subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-    subtitle.add_theme_color_override("font_color", Color(0.20, 0.28, 0.34))
     subtitle.add_theme_font_size_override("font_size", 13)
     column.add_child(subtitle)
 
@@ -1191,14 +1162,13 @@ func _create_profile_ui() -> void:
     var rent_note: Label = Label.new()
     rent_note.text = "HOSTEL: ₦525,000 per full academic session. Your first session is prepaid; future renewals are your responsibility."
     rent_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    rent_note.add_theme_color_override("font_color", Color(0.06, 0.40, 0.25))
     rent_note.add_theme_font_size_override("font_size", 13)
     column.add_child(rent_note)
 
     profile_error_label = Label.new()
+    profile_error_label.theme_type_variation = "ErrorLabel"
     profile_error_label.text = ""
     profile_error_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    profile_error_label.add_theme_color_override("font_color", Color(0.72, 0.12, 0.12))
     column.add_child(profile_error_label)
 
     var create_button: Button = Button.new()
@@ -1211,7 +1181,6 @@ func _create_profile_ui() -> void:
     footer.text = "In-game currency only • Your first hostel rent is prepaid • Daily rewards use your real system date"
     footer.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
     footer.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    footer.add_theme_color_override("font_color", Color(0.30, 0.36, 0.40))
     footer.add_theme_font_size_override("font_size", 11)
     column.add_child(footer)
 
@@ -1222,7 +1191,6 @@ func _add_profile_row(parent: VBoxContainer, label_text: String, control: Contro
     label.text = label_text
     label.custom_minimum_size = Vector2(0 if MOBILE_CONTROLS.touch_device() else 170, 26)
     label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-    label.add_theme_color_override("font_color", Color(0.09, 0.17, 0.22))
     label.add_theme_font_size_override("font_size", 14)
     row.add_child(label)
     control.custom_minimum_size = Vector2(0, maxf(control.custom_minimum_size.y, 44.0 if MOBILE_CONTROLS.touch_device() else 36.0))
@@ -1453,6 +1421,7 @@ func _save_game() -> void:
         return
     var save_data: Dictionary = {
         "save_version": SAVE_STORE.VERSION,
+        "settings": preferences,
         "transactions": transactions,
         "profile": profile_data,
         "wallet_balance": wallet_balance,
@@ -1514,7 +1483,22 @@ func _check_hostel_curfew() -> void:
     notice_timer = 8.0
     _save_game()
 
+func open_settings() -> void:
+    if profile_layer != null or task_panel.visible or shuttle_menu.visible or student_ui.modal.visible: return
+    student_ui.set_expanded(false)
+    campus_phone.open("Settings")
+
+func update_setting(key: String, value: Variant) -> void:
+    preferences[key] = value
+    preferences = SETTINGS.validated(preferences)
+    SETTINGS.apply(self)
+    _save_game()
+
 func _unhandled_input(event: InputEvent) -> void:
+    if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F2:
+        open_settings()
+        get_viewport().set_input_as_handled()
+        return
     if campus_phone != null and campus_phone.panel.visible:
         if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
             campus_phone.close()
@@ -1573,7 +1557,7 @@ func _unhandled_input(event: InputEvent) -> void:
         if event is InputEventKey and event.pressed and event.keycode == KEY_V:
             transit_system.toggle_passenger_view(ride_bus)
         elif event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-            transit_system.look_passenger(ride_bus, event.relative)
+            transit_system.look_passenger(ride_bus, event.relative * preferences.mouse_sensitivity)
         return
     if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_M:
         overview_on = not overview_on
@@ -1585,6 +1569,11 @@ func _unhandled_input(event: InputEvent) -> void:
         _set_mouse_capture(not overview_on)
 
 func _process(delta: float) -> void:
+    preference_timer += delta
+    if preference_timer >= 1.0:
+        preference_timer = 0.0
+        if preferences.theme == "system" and APP_THEME.dark != SETTINGS.device_dark():
+            APP_THEME.make(preload("res://assets/fonts/NotoSans.ttf"), SETTINGS.device_dark())
     _build_queued_architecture()
     _sync_mobile_controls()
     autosave_timer += delta
@@ -1653,7 +1642,7 @@ func _update_hud() -> void:
     if OS.has_feature("web"):
         var view: String = "campus"
         if profile_layer != null: view = "onboarding"
-        elif campus_phone != null and campus_phone.panel.visible: view = "phone"
+        elif campus_phone != null and campus_phone.panel.visible: view = "settings" if campus_phone.app == "Settings" else "phone"
         elif student_ui.modal.visible: view = student_ui.current
         elif task_panel.visible: view = "activities"
         elif student_ui.hud_expanded: view = "dashboard"
@@ -1725,30 +1714,17 @@ func _create_task_panel() -> void:
     task_panel.position = Vector2(310, 80)
     get_viewport().size_changed.connect(_layout_action_menus)
     call_deferred("_layout_action_menus")
-    var background: StyleBoxFlat = StyleBoxFlat.new()
-    background.bg_color = Color("f9fbf5")
-    background.corner_radius_top_left = 15
-    background.corner_radius_top_right = 15
-    background.corner_radius_bottom_left = 15
-    background.corner_radius_bottom_right = 15
-    background.content_margin_left = 18
-    background.content_margin_right = 18
-    background.content_margin_top = 16
-    background.content_margin_bottom = 16
-    task_panel.add_theme_stylebox_override("panel", background)
     task_panel_layer.add_child(task_panel)
     var column: VBoxContainer = VBoxContainer.new()
-    column.add_theme_constant_override("separation", 8)
+    column.add_theme_constant_override("separation", APP_THEME.SPACE)
     task_panel.add_child(column)
     task_title_label = Label.new()
     task_title_label.add_theme_font_size_override("font_size", 20)
     task_title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    task_title_label.add_theme_color_override("font_color", Color("345a4d"))
     column.add_child(task_title_label)
     var help: Label = Label.new()
     help.text = "Services, errands and activities are location-specific. Prices are illustrative in-game prices."
     help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-    help.add_theme_color_override("font_color", Color("345a4d"))
     column.add_child(help)
     var scroll: ScrollContainer = ScrollContainer.new()
     scroll.custom_minimum_size = Vector2(0, 80)
@@ -1762,7 +1738,6 @@ func _create_task_panel() -> void:
     task_status_label = Label.new()
     task_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
     task_status_label.custom_minimum_size = Vector2(0, 48)
-    task_status_label.add_theme_color_override("font_color", Color("345a4d"))
     column.add_child(task_status_label)
     var close_button: Button = Button.new()
     close_button.text = "BACK TO CAMPUS"
@@ -1866,18 +1841,6 @@ func _open_task_panel(site_name: String) -> void:
         task_label.offset_bottom = -8
         action.add_child(task_label)
         task_label.resized.connect(func(): action.custom_minimum_size.y = maxf(72, task_label.get_minimum_size().y + 16))
-        var task_box: StyleBoxFlat = StyleBoxFlat.new()
-        task_box.bg_color = Color("e8f3e9")
-        task_box.border_color = Color(0.22, 0.53, 0.53)
-        task_box.set_border_width_all(1)
-        task_box.set_corner_radius_all(8)
-        task_box.content_margin_left = 12
-        task_box.content_margin_top = 8
-        task_box.content_margin_bottom = 8
-        action.add_theme_stylebox_override("normal", task_box)
-        var hover_box: StyleBoxFlat = task_box.duplicate()
-        hover_box.bg_color = Color("d3eadc")
-        action.add_theme_stylebox_override("hover", hover_box)
         action.add_theme_font_size_override("font_size", 13)
         action.pressed.connect(_run_location_task.bind(site_name, entry))
         task_buttons_container.add_child(action)
@@ -2367,9 +2330,9 @@ func _mobile_action(action: String) -> void:
 
 func _look_around(relative: Vector2) -> void:
     if ride_bus != null:
-        transit_system.look_passenger(ride_bus, relative)
+        transit_system.look_passenger(ride_bus, relative * preferences.touch_sensitivity)
     elif not overview_on:
-        player.look(relative * 1.35)
+        player.look(relative * 1.35 * preferences.touch_sensitivity / preferences.mouse_sensitivity)
 
 func _fit_activity_navigation() -> void:
     for control in task_buttons_container.get_children():
@@ -2569,6 +2532,8 @@ func _build_queued_architecture() -> void:
     var entry: Dictionary = architecture_queue.pop_front()
     if is_instance_valid(entry.node):
         architect.build(entry.node, entry.item, entry.w, entry.depth, entry.height)
+        preload("res://scripts/render_budget.gd").batch(entry.node)
+        preload("res://scripts/render_budget.gd").apply_lod(get_tree(), SETTINGS.effective_quality(preferences))
     if architecture_queue.is_empty():
         _register_interactive_seats()
         if OS.has_feature("web"):

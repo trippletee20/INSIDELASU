@@ -1,0 +1,2434 @@
+{
+  "status": "captured",
+  "profile": {
+    "kind": "desktop Chromium emulation; NOT Android certification",
+    "viewport": [
+      393,
+      873
+    ],
+    "cpu_slowdown": 4,
+    "download_bps": 4000000,
+    "latency_ms": 150,
+    "network_shaping": "aggregate HTTP-server downlink; includes service-worker fetches; local upload unthrottled",
+    "memory_note": "Chrome process PSS is sampled every 2s on Linux and includes renderer/WASM and software GPU. JS heap and renderer video counters are also reported separately; do not add them to PSS."
+  },
+  "runs": [
+    {
+      "cold_boot": {
+        "startedAt": 993.3000000000466,
+        "downloadsFinishedAt": 22206.800000000047,
+        "worldReadyAt": 33560.69999999995,
+        "engineStartedAt": 36733.39999999991,
+        "architectureReadyAt": 49677.59999999986
+      },
+      "cold_world_ready_ms": 33560.69999999995,
+      "stages": {
+        "building": {
+          "fps_median": 4.560466429374776,
+          "fps_min_1s": 0.752049334436339,
+          "draw_calls_peak": 568,
+          "video_memory_peak_bytes": 95608969,
+          "max_frame_ms": 1329.7
+        },
+        "campus_idle": {
+          "fps_median": 4.58547322083639,
+          "fps_min_1s": 3.35176805765041,
+          "draw_calls_peak": 554,
+          "video_memory_peak_bytes": 95644913,
+          "max_frame_ms": 388.7
+        },
+        "campus_walk": {
+          "fps_median": 7.8301722637898,
+          "fps_min_1s": 4.70588235294118,
+          "draw_calls_peak": 534,
+          "video_memory_peak_bytes": 95630681,
+          "max_frame_ms": 315.2
+        },
+        "interior": {
+          "fps_median": 15.9362549800797,
+          "fps_min_1s": 5.0886269188364,
+          "draw_calls_peak": 361,
+          "video_memory_peak_bytes": 96639075,
+          "max_frame_ms": 513
+        },
+        "phone": {
+          "fps_median": 5.78647892757257,
+          "fps_min_1s": 5.10377679482817,
+          "draw_calls_peak": 339,
+          "video_memory_peak_bytes": 95940097,
+          "max_frame_ms": 393.5
+        }
+      },
+      "js_heap": {
+        "usedSize": 11868548,
+        "totalSize": 12951552,
+        "embedderHeapUsedSize": 5284768,
+        "backingStorageSize": 175955968
+      },
+      "samples": [
+        {
+          "at": 36856.59999999986,
+          "draw_calls": 479,
+          "fps": 0.752049334436339,
+          "max_frame_ms": 1329.7,
+          "nodes": 5580,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 49847761
+        },
+        {
+          "at": 37994.89999999991,
+          "draw_calls": 472,
+          "fps": 4.37560164522622,
+          "max_frame_ms": 357.6,
+          "nodes": 5663,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94686617
+        },
+        {
+          "at": 39070.5,
+          "draw_calls": 475,
+          "fps": 6.50678564788994,
+          "max_frame_ms": 278.3,
+          "nodes": 5765,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94794977
+        },
+        {
+          "at": 40312,
+          "draw_calls": 498,
+          "fps": 5.6392491742528,
+          "max_frame_ms": 302.5,
+          "nodes": 5906,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94949521
+        },
+        {
+          "at": 41470.69999999995,
+          "draw_calls": 524,
+          "fps": 5.17464424320828,
+          "max_frame_ms": 232.6,
+          "nodes": 5992,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95036361
+        },
+        {
+          "at": 42531,
+          "draw_calls": 563,
+          "fps": 4.71564651513722,
+          "max_frame_ms": 253,
+          "nodes": 6064,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95113417
+        },
+        {
+          "at": 43666.89999999991,
+          "draw_calls": 568,
+          "fps": 4.40528634361233,
+          "max_frame_ms": 361.1,
+          "nodes": 6125,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95175041
+        },
+        {
+          "at": 44802.80000000005,
+          "draw_calls": 568,
+          "fps": 5.27750901574457,
+          "max_frame_ms": 232.9,
+          "nodes": 6236,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95280009
+        },
+        {
+          "at": 45996.69999999995,
+          "draw_calls": 568,
+          "fps": 4.18865711652844,
+          "max_frame_ms": 289.7,
+          "nodes": 6306,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95367577
+        },
+        {
+          "at": 47140.80000000005,
+          "draw_calls": 568,
+          "fps": 4.37598459653422,
+          "max_frame_ms": 311.8,
+          "nodes": 6378,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95436185
+        },
+        {
+          "at": 48194.09999999986,
+          "draw_calls": 568,
+          "fps": 4.74338298074187,
+          "max_frame_ms": 242,
+          "nodes": 6456,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95522329
+        },
+        {
+          "at": 49350.89999999991,
+          "draw_calls": 568,
+          "fps": 4.33388229175696,
+          "max_frame_ms": 255,
+          "nodes": 6533,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95608969
+        },
+        {
+          "at": 50541.09999999986,
+          "draw_calls": 554,
+          "fps": 3.35176805765041,
+          "max_frame_ms": 355.1,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 51669.80000000005,
+          "draw_calls": 554,
+          "fps": 4.42948263642807,
+          "max_frame_ms": 270.6,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 52787.39999999991,
+          "draw_calls": 554,
+          "fps": 4.48350071736011,
+          "max_frame_ms": 388.7,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 54015.89999999991,
+          "draw_calls": 554,
+          "fps": 4.06404941884093,
+          "max_frame_ms": 325.2,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 55105.30000000005,
+          "draw_calls": 554,
+          "fps": 4.58547322083639,
+          "max_frame_ms": 235.9,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 56157.19999999995,
+          "draw_calls": 554,
+          "fps": 6.65272761832351,
+          "max_frame_ms": 214.8,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 57214,
+          "draw_calls": 554,
+          "fps": 7.58078271581541,
+          "max_frame_ms": 156.7,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 58269.39999999991,
+          "draw_calls": 554,
+          "fps": 8.51546977008232,
+          "max_frame_ms": 155.7,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 59275,
+          "draw_calls": 554,
+          "fps": 6.96309559335522,
+          "max_frame_ms": 166.9,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 60326,
+          "draw_calls": 534,
+          "fps": 8.56898029134533,
+          "max_frame_ms": 145.1,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 61437.09999999986,
+          "draw_calls": 490,
+          "fps": 9.000900090009,
+          "max_frame_ms": 154.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 62497.30000000005,
+          "draw_calls": 490,
+          "fps": 8.49778113492588,
+          "max_frame_ms": 145.9,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 63519.30000000005,
+          "draw_calls": 420,
+          "fps": 9.76753272123462,
+          "max_frame_ms": 151.1,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 64625.30000000005,
+          "draw_calls": 365,
+          "fps": 9.04977375565611,
+          "max_frame_ms": 135.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 65773.69999999995,
+          "draw_calls": 362,
+          "fps": 7.8301722637898,
+          "max_frame_ms": 203.2,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 66836.8999999999,
+          "draw_calls": 362,
+          "fps": 9.42063118228922,
+          "max_frame_ms": 141.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 67926.5,
+          "draw_calls": 377,
+          "fps": 5.50206327372765,
+          "max_frame_ms": 254.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 68930.5,
+          "draw_calls": 381,
+          "fps": 4.97958370680211,
+          "max_frame_ms": 271,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 69932.80000000005,
+          "draw_calls": 368,
+          "fps": 4.99101617089239,
+          "max_frame_ms": 239.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 71207.19999999995,
+          "draw_calls": 335,
+          "fps": 4.70588235294118,
+          "max_frame_ms": 315.2,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 72316.69999999995,
+          "draw_calls": 317,
+          "fps": 5.40637952784285,
+          "max_frame_ms": 266.7,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 73530.3999999999,
+          "draw_calls": 304,
+          "fps": 6.58870037885027,
+          "max_frame_ms": 222.2,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 74829.30000000005,
+          "draw_calls": 339,
+          "fps": 5.3883457778462,
+          "max_frame_ms": 393.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95940097
+        },
+        {
+          "at": 75855.80000000005,
+          "draw_calls": 331,
+          "fps": 6.82061775309364,
+          "max_frame_ms": 224,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 77070.80000000005,
+          "draw_calls": 331,
+          "fps": 5.77034045008656,
+          "max_frame_ms": 240.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 78107.8999999999,
+          "draw_calls": 331,
+          "fps": 5.78647892757257,
+          "max_frame_ms": 209.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 79116.8999999999,
+          "draw_calls": 331,
+          "fps": 5.93883005048006,
+          "max_frame_ms": 198.6,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 80193.3999999999,
+          "draw_calls": 331,
+          "fps": 5.56844547563805,
+          "max_frame_ms": 220,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 81302.30000000005,
+          "draw_calls": 331,
+          "fps": 7.21956502120747,
+          "max_frame_ms": 234,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 82478.30000000005,
+          "draw_calls": 331,
+          "fps": 5.10377679482817,
+          "max_frame_ms": 243.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 83553.69999999995,
+          "draw_calls": 331,
+          "fps": 7.43011052289403,
+          "max_frame_ms": 162.2,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 84733.69999999995,
+          "draw_calls": 361,
+          "fps": 5.0886269188364,
+          "max_frame_ms": 321.1,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96577635
+        },
+        {
+          "at": 85784,
+          "draw_calls": 91,
+          "fps": 7.61977331174397,
+          "max_frame_ms": 513,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 86861.3999999999,
+          "draw_calls": 91,
+          "fps": 12.0672050496612,
+          "max_frame_ms": 258.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 87861.19999999995,
+          "draw_calls": 91,
+          "fps": 16.9813205473979,
+          "max_frame_ms": 98.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 88918.30000000005,
+          "draw_calls": 91,
+          "fps": 15.1515151515152,
+          "max_frame_ms": 93.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 89927.69999999995,
+          "draw_calls": 91,
+          "fps": 12.8840436075322,
+          "max_frame_ms": 103.7,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 90972.8999999999,
+          "draw_calls": 91,
+          "fps": 20.0860832137733,
+          "max_frame_ms": 93.4,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 92041.30000000005,
+          "draw_calls": 91,
+          "fps": 17.7719577214479,
+          "max_frame_ms": 87.7,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 93088.69999999995,
+          "draw_calls": 91,
+          "fps": 17.1919770773639,
+          "max_frame_ms": 132.8,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 94121.69999999995,
+          "draw_calls": 91,
+          "fps": 15.4768814083962,
+          "max_frame_ms": 109.8,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 95151.8999999999,
+          "draw_calls": 89,
+          "fps": 19.423132951345,
+          "max_frame_ms": 120.2,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 96184.8999999999,
+          "draw_calls": 89,
+          "fps": 17.4351026733824,
+          "max_frame_ms": 77.7,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 97231.3999999999,
+          "draw_calls": 89,
+          "fps": 19.0949016612564,
+          "max_frame_ms": 78,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 98235.8999999999,
+          "draw_calls": 89,
+          "fps": 15.9362549800797,
+          "max_frame_ms": 96,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 99333.19999999995,
+          "draw_calls": 89,
+          "fps": 13.6749019965357,
+          "max_frame_ms": 119.8,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        }
+      ],
+      "browser_pss_samples": [
+        {
+          "pss_bytes": 116837376,
+          "at": 1103.5
+        },
+        {
+          "pss_bytes": 171315200,
+          "at": 3130.5
+        },
+        {
+          "pss_bytes": 216417280,
+          "at": 5146.699999999953
+        },
+        {
+          "pss_bytes": 264231936,
+          "at": 7201.300000000047
+        },
+        {
+          "pss_bytes": 308726784,
+          "at": 9251.300000000047
+        },
+        {
+          "pss_bytes": 361671680,
+          "at": 11298
+        },
+        {
+          "pss_bytes": 358447104,
+          "at": 13345.399999999907
+        },
+        {
+          "pss_bytes": 399411200,
+          "at": 15382
+        },
+        {
+          "pss_bytes": 339710976,
+          "at": 17409.300000000047
+        },
+        {
+          "pss_bytes": 361931776,
+          "at": 19446.09999999986
+        },
+        {
+          "pss_bytes": 381117440,
+          "at": 21468.699999999953
+        },
+        {
+          "pss_bytes": 624133120,
+          "at": 37140.09999999986
+        },
+        {
+          "pss_bytes": 716386304,
+          "at": 39363.69999999995
+        },
+        {
+          "pss_bytes": 732790784,
+          "at": 41631.30000000005
+        },
+        {
+          "pss_bytes": 742764544,
+          "at": 43873.59999999986
+        },
+        {
+          "pss_bytes": 751415296,
+          "at": 46196.30000000005
+        },
+        {
+          "pss_bytes": 750555136,
+          "at": 48599.69999999995
+        },
+        {
+          "pss_bytes": 760501248,
+          "at": 50948.39999999991
+        },
+        {
+          "pss_bytes": 765211648,
+          "at": 53499.5
+        },
+        {
+          "pss_bytes": 769325056,
+          "at": 55702.89999999991
+        },
+        {
+          "pss_bytes": 777054208,
+          "at": 57874.09999999986
+        },
+        {
+          "pss_bytes": 778127360,
+          "at": 60046.30000000005
+        },
+        {
+          "pss_bytes": 790462464,
+          "at": 62223.39999999991
+        },
+        {
+          "pss_bytes": 800741376,
+          "at": 64447.19999999995
+        },
+        {
+          "pss_bytes": 806938624,
+          "at": 66655.3999999999
+        },
+        {
+          "pss_bytes": 809641984,
+          "at": 69033.59999999986
+        },
+        {
+          "pss_bytes": 814249984,
+          "at": 71275.8999999999
+        },
+        {
+          "pss_bytes": 819099648,
+          "at": 73552.8999999999
+        },
+        {
+          "pss_bytes": 824776704,
+          "at": 75775.80000000005
+        },
+        {
+          "pss_bytes": 759142400,
+          "at": 77991.30000000005
+        },
+        {
+          "pss_bytes": 762976256,
+          "at": 80221.09999999986
+        },
+        {
+          "pss_bytes": 766841856,
+          "at": 82551.09999999986
+        },
+        {
+          "pss_bytes": 798636032,
+          "at": 85105.8999999999
+        },
+        {
+          "pss_bytes": 772759552,
+          "at": 87169.5
+        },
+        {
+          "pss_bytes": 783897600,
+          "at": 89300
+        },
+        {
+          "pss_bytes": 795149312,
+          "at": 91434.3999999999
+        },
+        {
+          "pss_bytes": 808936448,
+          "at": 93509.59999999986
+        },
+        {
+          "pss_bytes": 777024512,
+          "at": 95608.30000000005
+        },
+        {
+          "pss_bytes": 790266880,
+          "at": 97690.80000000005
+        }
+      ],
+      "browser_pss_peak_bytes": 824776704,
+      "warm_boot": {
+        "startedAt": 879.7000000001863,
+        "downloadsFinishedAt": 1719.5,
+        "worldReadyAt": 8927.40000000014,
+        "engineStartedAt": 10978.100000000093,
+        "architectureReadyAt": 18830.300000000047
+      }
+    },
+    {
+      "cold_boot": {
+        "startedAt": 989.0999999998603,
+        "downloadsFinishedAt": 21976.399999999907,
+        "worldReadyAt": 31368.299999999814,
+        "engineStartedAt": 33802.89999999991,
+        "architectureReadyAt": 48173.19999999995
+      },
+      "cold_world_ready_ms": 31368.299999999814,
+      "stages": {
+        "building": {
+          "fps_median": 3.84800384800385,
+          "fps_min_1s": 0.883548330093656,
+          "draw_calls_peak": 568,
+          "video_memory_peak_bytes": 95589129,
+          "max_frame_ms": 1131.8
+        },
+        "campus_idle": {
+          "fps_median": 3.811527596484,
+          "fps_min_1s": 3.42612419700214,
+          "draw_calls_peak": 554,
+          "video_memory_peak_bytes": 95644913,
+          "max_frame_ms": 359.3
+        },
+        "campus_walk": {
+          "fps_median": 8.50018889308651,
+          "fps_min_1s": 3.86137658075104,
+          "draw_calls_peak": 554,
+          "video_memory_peak_bytes": 95644913,
+          "max_frame_ms": 305.3
+        },
+        "interior": {
+          "fps_median": 12.7912370932913,
+          "fps_min_1s": 3.90991554582421,
+          "draw_calls_peak": 499,
+          "video_memory_peak_bytes": 96639075,
+          "max_frame_ms": 383.5
+        },
+        "phone": {
+          "fps_median": 6.13389414651244,
+          "fps_min_1s": 5.49098563192093,
+          "draw_calls_peak": 316,
+          "video_memory_peak_bytes": 95935585,
+          "max_frame_ms": 545.8
+        }
+      },
+      "js_heap": {
+        "usedSize": 12050440,
+        "totalSize": 14262272,
+        "embedderHeapUsedSize": 5340808,
+        "backingStorageSize": 175954398
+      },
+      "samples": [
+        {
+          "at": 34022.799999999814,
+          "draw_calls": 479,
+          "fps": 0.883548330093656,
+          "max_frame_ms": 1131.8,
+          "nodes": 5580,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 49847761
+        },
+        {
+          "at": 35058.69999999995,
+          "draw_calls": 472,
+          "fps": 4.82998454404946,
+          "max_frame_ms": 237.8,
+          "nodes": 5663,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94686617
+        },
+        {
+          "at": 36153,
+          "draw_calls": 484,
+          "fps": 8.22143052891203,
+          "max_frame_ms": 219.6,
+          "nodes": 5798,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94832825
+        },
+        {
+          "at": 37311.89999999991,
+          "draw_calls": 498,
+          "fps": 6.04073179150846,
+          "max_frame_ms": 222.9,
+          "nodes": 5939,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94987033
+        },
+        {
+          "at": 38425.39999999991,
+          "draw_calls": 532,
+          "fps": 4.49397806938702,
+          "max_frame_ms": 310.2,
+          "nodes": 6007,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95048097
+        },
+        {
+          "at": 39690.09999999986,
+          "draw_calls": 565,
+          "fps": 3.95319418089817,
+          "max_frame_ms": 320,
+          "nodes": 6079,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95129353
+        },
+        {
+          "at": 40820.39999999991,
+          "draw_calls": 568,
+          "fps": 4.42399575296408,
+          "max_frame_ms": 247.8,
+          "nodes": 6140,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95192217
+        },
+        {
+          "at": 41859.799999999814,
+          "draw_calls": 568,
+          "fps": 3.84800384800385,
+          "max_frame_ms": 305.4,
+          "nodes": 6229,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95275545
+        },
+        {
+          "at": 42913.299999999814,
+          "draw_calls": 568,
+          "fps": 3.7914691943128,
+          "max_frame_ms": 344.1,
+          "nodes": 6276,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95334129
+        },
+        {
+          "at": 43967.59999999986,
+          "draw_calls": 568,
+          "fps": 3.7943464238285,
+          "max_frame_ms": 276.6,
+          "nodes": 6338,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95397945
+        },
+        {
+          "at": 45160,
+          "draw_calls": 568,
+          "fps": 3.35711288292069,
+          "max_frame_ms": 376,
+          "nodes": 6394,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95456385
+        },
+        {
+          "at": 46366.59999999986,
+          "draw_calls": 568,
+          "fps": 3.31235508446505,
+          "max_frame_ms": 357.9,
+          "nodes": 6456,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95522329
+        },
+        {
+          "at": 47565.69999999995,
+          "draw_calls": 568,
+          "fps": 3.33583520974064,
+          "max_frame_ms": 352.1,
+          "nodes": 6516,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95589129
+        },
+        {
+          "at": 49010,
+          "draw_calls": 554,
+          "fps": 4.32937916702745,
+          "max_frame_ms": 359.3,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 50163.69999999995,
+          "draw_calls": 554,
+          "fps": 3.45871162991786,
+          "max_frame_ms": 302.7,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 51330.89999999991,
+          "draw_calls": 554,
+          "fps": 3.42612419700214,
+          "max_frame_ms": 341.4,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 52467.299999999814,
+          "draw_calls": 554,
+          "fps": 3.51864883884588,
+          "max_frame_ms": 299.4,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 53515.19999999995,
+          "draw_calls": 554,
+          "fps": 3.81679389312977,
+          "max_frame_ms": 301.2,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 54616.299999999814,
+          "draw_calls": 554,
+          "fps": 4.53761684363372,
+          "max_frame_ms": 259.4,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 55668.09999999986,
+          "draw_calls": 554,
+          "fps": 3.80626129983823,
+          "max_frame_ms": 292.5,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 56924.69999999995,
+          "draw_calls": 554,
+          "fps": 3.99201596806387,
+          "max_frame_ms": 288.4,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 57960.89999999991,
+          "draw_calls": 554,
+          "fps": 3.86137658075104,
+          "max_frame_ms": 305.3,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95644913
+        },
+        {
+          "at": 58961.69999999995,
+          "draw_calls": 546,
+          "fps": 5.96362190637114,
+          "max_frame_ms": 250.1,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 60068,
+          "draw_calls": 508,
+          "fps": 5.43576734915746,
+          "max_frame_ms": 275.9,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 61211.69999999995,
+          "draw_calls": 502,
+          "fps": 4.3675751222921,
+          "max_frame_ms": 252.2,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 62298.799999999814,
+          "draw_calls": 498,
+          "fps": 5.51724137931035,
+          "max_frame_ms": 240,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 63334,
+          "draw_calls": 452,
+          "fps": 9.66090232827746,
+          "max_frame_ms": 130.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 64356.299999999814,
+          "draw_calls": 379,
+          "fps": 9.7799511002445,
+          "max_frame_ms": 113.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 65371.89999999991,
+          "draw_calls": 379,
+          "fps": 9.8512461826421,
+          "max_frame_ms": 132.1,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 66465.59999999986,
+          "draw_calls": 374,
+          "fps": 10.0511695906433,
+          "max_frame_ms": 134.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 67576.09999999986,
+          "draw_calls": 381,
+          "fps": 7.20331352422114,
+          "max_frame_ms": 218.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 68635.3999999999,
+          "draw_calls": 347,
+          "fps": 8.50018889308651,
+          "max_frame_ms": 165.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95630681
+        },
+        {
+          "at": 69667.59999999986,
+          "draw_calls": 325,
+          "fps": 12.5968992248062,
+          "max_frame_ms": 130.2,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 70720,
+          "draw_calls": 324,
+          "fps": 8.54700854700855,
+          "max_frame_ms": 179.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 71731.79999999981,
+          "draw_calls": 309,
+          "fps": 7.9074824552733,
+          "max_frame_ms": 159.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 72735,
+          "draw_calls": 277,
+          "fps": 8.97308075772682,
+          "max_frame_ms": 135.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95616449
+        },
+        {
+          "at": 73827.5,
+          "draw_calls": 316,
+          "fps": 5.49098563192093,
+          "max_frame_ms": 545.8,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 74885.5,
+          "draw_calls": 316,
+          "fps": 9.45090256119459,
+          "max_frame_ms": 142.3,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 76008.19999999995,
+          "draw_calls": 316,
+          "fps": 6.23885918003565,
+          "max_frame_ms": 211.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 77066.09999999986,
+          "draw_calls": 316,
+          "fps": 6.61250708482902,
+          "max_frame_ms": 178.8,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 78098.59999999986,
+          "draw_calls": 316,
+          "fps": 5.81564408258215,
+          "max_frame_ms": 199.9,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 79106.79999999981,
+          "draw_calls": 316,
+          "fps": 5.94648166501487,
+          "max_frame_ms": 281.7,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 80248.69999999995,
+          "draw_calls": 316,
+          "fps": 6.13389414651244,
+          "max_frame_ms": 198.1,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 81311.29999999981,
+          "draw_calls": 316,
+          "fps": 6.58513640639699,
+          "max_frame_ms": 194.3,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 82341.29999999981,
+          "draw_calls": 316,
+          "fps": 5.82467721580429,
+          "max_frame_ms": 249.1,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95935585
+        },
+        {
+          "at": 83619.19999999995,
+          "draw_calls": 91,
+          "fps": 3.90991554582421,
+          "max_frame_ms": 383.5,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 84770,
+          "draw_calls": 91,
+          "fps": 6.95168578380257,
+          "max_frame_ms": 295.1,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 85814.3999999999,
+          "draw_calls": 91,
+          "fps": 10.5404369490226,
+          "max_frame_ms": 171.4,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 86834,
+          "draw_calls": 91,
+          "fps": 11.7716303708064,
+          "max_frame_ms": 109.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 87935.59999999986,
+          "draw_calls": 91,
+          "fps": 12.7226463104326,
+          "max_frame_ms": 134.4,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 89013,
+          "draw_calls": 91,
+          "fps": 11.1162575266327,
+          "max_frame_ms": 134,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 90084.8999999999,
+          "draw_calls": 91,
+          "fps": 10.2611940298507,
+          "max_frame_ms": 136,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 91095.8999999999,
+          "draw_calls": 91,
+          "fps": 12.85982787615,
+          "max_frame_ms": 103.4,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96639075
+        },
+        {
+          "at": 92136.79999999981,
+          "draw_calls": 89,
+          "fps": 14.4203037877331,
+          "max_frame_ms": 121.7,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 93149.79999999981,
+          "draw_calls": 89,
+          "fps": 16.781836130306,
+          "max_frame_ms": 86.6,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 94157.29999999981,
+          "draw_calls": 89,
+          "fps": 14.8853825543316,
+          "max_frame_ms": 111.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 95188.79999999981,
+          "draw_calls": 89,
+          "fps": 24.2483026188167,
+          "max_frame_ms": 58.2,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 96233.29999999981,
+          "draw_calls": 89,
+          "fps": 16.2928886333142,
+          "max_frame_ms": 101.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 97263.79999999981,
+          "draw_calls": 89,
+          "fps": 15.5083842202191,
+          "max_frame_ms": 138.3,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96624843
+        },
+        {
+          "at": 98271,
+          "draw_calls": 470,
+          "fps": 14.8912935570337,
+          "max_frame_ms": 112.6,
+          "nodes": 6503,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96514963
+        },
+        {
+          "at": 99322.3999999999,
+          "draw_calls": 499,
+          "fps": 8.56327307326356,
+          "max_frame_ms": 165.6,
+          "nodes": 6503,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96514963
+        }
+      ],
+      "browser_pss_samples": [
+        {
+          "pss_bytes": 185644032,
+          "at": 1054.5
+        },
+        {
+          "pss_bytes": 234720256,
+          "at": 3096.6999999999534
+        },
+        {
+          "pss_bytes": 274734080,
+          "at": 5117.199999999953
+        },
+        {
+          "pss_bytes": 319167488,
+          "at": 7139
+        },
+        {
+          "pss_bytes": 361774080,
+          "at": 9168.59999999986
+        },
+        {
+          "pss_bytes": 412412928,
+          "at": 11207.299999999814
+        },
+        {
+          "pss_bytes": 410681344,
+          "at": 13234.899999999907
+        },
+        {
+          "pss_bytes": 450998272,
+          "at": 15259
+        },
+        {
+          "pss_bytes": 391934976,
+          "at": 17276.199999999953
+        },
+        {
+          "pss_bytes": 413553664,
+          "at": 19302.699999999953
+        },
+        {
+          "pss_bytes": 433296384,
+          "at": 21369.199999999953
+        },
+        {
+          "pss_bytes": 644713472,
+          "at": 34229.09999999986
+        },
+        {
+          "pss_bytes": 724481024,
+          "at": 36498.39999999991
+        },
+        {
+          "pss_bytes": 737977344,
+          "at": 38751.09999999986
+        },
+        {
+          "pss_bytes": 744461312,
+          "at": 41004.69999999995
+        },
+        {
+          "pss_bytes": 743363584,
+          "at": 43393.69999999995
+        },
+        {
+          "pss_bytes": 747811840,
+          "at": 45758.39999999991
+        },
+        {
+          "pss_bytes": 753894400,
+          "at": 48009.59999999986
+        },
+        {
+          "pss_bytes": 760030208,
+          "at": 50396.19999999995
+        },
+        {
+          "pss_bytes": 764527616,
+          "at": 52922.299999999814
+        },
+        {
+          "pss_bytes": 770343936,
+          "at": 55336
+        },
+        {
+          "pss_bytes": 773166080,
+          "at": 57823.19999999995
+        },
+        {
+          "pss_bytes": 785568768,
+          "at": 60240.19999999995
+        },
+        {
+          "pss_bytes": 792441856,
+          "at": 62464.39999999991
+        },
+        {
+          "pss_bytes": 797860864,
+          "at": 64617.69999999995
+        },
+        {
+          "pss_bytes": 799945728,
+          "at": 66806.69999999995
+        },
+        {
+          "pss_bytes": 806228992,
+          "at": 68927.5
+        },
+        {
+          "pss_bytes": 815514624,
+          "at": 71171.5
+        },
+        {
+          "pss_bytes": 821314560,
+          "at": 73451.5
+        },
+        {
+          "pss_bytes": 757535744,
+          "at": 75736.3999999999
+        },
+        {
+          "pss_bytes": 762287104,
+          "at": 78008.69999999995
+        },
+        {
+          "pss_bytes": 766108672,
+          "at": 80301.5
+        },
+        {
+          "pss_bytes": 771220480,
+          "at": 82644.09999999986
+        },
+        {
+          "pss_bytes": 766886912,
+          "at": 84805.69999999995
+        },
+        {
+          "pss_bytes": 775398400,
+          "at": 86993.3999999999
+        },
+        {
+          "pss_bytes": 785150976,
+          "at": 89124.79999999981
+        },
+        {
+          "pss_bytes": 820815872,
+          "at": 91302.3999999999
+        },
+        {
+          "pss_bytes": 847707136,
+          "at": 93387.19999999995
+        },
+        {
+          "pss_bytes": 862137344,
+          "at": 95489.8999999999
+        },
+        {
+          "pss_bytes": 875006976,
+          "at": 97556
+        }
+      ],
+      "browser_pss_peak_bytes": 875006976,
+      "warm_boot": {
+        "startedAt": 582.6000000000931,
+        "downloadsFinishedAt": 1326.7000000001863,
+        "worldReadyAt": 8393.90000000014,
+        "engineStartedAt": 10351.90000000014,
+        "architectureReadyAt": 17286.40000000014
+      }
+    },
+    {
+      "cold_boot": {
+        "startedAt": 969.4000000001397,
+        "downloadsFinishedAt": 21578.40000000014,
+        "worldReadyAt": 31842.800000000047,
+        "engineStartedAt": 34604.10000000009,
+        "architectureReadyAt": 42333.60000000009
+      },
+      "cold_world_ready_ms": 31842.800000000047,
+      "stages": {
+        "building": {
+          "fps_median": 8.52918877937832,
+          "fps_min_1s": 0.995916741360422,
+          "draw_calls_peak": 568,
+          "video_memory_peak_bytes": 86951833,
+          "max_frame_ms": 1004.1
+        },
+        "campus_idle": {
+          "fps_median": 8.40100812097452,
+          "fps_min_1s": 8.19149904432511,
+          "draw_calls_peak": 554,
+          "video_memory_peak_bytes": 87124145,
+          "max_frame_ms": 250.8
+        },
+        "campus_walk": {
+          "fps_median": 9.15077701394104,
+          "fps_min_1s": 6.89791091840757,
+          "draw_calls_peak": 541,
+          "video_memory_peak_bytes": 87109913,
+          "max_frame_ms": 249.8
+        },
+        "interior": {
+          "fps_median": 18.883893381434348,
+          "fps_min_1s": 9.59969280983008,
+          "draw_calls_peak": 502,
+          "video_memory_peak_bytes": 88118307,
+          "max_frame_ms": 282.3
+        },
+        "phone": {
+          "fps_median": 11.9130348456269,
+          "fps_min_1s": 8.62730061349693,
+          "draw_calls_peak": 318,
+          "video_memory_peak_bytes": 87414817,
+          "max_frame_ms": 428.8
+        }
+      },
+      "js_heap": {
+        "usedSize": 12220452,
+        "totalSize": 14614528,
+        "embedderHeapUsedSize": 6287720,
+        "backingStorageSize": 175960144
+      },
+      "samples": [
+        {
+          "at": 34792.40000000014,
+          "draw_calls": 479,
+          "fps": 0.995916741360422,
+          "max_frame_ms": 1004.1,
+          "nodes": 5580,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 49847761
+        },
+        {
+          "at": 35902.19999999995,
+          "draw_calls": 472,
+          "fps": 4.4992351300279,
+          "max_frame_ms": 262.6,
+          "nodes": 5663,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 86165849
+        },
+        {
+          "at": 36957.60000000009,
+          "draw_calls": 484,
+          "fps": 8.52918877937832,
+          "max_frame_ms": 193.9,
+          "nodes": 5798,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 86312057
+        },
+        {
+          "at": 38008.40000000014,
+          "draw_calls": 508,
+          "fps": 8.56082944925331,
+          "max_frame_ms": 157.1,
+          "nodes": 5968,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 86491385
+        },
+        {
+          "at": 39063.10000000009,
+          "draw_calls": 561,
+          "fps": 8.53566009104704,
+          "max_frame_ms": 160.1,
+          "nodes": 6095,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 86623681
+        },
+        {
+          "at": 40089.90000000014,
+          "draw_calls": 568,
+          "fps": 11.6845180136319,
+          "max_frame_ms": 120.5,
+          "nodes": 6276,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 86813361
+        },
+        {
+          "at": 41158.60000000009,
+          "draw_calls": 568,
+          "fps": 8.41514726507714,
+          "max_frame_ms": 139.3,
+          "nodes": 6410,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 86951833
+        },
+        {
+          "at": 43237.19999999995,
+          "draw_calls": 554,
+          "fps": 8.19149904432511,
+          "max_frame_ms": 250.8,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 44238.69999999995,
+          "draw_calls": 554,
+          "fps": 8.98831519025267,
+          "max_frame_ms": 140.3,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 45402.40000000014,
+          "draw_calls": 554,
+          "fps": 8.5954959601169,
+          "max_frame_ms": 186,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 46491.5,
+          "draw_calls": 554,
+          "fps": 8.2637039757598,
+          "max_frame_ms": 155.5,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 47575.60000000009,
+          "draw_calls": 554,
+          "fps": 8.30105146651909,
+          "max_frame_ms": 144.8,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 48595.19999999995,
+          "draw_calls": 554,
+          "fps": 8.83478943751841,
+          "max_frame_ms": 141.9,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 49597.40000000014,
+          "draw_calls": 554,
+          "fps": 8.96503635820301,
+          "max_frame_ms": 138.6,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 50682.19999999995,
+          "draw_calls": 554,
+          "fps": 8.30411515039675,
+          "max_frame_ms": 154.6,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 51753.80000000005,
+          "draw_calls": 554,
+          "fps": 8.40100812097452,
+          "max_frame_ms": 142.9,
+          "nodes": 6482,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87124145
+        },
+        {
+          "at": 52820.40000000014,
+          "draw_calls": 541,
+          "fps": 9.41619585687382,
+          "max_frame_ms": 161.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 53866.69999999995,
+          "draw_calls": 490,
+          "fps": 9.51565324959559,
+          "max_frame_ms": 143.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 54888.30000000005,
+          "draw_calls": 463,
+          "fps": 7.82472613458529,
+          "max_frame_ms": 158.3,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 55985,
+          "draw_calls": 433,
+          "fps": 10.9509034495346,
+          "max_frame_ms": 114.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 56998.19999999995,
+          "draw_calls": 394,
+          "fps": 6.89791091840757,
+          "max_frame_ms": 177.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 58059.90000000014,
+          "draw_calls": 359,
+          "fps": 7.54290024514426,
+          "max_frame_ms": 181.6,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 59173.10000000009,
+          "draw_calls": 363,
+          "fps": 12.5763564498742,
+          "max_frame_ms": 127.4,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 60238.90000000014,
+          "draw_calls": 371,
+          "fps": 9.38174312787316,
+          "max_frame_ms": 249.8,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87109913
+        },
+        {
+          "at": 61262.30000000005,
+          "draw_calls": 384,
+          "fps": 7.82166601486117,
+          "max_frame_ms": 203.7,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87109913
+        },
+        {
+          "at": 62382.69999999995,
+          "draw_calls": 370,
+          "fps": 8.91981090000892,
+          "max_frame_ms": 147.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87109913
+        },
+        {
+          "at": 63443.69999999995,
+          "draw_calls": 337,
+          "fps": 8.48496276044122,
+          "max_frame_ms": 161.3,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87109913
+        },
+        {
+          "at": 64552.09999999986,
+          "draw_calls": 315,
+          "fps": 10.8293475318112,
+          "max_frame_ms": 124.9,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 65626.19999999995,
+          "draw_calls": 305,
+          "fps": 11.1804714432125,
+          "max_frame_ms": 120.5,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 66652.09999999986,
+          "draw_calls": 296,
+          "fps": 8.76168224299065,
+          "max_frame_ms": 138.9,
+          "nodes": 6482,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87095681
+        },
+        {
+          "at": 67695.09999999986,
+          "draw_calls": 318,
+          "fps": 8.62730061349693,
+          "max_frame_ms": 428.8,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 68755.09999999986,
+          "draw_calls": 318,
+          "fps": 12.2676229121449,
+          "max_frame_ms": 160.3,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 69787.80000000005,
+          "draw_calls": 318,
+          "fps": 8.70743034055728,
+          "max_frame_ms": 170.7,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 70807.00000000023,
+          "draw_calls": 318,
+          "fps": 17.6747839748625,
+          "max_frame_ms": 77.7,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 71890.19999999995,
+          "draw_calls": 318,
+          "fps": 9.22934933087217,
+          "max_frame_ms": 146.6,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 72898.09999999986,
+          "draw_calls": 318,
+          "fps": 11.9130348456269,
+          "max_frame_ms": 112.4,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 73902.69999999995,
+          "draw_calls": 318,
+          "fps": 16.9154228855721,
+          "max_frame_ms": 119.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 74956.09999999986,
+          "draw_calls": 318,
+          "fps": 12.3327957499288,
+          "max_frame_ms": 135.5,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 76061.09999999986,
+          "draw_calls": 318,
+          "fps": 10.8744902582691,
+          "max_frame_ms": 130.2,
+          "nodes": 6503,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87414817
+        },
+        {
+          "at": 77224.80000000005,
+          "draw_calls": 318,
+          "fps": 11.0782865583456,
+          "max_frame_ms": 129.3,
+          "nodes": 6595,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87458713
+        },
+        {
+          "at": 78185.59999999986,
+          "draw_calls": 91,
+          "fps": 9.59969280983008,
+          "max_frame_ms": 282.3,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 79220.40000000014,
+          "draw_calls": 91,
+          "fps": 18.3557144237272,
+          "max_frame_ms": 76.1,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 80273.90000000014,
+          "draw_calls": 91,
+          "fps": 18.984337921215,
+          "max_frame_ms": 75.7,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 81308.80000000005,
+          "draw_calls": 91,
+          "fps": 17.3795500627595,
+          "max_frame_ms": 80.1,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 82318.19999999995,
+          "draw_calls": 91,
+          "fps": 22.7812995245642,
+          "max_frame_ms": 78.3,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 83354.90000000014,
+          "draw_calls": 89,
+          "fps": 19.3162062970833,
+          "max_frame_ms": 99.4,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88104075
+        },
+        {
+          "at": 84407.30000000005,
+          "draw_calls": 91,
+          "fps": 19.9695701787752,
+          "max_frame_ms": 89.4,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 85413.30000000005,
+          "draw_calls": 91,
+          "fps": 18.8604327973,
+          "max_frame_ms": 73.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 86417.59999999986,
+          "draw_calls": 91,
+          "fps": 18.9073539655687,
+          "max_frame_ms": 64,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 87462.00000000023,
+          "draw_calls": 91,
+          "fps": 16.289766193944,
+          "max_frame_ms": 88.6,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 88463.30000000005,
+          "draw_calls": 91,
+          "fps": 19.9600798403194,
+          "max_frame_ms": 88.3,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 89513.30000000005,
+          "draw_calls": 91,
+          "fps": 19.0530627798419,
+          "max_frame_ms": 70.9,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 90516.50000000023,
+          "draw_calls": 91,
+          "fps": 20.9769253820797,
+          "max_frame_ms": 81.8,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88118307
+        },
+        {
+          "at": 91535.00000000023,
+          "draw_calls": 89,
+          "fps": 18.6256249387315,
+          "max_frame_ms": 74.7,
+          "nodes": 6602,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 88104075
+        },
+        {
+          "at": 92613.09999999986,
+          "draw_calls": 502,
+          "fps": 13.9107854956877,
+          "max_frame_ms": 198,
+          "nodes": 6503,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 87994195
+        }
+      ],
+      "browser_pss_samples": [
+        {
+          "pss_bytes": 254707712,
+          "at": 1010.8000000000466
+        },
+        {
+          "pss_bytes": 304622592,
+          "at": 3026.600000000093
+        },
+        {
+          "pss_bytes": 344583168,
+          "at": 5038.300000000047
+        },
+        {
+          "pss_bytes": 389533696,
+          "at": 7051
+        },
+        {
+          "pss_bytes": 432607232,
+          "at": 9066.5
+        },
+        {
+          "pss_bytes": 485330944,
+          "at": 11085.90000000014
+        },
+        {
+          "pss_bytes": 480727040,
+          "at": 13107.100000000093
+        },
+        {
+          "pss_bytes": 523366400,
+          "at": 15123.90000000014
+        },
+        {
+          "pss_bytes": 465471488,
+          "at": 17147.100000000093
+        },
+        {
+          "pss_bytes": 486676480,
+          "at": 19163.300000000047
+        },
+        {
+          "pss_bytes": 506394624,
+          "at": 21180.199999999953
+        },
+        {
+          "pss_bytes": 722425856,
+          "at": 35032.69999999995
+        },
+        {
+          "pss_bytes": 771699712,
+          "at": 37159.19999999995
+        },
+        {
+          "pss_bytes": 790459392,
+          "at": 39311.10000000009
+        },
+        {
+          "pss_bytes": 820261888,
+          "at": 41470.60000000009
+        },
+        {
+          "pss_bytes": 825066496,
+          "at": 43655.19999999995
+        },
+        {
+          "pss_bytes": 832803840,
+          "at": 45813
+        },
+        {
+          "pss_bytes": 838263808,
+          "at": 47976.90000000014
+        },
+        {
+          "pss_bytes": 846877696,
+          "at": 50166.30000000005
+        },
+        {
+          "pss_bytes": 854197248,
+          "at": 52410.30000000005
+        },
+        {
+          "pss_bytes": 865489920,
+          "at": 54577.69999999995
+        },
+        {
+          "pss_bytes": 871916544,
+          "at": 56886.90000000014
+        },
+        {
+          "pss_bytes": 878781440,
+          "at": 58989.10000000009
+        },
+        {
+          "pss_bytes": 883774464,
+          "at": 61140.69999999995
+        },
+        {
+          "pss_bytes": 812471296,
+          "at": 63286.90000000014
+        },
+        {
+          "pss_bytes": 822641664,
+          "at": 65470.50000000023
+        },
+        {
+          "pss_bytes": 826041344,
+          "at": 67636.80000000005
+        },
+        {
+          "pss_bytes": 832160768,
+          "at": 69804.69999999995
+        },
+        {
+          "pss_bytes": 814359552,
+          "at": 72044.09999999986
+        },
+        {
+          "pss_bytes": 832402432,
+          "at": 74145.30000000005
+        },
+        {
+          "pss_bytes": 841106432,
+          "at": 76257.90000000014
+        },
+        {
+          "pss_bytes": 855139328,
+          "at": 78332.19999999995
+        },
+        {
+          "pss_bytes": 833082368,
+          "at": 80423.09999999986
+        },
+        {
+          "pss_bytes": 846783488,
+          "at": 82500.59999999986
+        },
+        {
+          "pss_bytes": 861594624,
+          "at": 84578.00000000023
+        },
+        {
+          "pss_bytes": 875316224,
+          "at": 86656.40000000014
+        },
+        {
+          "pss_bytes": 889132032,
+          "at": 88766.30000000005
+        },
+        {
+          "pss_bytes": 904033280,
+          "at": 90874.19999999995
+        }
+      ],
+      "browser_pss_peak_bytes": 904033280,
+      "warm_boot": {
+        "startedAt": 698.3999999999069,
+        "downloadsFinishedAt": 1380.7999999998137,
+        "worldReadyAt": 8390.700000000186,
+        "engineStartedAt": 10231.200000000186,
+        "architectureReadyAt": 17115.700000000186
+      }
+    }
+  ],
+  "environment": {
+    "browser": "145.0.7632.6",
+    "host": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "gpu": [
+      {
+        "vendorId": 65535,
+        "deviceId": 65535,
+        "vendorString": "Google Inc. (Google)",
+        "deviceString": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+        "driverVendor": "SwANGLE",
+        "driverVersion": "5.0.0"
+      }
+    ]
+  }
+}

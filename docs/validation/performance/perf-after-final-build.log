@@ -1,0 +1,142 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (3 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1msavepack[22m | Started Packing (102 steps)[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/NotoSans.ttf-27eae6a86b17fcaacb38def985d59f4e.fontdata[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://assets/fonts/NotoSans.ttf.import[39m[0m
+[   2% ] [90m[1msavepack[22m | Storing File: res://scripts/amenities_builder.gdc[39m[0m
+[   4% ] [90m[1msavepack[22m | Storing File: res://scripts/architecture_builder.gdc[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/chevron-down.svg-5916396ad67c682206e0e9923ff5e93d.ctex[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://assets/phone/chevron-down.svg.import[39m[0m
+[   8% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/chevron-up.svg-05d90d11cab1e456486f545e6d79ac8b.ctex[39m[0m
+[   8% ] [90m[1msavepack[22m | Storing File: res://assets/phone/chevron-up.svg.import[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/contacts.svg-f01e64d2fd05bf8271c0f81ac738fe29.ctex[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://assets/phone/contacts.svg.import[39m[0m
+[  11% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/courses.svg-d51cb560e75e3222af4362bc6e2b7449.ctex[39m[0m
+[  11% ] [90m[1msavepack[22m | Storing File: res://assets/phone/courses.svg.import[39m[0m
+[  13% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/guide.svg-993f2cd81576c457299f453aa0d1b725.ctex[39m[0m
+[  13% ] [90m[1msavepack[22m | Storing File: res://assets/phone/guide.svg.import[39m[0m
+[  15% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/health.svg-fe1528bc010d31181d7535adbc2c62df.ctex[39m[0m
+[  15% ] [90m[1msavepack[22m | Storing File: res://assets/phone/health.svg.import[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/jobs.svg-bcf69b17f5705256415dd11e8846eeb3.ctex[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://assets/phone/jobs.svg.import[39m[0m
+[  18% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/map.svg-bc7a90d34c2980271a422337ad5b2770.ctex[39m[0m
+[  18% ] [90m[1msavepack[22m | Storing File: res://assets/phone/map.svg.import[39m[0m
+[  20% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/messages.svg-9befc09fbc6377768344cd268ea4ad84.ctex[39m[0m
+[  20% ] [90m[1msavepack[22m | Storing File: res://assets/phone/messages.svg.import[39m[0m
+[  22% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/notes.svg-d1a5c0aa4eb4108d50170e0de1ff6e37.ctex[39m[0m
+[  22% ] [90m[1msavepack[22m | Storing File: res://assets/phone/notes.svg.import[39m[0m
+[  24% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/phone.svg-ef116dc23f72b7c77f4c12ca056a55bc.ctex[39m[0m
+[  24% ] [90m[1msavepack[22m | Storing File: res://assets/phone/phone.svg.import[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/places.svg-aa7b4390b37071412877b7bfd724ef06.ctex[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://assets/phone/places.svg.import[39m[0m
+[  27% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/planner.svg-081214c8c04face414b918ab2568bcca.ctex[39m[0m
+[  27% ] [90m[1msavepack[22m | Storing File: res://assets/phone/planner.svg.import[39m[0m
+[  29% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/quiz.svg-05907171c4cc9b010ac465b300b3fc66.ctex[39m[0m
+[  29% ] [90m[1msavepack[22m | Storing File: res://assets/phone/quiz.svg.import[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/ride.svg-956c5646bfe20bd357191d370da5a597.ctex[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://assets/phone/ride.svg.import[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/room.svg-e179097f0b6ee38ac5083bdcbb8ff7dc.ctex[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://assets/phone/room.svg.import[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/skills.svg-fd49736cd417cf1a3c5adc51ed078afa.ctex[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://assets/phone/skills.svg.import[39m[0m
+[  35% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/societies.svg-ff92604853e0431e06ffe9968d41bdbe.ctex[39m[0m
+[  35% ] [90m[1msavepack[22m | Storing File: res://assets/phone/societies.svg.import[39m[0m
+[  37% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/wallet.svg-455171f782a2c3ba6e567dbcdce7e09a.ctex[39m[0m
+[  37% ] [90m[1msavepack[22m | Storing File: res://assets/phone/wallet.svg.import[39m[0m
+[  39% ] [90m[1msavepack[22m | Storing File: res://data/amenities_v0.6.json[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://data/billboard_placement_audit_v0.10.json[39m[0m
+[  42% ] [90m[1msavepack[22m | Storing File: res://data/building_experiences.json[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://data/campus_layout.json[39m[0m
+[  46% ] [90m[1msavepack[22m | Storing File: res://data/interior_catalog_v0.10.json[39m[0m
+[  48% ] [90m[1msavepack[22m | Storing File: res://data/landscape_v0.5.json[39m[0m
+[  50% ] [90m[1msavepack[22m | Storing File: res://data/market_prices_v0.10.json[39m[0m
+[  51% ] [90m[1msavepack[22m | Storing File: res://data/road_network_v0.4.json[39m[0m
+[  53% ] [90m[1msavepack[22m | Storing File: res://data/social_config.json[39m[0m
+[  55% ] [90m[1msavepack[22m | Storing File: res://data/task_catalog_v0.9.json[39m[0m
+[  57% ] [90m[1msavepack[22m | Storing File: res://data/transit_routes_v0.7.json[39m[0m
+[  58% ] [90m[1msavepack[22m | Storing File: res://scripts/campus_social.gdc[39m[0m
+[  60% ] [90m[1msavepack[22m | Storing File: res://scripts/supabase_social.gdc[39m[0m
+[  62% ] [90m[1msavepack[22m | Storing File: res://scripts/interior_identity.gdc[39m[0m
+[  64% ] [90m[1msavepack[22m | Storing File: res://scripts/render_budget.gdc[39m[0m
+[  66% ] [90m[1msavepack[22m | Storing File: res://scripts/save_store.gdc[39m[0m
+[  66% ] [90m[1msavepack[22m | Storing File: res://scripts/main.gdc[39m[0m
+[  68% ] [90m[1msavepack[22m | Storing File: res://scripts/ui_motion.gdc[39m[0m
+[  70% ] [90m[1msavepack[22m | Storing File: res://scripts/traffic_debug.gdc[39m[0m
+[  72% ] [90m[1msavepack[22m | Storing File: res://scripts/traffic_reservations.gdc[39m[0m
+[  74% ] [90m[1msavepack[22m | Storing File: res://scripts/world_labels.gdc[39m[0m
+[  75% ] [90m[1msavepack[22m | Storing File: res://scripts/transit_manager.gdc[39m[0m
+[  77% ] [90m[1msavepack[22m | Storing File: res://scripts/ui_theme.gdc[39m[0m
+[  79% ] [90m[1msavepack[22m | Storing File: res://scripts/mobile_controls.gdc[39m[0m
+[  81% ] [90m[1msavepack[22m | Storing File: res://scripts/game_settings.gdc[39m[0m
+[  82% ] [90m[1msavepack[22m | Storing File: res://scripts/student_ui.gdc[39m[0m
+[  84% ] [90m[1msavepack[22m | Storing File: res://scripts/interior_builder.gdc[39m[0m
+[  86% ] [90m[1msavepack[22m | Storing File: res://scripts/performance_probe.gdc[39m[0m
+[  88% ] [90m[1msavepack[22m | Storing File: res://scripts/player_controller.gdc[39m[0m
+[  90% ] [90m[1msavepack[22m | Storing File: res://scripts/campus_rooms.gdc[39m[0m
+[  91% ] [90m[1msavepack[22m | Storing File: res://scripts/campus_phone.gdc[39m[0m
+[  93% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-4c8121adc5da4b3d5b3600ce644915a9-campus_theme.res[39m[0m
+[  95% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-1739577535346f56060e668f36d2afbe-student_ui.scn[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-3ad5c15c4f3250da0cc7c1af1770d85f-main.scn[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/amenities_builder.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/architecture_builder.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/campus_social.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/supabase_social.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/interior_identity.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/render_budget.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/save_store.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/main.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/ui_motion.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/traffic_debug.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/traffic_reservations.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/world_labels.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/transit_manager.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/ui_theme.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/mobile_controls.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/game_settings.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/student_ui.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/interior_builder.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/performance_probe.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/player_controller.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/campus_rooms.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scripts/campus_phone.gd.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://ui/campus_theme.tres.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scenes/ui/student_ui.tscn.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://scenes/main.tscn.remap[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://.godot/global_script_class_cache.cfg[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://.godot/uid_cache.bin[39m[0m
+[  97% ] [90m[1msavepack[22m | Storing File: res://project.binary[39m[0m
+[92m[ DONE ][39m [1msavepack[22m
+[0m
+ENGINE DOWNLOAD: 9382282 compressed bytes / 37700666 original bytes
+WEB BUILD READY: /workspace/scratch/cc0a1f20725e/INSIDELASU-main/build/web

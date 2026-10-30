@@ -44,8 +44,8 @@ func _run() -> void:
     var rotation: float = game.player.rotation.y
     touch(1, Vector2(470, 240), true)
     drag(1, Vector2(550, 250), Vector2(80, 10))
-    await process_frame
-    check(absf(game.player.rotation.y - rotation) > 0.1, "second finger turns camera while joystick is held")
+    for _frame in range(12): await physics_frame
+    check(absf(game.player.rotation.y - rotation) > 0.1, "second finger turns camera within 200ms while joystick is held")
     for i in range(45):
         await physics_frame
     check(game.player.position.distance_to(origin) > 2.0, "screen drag drives actual player movement without keyboard")

@@ -1,0 +1,1 @@
+NotoSans.ttf is the static default instance of the supplied Noto Sans variable font (weight 400, width 100). All 4,515 glyphs, Unicode mappings and default advance metrics are retained. No language subset was applied. Unused weight/width variation data was removed using tools/optimise_font.py (fontTools varLib.instancer). The accompanying OFL.txt is unchanged.
