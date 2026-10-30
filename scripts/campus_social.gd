@@ -238,11 +238,7 @@ func update_history(messages: Array) -> void:
         if own: row.add_child(spacer)
         var bubble := PanelContainer.new()
         bubble.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        var style := StyleBoxFlat.new()
-        style.bg_color = Color("1c655d") if own else Color("2a3b53")
-        style.set_corner_radius_all(12)
-        style.set_content_margin_all(10)
-        bubble.add_theme_stylebox_override("panel", style)
+        bubble.theme_type_variation = "OwnMessage" if own else "PeerMessage"
         row.add_child(bubble)
         var text := RichTextLabel.new()
         text.fit_content = true

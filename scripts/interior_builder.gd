@@ -4,12 +4,15 @@ extends Node3D
 # room contents, palettes and floor arrangements. These are NOT field-surveyed
 # architectural plans. Only the active floor is instantiated (low-end friendly).
 const IDENTITY = preload("res://scripts/interior_identity.gd")
-var designs: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/building_experiences.json")).get("locations", {})
+var designs: Dictionary = {}
+var material_cache: Dictionary = {}
 var current_floor: Node3D = null
 var current_site: String = ""
 const ROOM_BASE: Vector3 = Vector3(900.0, 0.0, 0.0)
 
 func _material(tint: Color, glowing: bool = false) -> StandardMaterial3D:
+    var key: String = tint.to_html() + str(glowing)
+    if material_cache.has(key): return material_cache[key]
     var mat: StandardMaterial3D = StandardMaterial3D.new()
     mat.albedo_color = tint
     mat.roughness = 0.64
@@ -17,6 +20,7 @@ func _material(tint: Color, glowing: bool = false) -> StandardMaterial3D:
         mat.emission_enabled = true
         mat.emission = tint
         mat.emission_energy_multiplier = 0.55
+    material_cache[key] = mat
     return mat
 
 func _shape(parent: Node3D, piece_name: String, position_value: Vector3, dimensions: Vector3, tint: Color, solid: bool = false, glow: bool = false) -> void:
@@ -227,6 +231,8 @@ func show_floor(site_name: String, floor_title: String, floor_index: int, own_ro
     var wood: Color = Color(0.52, 0.36, 0.24)
     var warm: Color = Color(0.88, 0.85, 0.77)
     var dark: Color = Color(0.09, 0.20, 0.28)
+    if designs.is_empty():
+        designs = JSON.parse_string(FileAccess.get_file_as_string("res://data/building_experiences.json")).get("locations", {})
     var design: Dictionary = designs.get(site_name, {})
     var theme: String = str(design.get("theme", "lecture"))
     accent = Color(str(design.get("accent", "397777")))
@@ -316,6 +322,8 @@ func clear_interior() -> void:
         current_floor.queue_free()
         current_floor = null
     visible = false
+    designs.clear()
+    material_cache.clear()
 
 
 func _action_point(parent: Node3D, action: String, title: String, at: Vector3) -> Node3D:

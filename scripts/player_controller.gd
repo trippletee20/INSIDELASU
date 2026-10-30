@@ -17,6 +17,8 @@ var avatar_right_arm: Node3D
 var avatar_left_leg: Node3D
 var avatar_right_leg: Node3D
 var walk_cycle: float = 0.0
+var proximity_timer: float = 0.0
+var pending_look: Vector2 = Vector2.ZERO
 var is_sitting: bool = false
 var avatar_gender: String = "Prefer not to say"
 var avatar_student_name: String = "Student"
@@ -178,9 +180,7 @@ func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("toggle_mouse_capture"):
         Input.mouse_mode = Input.MOUSE_MODE_VISIBLE if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_CAPTURED
     if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-        rotate_y(-event.relative.x * mouse_sensitivity)
-        camera_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
-        camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-35), deg_to_rad(20))
+        look(event.relative)
     if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_F:
         perform_seat_interaction()
         get_viewport().set_input_as_handled()
@@ -189,8 +189,16 @@ func _unhandled_input(event: InputEvent) -> void:
         get_viewport().set_input_as_handled()
 
 func look(relative: Vector2) -> void:
-    rotate_y(-relative.x * mouse_sensitivity)
-    camera_pivot.rotation.x = clampf(camera_pivot.rotation.x - relative.y * mouse_sensitivity, deg_to_rad(-35), deg_to_rad(20))
+    pending_look += relative
+
+func _process(delta: float) -> void:
+    if not is_processing_unhandled_input():
+        pending_look = Vector2.ZERO
+        return
+    var applied: Vector2 = pending_look * (1.0 - exp(-35.0 * delta))
+    pending_look -= applied
+    rotate_y(-applied.x * mouse_sensitivity)
+    camera_pivot.rotation.x = clampf(camera_pivot.rotation.x - applied.y * mouse_sensitivity, deg_to_rad(-35), deg_to_rad(20))
 
 func perform_seat_interaction() -> void:
     if is_sitting:
@@ -316,8 +324,8 @@ func _physics_process(delta: float) -> void:
     var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
     var speed := run_speed if Input.is_key_pressed(KEY_SHIFT) or touch_running else move_speed
     if direction.length() > 0.0:
-        velocity.x = direction.x * speed
-        velocity.z = direction.z * speed
+        velocity.x = move_toward(velocity.x, direction.x * speed, speed * 8.0 * delta)
+        velocity.z = move_toward(velocity.z, direction.z * speed, speed * 8.0 * delta)
     else:
         velocity.x = move_toward(velocity.x, 0.0, speed * 4.0 * delta)
         velocity.z = move_toward(velocity.z, 0.0, speed * 4.0 * delta)
@@ -332,7 +340,10 @@ func _physics_process(delta: float) -> void:
     avatar_right_arm.rotation.x = -swing
     avatar_left_leg.rotation.x = -swing
     avatar_right_leg.rotation.x = swing
-    _find_nearest_feature()
+    proximity_timer += delta
+    if proximity_timer >= 0.10:
+        proximity_timer = 0.0
+        _find_nearest_feature()
 
 func _find_nearest_feature() -> void:
     nearby_feature = null

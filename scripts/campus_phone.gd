@@ -1,4 +1,5 @@
 extends CanvasLayer
+const APP_THEME = preload("res://scripts/ui_theme.gd")
 ## Phone apps operate on real game state. Network apps never invent online players.
 signal opened_changed(open: bool)
 var game: Node
@@ -10,30 +11,24 @@ var maximized: bool = false
 var app: String = "Home"
 var state: Dictionary = {"notes": [], "planner": [], "quiz_day": "", "quiz_score": 0}
 var query: String = ""
+var app_grid: GridContainer
 var online: Node
 const ICONS: Array = ["places", "messages", "contacts", "notes", "planner", "courses", "jobs", "wallet", "room", "ride", "health", "skills", "quiz", "societies", "guide", "courses"]
 const APPS: Array = [
-    ["Places & tasks", "Explore", "176c76"], ["Messages", "Social", "278c61"], ["Contacts", "Connect", "43836c"],
-    ["Notes", "Academics", "b58132"], ["Study planner", "Academics", "506caf"], ["Courses", "Academics", "5869a6"],
-    ["Campus jobs", "Earn", "887038"], ["Wallet", "Money", "257755"], ["My room", "Living", "8462aa"],
-    ["Ride", "Transport", "ae683b"], ["Wellbeing", "Recharge", "387c83"], ["Skill lab", "Progress", "5c719e"],
-    ["Campus quiz", "Play", "945a99"], ["Societies", "Community", "98654a"], ["Guide", "Help", "3f7689"], ["Profile", "Me", "526a97"]
+    ["Places & tasks", "Explore"], ["Messages", "Social"], ["Contacts", "Connect"],
+    ["Notes", "Academics"], ["Study planner", "Academics"], ["Courses", "Academics"],
+    ["Campus jobs", "Earn"], ["Wallet", "Money"], ["My room", "Living"],
+    ["Ride", "Transport"], ["Wellbeing", "Recharge"], ["Skill lab", "Progress"],
+    ["Campus quiz", "Play"], ["Societies", "Community"], ["Guide", "Help"], ["Profile", "Me"]
 ]
 
 func _ready() -> void:
     layer = 22
     panel = PanelContainer.new()
     panel.name = "CampusPhone"
-    var style := StyleBoxFlat.new()
-    style.bg_color = Color("f9fbf5")
-    style.border_color = Color("428f89")
-    style.set_border_width_all(0)
-    style.set_corner_radius_all(26)
-    style.set_content_margin_all(16)
-    panel.add_theme_stylebox_override("panel", style)
     add_child(panel)
     var column := VBoxContainer.new()
-    column.add_theme_constant_override("separation", 10)
+    column.add_theme_constant_override("separation", APP_THEME.SPACE)
     panel.add_child(column)
     var bar := HBoxContainer.new()
     column.add_child(bar)
@@ -41,6 +36,7 @@ func _ready() -> void:
     heading.text = "LASU Connect"
     heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
     heading.clip_text = true
+    heading.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
     heading.add_theme_font_size_override("font_size", 20)
     bar.add_child(heading)
     button("Size", func(): maximized = not maximized; _layout(), bar)
@@ -52,7 +48,7 @@ func _ready() -> void:
     column.add_child(scroll)
     body = VBoxContainer.new()
     body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-    body.add_theme_constant_override("separation", 12)
+    body.add_theme_constant_override("separation", APP_THEME.SPACE)
     scroll.add_child(body)
     panel.visible = false
     get_viewport().size_changed.connect(_layout)
@@ -62,6 +58,7 @@ func _layout() -> void:
     var size: Vector2 = get_viewport().get_visible_rect().size
     panel.size = Vector2(size.x - 16 if maximized else minf(470, size.x - 16), minf(790, size.y - 16))
     panel.position = (size - panel.size) * 0.5
+    if is_instance_valid(app_grid): app_grid.columns = 2 if panel.size.x < 350 else 3
 
 func button(text: String, action: Callable, parent: Node = null) -> Button:
     var b := Button.new()
@@ -98,6 +95,7 @@ func open(target: String = "Home") -> void:
     panel.visible = true
     opened_changed.emit(true)
     show_app(target)
+    preload("res://scripts/ui_motion.gd").reveal(panel)
 
 func close() -> void:
     panel.visible = false
@@ -120,6 +118,7 @@ func show_app(target: String) -> void:
     heading.text = "LASU Connect" if target == "Home" else target
     match target:
         "Home": home()
+        "Settings": settings()
         "Places & tasks": places()
         "Campus jobs": places(true)
         "Notes": notes()
@@ -146,29 +145,24 @@ func home() -> void:
     label("%s  ·  %s\n%s · %s" % [Time.get_time_string_from_system().substr(0, 5), Time.get_date_string_from_system(), str(game.profile_data.get("student_name", "Student")), str(game.profile_data.get("department", "Campus life"))])
     label("Your campus, in your pocket")
     var grid := GridContainer.new()
-    grid.columns = 3
-    grid.add_theme_constant_override("h_separation", 8)
-    grid.add_theme_constant_override("v_separation", 8)
+    app_grid = grid
+    grid.columns = 2 if panel.size.x < 350 else 3
+    grid.add_theme_constant_override("h_separation", APP_THEME.SPACE)
+    grid.add_theme_constant_override("v_separation", APP_THEME.SPACE)
     body.add_child(grid)
     for item in APPS:
         var target: String = item[0]
         var tile := button(target + "\n" + str(item[1]), func(): show_app(target), grid)
         tile.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-        tile.custom_minimum_size = Vector2(0, 104)
+        tile.custom_minimum_size = Vector2(0, 112)
+        tile.theme_type_variation = "PhoneTile"
+        tile.expand_icon = true
         tile.icon = load("res://assets/phone/" + str(ICONS[APPS.find(item)]) + ".svg")
         tile.add_theme_constant_override("icon_max_width", 28)
         tile.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
         tile.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
         tile.add_theme_font_size_override("font_size", 12)
-        tile.add_theme_color_override("font_color", Color("ffffff"))
-        tile.add_theme_color_override("font_hover_color", Color("ffffff"))
-        tile.add_theme_color_override("font_pressed_color", Color("ffffff"))
-        tile.add_theme_color_override("font_focus_color", Color("ffffff"))
-        var style := StyleBoxFlat.new()
-        style.bg_color = Color(item[2]).darkened(0.18)
-        style.set_corner_radius_all(18)
-        style.set_content_margin_all(4)
-        tile.add_theme_stylebox_override("normal", style)
+    button("Settings", settings)
     label("Progress is saved on this device. Social accounts connect separately when the campus server is available.")
 
 func places(jobs_only: bool = false) -> void:
@@ -317,3 +311,61 @@ func societies() -> void:
 
 func social(target: String) -> void:
     online.render(self, target)
+
+func settings() -> void:
+    app = "Settings"
+    clear()
+    heading.text = "Settings"
+    label("Changes apply immediately and save with your student on this device.")
+    setting_choice("Appearance", "theme", ["system", "light", "dark"], ["System (device)", "Light", "Dark"])
+    setting_choice("Graphics quality", "quality", ["auto", "low", "medium", "high"], ["Auto · device capability", "Low · lighter rendering", "Medium · balanced", "High · smoother edges"])
+    if game.MOBILE_CONTROLS.touch_device():
+        setting_slider("Control size", "control_size", 0.85, 1.2, 0.05)
+        setting_choice("Stick position", "stick_position", ["left", "right"], ["Left hand", "Right hand"])
+        setting_slider("Look sensitivity", "touch_sensitivity", 0.25, 2.0, 0.05)
+    else:
+        setting_slider("Resolution scale (3D only)", "resolution_scale", 0.5, 1.0, 0.05)
+        setting_slider("Mouse sensitivity", "mouse_sensitivity", 0.25, 2.0, 0.05)
+    setting_slider("Master volume", "volume", 0.0, 1.0, 0.05)
+    if not game.MOBILE_CONTROLS.touch_device():
+        label("KEYBINDINGS · display only")
+        for action in ["move_forward", "move_back", "move_left", "move_right", "jump", "interact"]:
+            var keys: Array[String] = []
+            for event in InputMap.action_get_events(action):
+                if event is InputEventKey: keys.append(OS.get_keycode_string(event.physical_keycode if event.physical_keycode != 0 else event.keycode))
+            label(action.replace("_", " ").capitalize() + " — " + " / ".join(keys))
+        label("Shift — Run · F — Sit/stand\nM — Map · P — Profile · B — Wallet\nH — Help · T — Phone · F2 — Settings\nV — Ride camera · Right mouse — Cabin look\nEsc — Close menu / release mouse")
+    label("Lower quality reduces 3D rendering cost; UI stays sharp. High quality may be slower on phones.")
+    button("Reset settings to device defaults", func():
+        game.preferences = game.SETTINGS.validated({})
+        game.SETTINGS.apply(game)
+        game._save_game()
+        settings())
+
+func setting_choice(title: String, key: String, values: Array, captions: Array) -> void:
+    label(title)
+    var choice := OptionButton.new()
+    choice.name = "Setting_" + key
+    choice.tooltip_text = title
+    choice.custom_minimum_size.y = 48
+    choice.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+    for caption in captions: choice.add_item(caption)
+    choice.selected = values.find(game.preferences[key])
+    choice.item_selected.connect(func(index): game.update_setting(key, values[index]))
+    body.add_child(choice)
+    if key == "theme": choice.grab_focus.call_deferred()
+
+func setting_slider(title: String, key: String, low: float, high: float, step_value: float) -> void:
+    var caption := label(title + " · %d%%" % roundi(float(game.preferences[key]) * 100))
+    var slider := HSlider.new()
+    slider.name = "Setting_" + key
+    slider.tooltip_text = title
+    slider.custom_minimum_size.y = 44
+    slider.min_value = low
+    slider.max_value = high
+    slider.step = step_value
+    slider.value = game.preferences[key]
+    slider.value_changed.connect(func(value):
+        caption.text = title + " · %d%%" % roundi(value * 100)
+        game.update_setting(key, value))
+    body.add_child(slider)

@@ -19,6 +19,9 @@ var riding: bool = false
 var map_view: bool = false
 var available: bool = false
 var secondary_open: bool = false
+var control_scale: float = 1.0
+var stick_right: bool = false
+const APP_THEME = preload("res://scripts/ui_theme.gd")
 
 static var _touch_available: int = -1
 static func touch_device() -> bool:
@@ -45,9 +48,6 @@ func _ready() -> void:
         button.focus_mode = Control.FOCUS_NONE
         button.mouse_filter = Control.MOUSE_FILTER_IGNORE
         button.add_theme_font_size_override("font_size", 14)
-        var style := preload("res://scripts/ui_theme.gd").surface(Color(0.98, 0.99, 0.96, 0.94), 26, 10)
-        button.add_theme_color_override("font_color", Color("17332e"))
-        button.add_theme_stylebox_override("normal", style)
         var action: String = item[0]
         button.pressed.connect(_activate.bind(action))
         surface.add_child(button)
@@ -59,9 +59,11 @@ func _ready() -> void:
 func _layout() -> void:
     reset_fingers()
     var size: Vector2 = get_viewport().get_visible_rect().size
-    stick_radius = 40.0
+    stick_radius = 40.0 * control_scale
     center = Vector2(72, size.y - 192)
     if size.y < 460: center = Vector2(72, size.y - 143)
+    center.y = minf(center.y, size.y - 130 - stick_radius - 9)
+    if stick_right: center.x = size.x - center.x
     var positions := {"interact": Vector2(size.x - 134, size.y - 190), "jump": Vector2(size.x - 66, size.y - 252), "more": Vector2(size.x - 124, size.y - 252), "sit": Vector2(size.x - 134, size.y - 310), "run": Vector2(16, size.y - 288), "map": Vector2(size.x - 80, 80), "view": Vector2(size.x - 170, size.y - 252)}
     for key in buttons:
         var button: Button = buttons[key]
@@ -69,6 +71,15 @@ func _layout() -> void:
         button.size = Vector2(118, 48)
         if key in ["jump", "more", "map"]: button.size = Vector2(50, 50)
         elif key == "view": button.size.x = 154
+        button.size = button.size.max(Vector2.ONE * (44.0 / control_scale))
+        button.scale = Vector2.ONE * control_scale
+        var anchor := Vector2(16 if key == "run" else size.x - 16, size.y - 130)
+        button.position = anchor + (button.position - anchor) * control_scale
+        button.position.x = clampf(button.position.x, 8, size.x - button.size.x * control_scale - 8)
+        button.position.y = clampf(button.position.y, 80, size.y - 130 - button.size.y * control_scale)
+        if size.y < 460 and key in ["sit", "run"]:
+            button.position = Vector2(size.x * 0.5 + (8 if key == "sit" else -button.size.x * control_scale - 8), 80)
+        if stick_right: button.position.x = size.x - button.position.x - button.size.x * control_scale
     surface.queue_redraw()
 
 func _activate(action: String) -> void:
@@ -124,9 +135,9 @@ func _notification(what: int) -> void:
 func _draw_stick() -> void:
     if riding or map_view or not enabled:
         return
-    surface.draw_circle(center, stick_radius + 9, Color(1, 1, 1, 0.20))
-    surface.draw_arc(center, stick_radius + 9, 0, TAU, 40, Color(1, 1, 1, 0.45), 2)
-    surface.draw_circle(center + knob, 19, Color(1, 1, 1, 0.65))
+    surface.draw_circle(center, stick_radius + 9, Color(APP_THEME.colors.surface, 0.8))
+    surface.draw_arc(center, stick_radius + 9, 0, TAU, 40, APP_THEME.colors.accent, 2)
+    surface.draw_circle(center + knob, 19 * control_scale, APP_THEME.colors.accent)
 
 func _input(event: InputEvent) -> void:
     if not enabled:
@@ -137,7 +148,7 @@ func _input(event: InputEvent) -> void:
                 var action: String = str(button_fingers[event.index])
                 button_fingers.erase(event.index)
                 buttons[action].modulate = Color.WHITE
-                if buttons[action].visible and buttons[action].get_global_rect().has_point(event.position):
+                if buttons[action].visible and Rect2(buttons[action].position, buttons[action].size * buttons[action].scale).has_point(event.position):
                     _activate(action)
                 get_viewport().set_input_as_handled()
                 return
@@ -153,7 +164,7 @@ func _input(event: InputEvent) -> void:
             return
         for action in buttons:
             var button: Button = buttons[action]
-            if button.visible and button.get_global_rect().has_point(event.position):
+            if button.visible and Rect2(button.position, button.size * button.scale).has_point(event.position):
                 button_fingers[event.index] = action
                 button.modulate = Color(0.65, 1.0, 0.85)
                 get_viewport().set_input_as_handled()
@@ -167,7 +178,7 @@ func _input(event: InputEvent) -> void:
             move_finger = event.index
             _move_stick(event.position)
             get_viewport().set_input_as_handled()
-        elif look_finger < 0 and event.position.x > get_viewport().get_visible_rect().size.x * 0.43 and event.position.y > (90 if get_viewport().get_visible_rect().size.y < 500 else 110):
+        elif look_finger < 0 and (event.position.x < get_viewport().get_visible_rect().size.x * 0.57 if stick_right else event.position.x > get_viewport().get_visible_rect().size.x * 0.43) and event.position.y > (90 if get_viewport().get_visible_rect().size.y < 500 else 110):
             look_finger = event.index
             look_travel = 0
             get_viewport().set_input_as_handled()

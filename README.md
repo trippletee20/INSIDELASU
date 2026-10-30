@@ -51,7 +51,13 @@ save. Clearing site data removes local progress. The game wallet uses fictional 
 
 The [mobile expansion](docs/MOBILE_EXPANSION.md) adds 24 interior themes, 168 building challenges, nonblocking shuttle traffic and passenger cabin views. [Billboard advertising](docs/BILLBOARD_ADVERTISING.md) has a local artwork preview; real bookings through Paystack and Flutterwave are planned for after launch and are not enabled.
 
+## Theme and Settings
+
+Open Settings from the campus dashboard or phone, or press **F2** on desktop. Choose System, Light or Dark appearance and adjust device controls, rendering quality and volume. Preferences stay with your local student save. See [UI theme and Settings](docs/UI_THEME_AND_SETTINGS.md) for controls, implementation and validation limits.
+
 ## Develop
+
+Start with the [project brief](docs/PROJECT_BRIEF.md) for architecture, folders, build/test commands and limitations. Historical root-level reports are preserved in [docs/archive/](docs/archive/).
 
 Use official **Godot 4.6.3 stable** and Python 3.11+. The full setup, release
 evidence and limitations are in [docs/BROWSER_RELEASE.md](docs/BROWSER_RELEASE.md).

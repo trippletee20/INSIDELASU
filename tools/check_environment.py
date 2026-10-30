@@ -76,6 +76,8 @@ run("occupied-traffic", ["godot", "--headless", "--path", str(ROOT), "--script",
 run("mobile-gameplay", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/mobile_gameplay_regression.gd"], "MOBILE GAMEPLAY:", fresh_save=True)
 run("ecosystem", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/ecosystem_regression.gd"], "ECOSYSTEM:", fresh_save=True)
 run("modern-ui", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/modern_ui_regression.gd"], "MODERN UI:", fresh_save=True)
+run("theme-settings", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/theme_settings_regression.gd"], "THEME SETTINGS:", fresh_save=True)
+run("performance", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/performance_regression.gd"], "PERFORMANCE REGRESSION:", fresh_save=True)
 run("supabase-client", [sys.executable, "tools/test_supabase_client.py"], "SUPABASE CLIENT: 12 checks, 0 failures")
 run("social-service", [sys.executable, "server/test_app.py"], "OK")
 run("social-client", [sys.executable, "tools/test_social_client.py"], "SOCIAL CLIENT: 15 checks, 0 failures")
