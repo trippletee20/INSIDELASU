@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Real WASM cold/warm starts, compressed transfer and public runtime cache."""
 from pathlib import Path
-import functools,http.server,json,os,shutil,threading
+import functools,http.server,json,os,re,shutil,threading
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];requests=[]
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -20,13 +20,17 @@ try:
   page.wait_for_function('window.lasuBootMetrics.architectureReadyAt',timeout=120000)
   assert any(path.endswith('.wasm.gz') for path in requests),'Compressed engine was not used'
   assert not any(path.endswith('.wasm') for path in requests),'Cold start downloaded the large raw engine'
-  cached=page.evaluate("async()=>{const c=await caches.open('inside-lasu-runtime-v1');return (await c.keys()).map(r=>r.url)}")
+  cache_name=re.search(r"const CACHE='([^']+)'",(ROOT/'build/web/runtime-cache.js').read_text()).group(1)
+  cached=page.evaluate("async name=>{const c=await caches.open(name);return (await c.keys()).map(r=>r.url)}",cache_name)
   assert any(url.endswith('.wasm') for url in cached) and any(url.endswith('.pck') for url in cached)
-  before=len([r for r in requests if r.endswith('.wasm.gz') or r.endswith('.pck')])
+  assert any(path.endswith('.pck.gz') for path in requests),'Compressed game pack was not used'
+  assert not any(path.endswith('.pck') for path in requests),'Cold start downloaded the raw game pack'
+  asset_suffixes=('.wasm','.wasm.gz','.pck','.pck.gz')
+  before=sum(r.endswith(asset_suffixes) for r in requests)
   page.reload(wait_until='networkidle',timeout=120000)
   page.wait_for_function("window.lasuBootMetrics?.worldReadyAt && document.querySelector('#boot').hidden",timeout=120000)
   warm=page.evaluate('window.lasuBootMetrics')
-  after=len([r for r in requests if r.endswith('.wasm.gz') or r.endswith('.pck')])
+  after=sum(r.endswith(asset_suffixes) for r in requests)
   assert before==after,'Warm visit re-downloaded engine or game pack'
   assert not errors,errors
   result={'cold':cold,'warm':warm,'compressed_engine_bytes':next((ROOT/'build/web/play').glob('engine-*.wasm.gz')).stat().st_size,'raw_engine_bytes':(ROOT/'build/web/play/index.wasm').stat().st_size,'warm_asset_network_requests':after-before,'errors':errors,'target':'local Chromium software-rendered mobile emulation, not physical Android or mobile-network timing'}
