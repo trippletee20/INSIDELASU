@@ -24,6 +24,7 @@ var world_labels
 var student_ui
 var campus_phone
 var campus_social
+var campus_npcs
 var active_campus_room: int = -1
 const CAMPUS_ROOMS = preload("res://scripts/campus_rooms.gd")
 const MOBILE_CONTROLS = preload("res://scripts/mobile_controls.gd")
@@ -191,6 +192,9 @@ func _ready() -> void:
         if not active_interior_site.is_empty(): _open_task_panel(active_interior_site)
         elif player.nearby_feature != null: show_interaction(str(player.nearby_feature.get_meta("campus_name", "")))
         else: campus_phone.open("Places & tasks"))
+    campus_npcs = preload("res://scripts/campus_npcs.gd").new()
+    campus_npcs.game = self
+    add_child(campus_npcs)
     _create_entrance_markers()
     APP_THEME.bind(self)
     SETTINGS.apply(self)
@@ -1634,8 +1638,10 @@ func _update_hud() -> void:
         message = "Arrived — tap Alight / press E to leave" if transit_system.has_arrived(ride_bus) else "Onboard: " + transit_system.next_stop_name(ride_bus)
     if not notice.is_empty():
         message += "\n" + notice
+    if campus_npcs != null and not campus_npcs.hint().is_empty(): message = campus_npcs.hint()
     hud_label.text = message
     student_ui.toast.text = notice.get_slice("! ", 0).get_slice(". ", 0).left(88) if not student_ui.hud_expanded else ""
+    if notice.is_empty() and campus_npcs != null: student_ui.toast.text = campus_npcs.hint()
     student_ui.toast.visible = not student_ui.toast.text.is_empty()
     student_ui.map_button.text = "Back" if overview_on else "Map"
     student_ui.update_context()
@@ -2495,6 +2501,7 @@ func social_location() -> String:
     return active_interior_site + ":" + str(active_interior_floor) + ":" + str(active_campus_room)
 
 func try_campus_interaction(walker: Node3D) -> bool:
+    if campus_npcs != null and campus_npcs.try_interact(walker): return true
     if campus_phone == null: return false
     for peer in get_tree().get_nodes_in_group("online_students"):
         if peer.global_position.distance_to(walker.global_position) < 3:
@@ -2515,9 +2522,9 @@ func try_campus_interaction(walker: Node3D) -> bool:
     elif action == "rooms":
         _open_task_panel(active_interior_site)
     elif action == "staff":
-        _open_task_panel(active_interior_site)
-        task_title_label.text = str(nearest.get_meta("role", "Campus staff"))
-        task_status_label.text = str(nearest.get_meta("dialogue", "Welcome. Choose a service or activity below."))
+        notice = campus_npcs.config.dialogue.closed_short
+        notice_timer = 4
+
     else:
         _open_task_panel(active_interior_site)
     return true

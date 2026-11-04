@@ -1,24 +1,16 @@
 extends RefCounted
 ## Each destination is its own walkable scene; only the active room is built.
-const KITS: Dictionary = {
-    "lecture": [["Lecture theatre", "lecture", "Course rep"], ["Seminar room", "education", "Peer tutor"], ["Staff office", "management", "Academic adviser"]],
-    "science": [["Teaching laboratory", "science", "Lab technologist"], ["Research room", "computing", "Research assistant"], ["Seminar theatre", "lecture", "Peer tutor"]],
-    "library": [["Silent reading room", "library", "Librarian"], ["Digital research suite", "computing", "Research assistant"], ["Study group room", "education", "Peer tutor"]],
-    "hostel": [["Residents lounge", "lounge", "Hall representative"], ["Shared kitchen", "food", "Kitchen steward"], ["Laundry room", "laundry", "Laundry attendant"]],
-    "law": [["Moot courtroom", "law", "Moot coordinator"], ["Law reading room", "library", "Librarian"], ["Legal clinic", "management", "Student adviser"]],
-    "clinic": [["Consultation room", "clinic", "Campus nurse"], ["Pharmacy", "market", "Pharmacist"], ["Wellbeing lounge", "lounge", "Wellbeing adviser"]],
-    "market": [["Campus essentials shop", "market", "Shopkeeper"], ["Print and copy studio", "computing", "Print attendant"], ["Snack corner", "food", "Food vendor"]],
-    "food": [["Dining room", "food", "Food vendor"], ["Kitchen counter", "food", "Kitchen steward"], ["Student hangout", "lounge", "Hall representative"]],
-    "studio": [["Recording booth", "studio", "Studio producer"], ["Editing suite", "computing", "Media tutor"], ["Interview lounge", "lounge", "Student journalist"]],
-    "sports": [["Training court", "sports", "Campus coach"], ["Team changing room", "hostel", "Team captain"], ["Club meeting room", "education", "Club organiser"]],
-    "arts": [["Creative studio", "arts", "Studio tutor"], ["Rehearsal room", "auditorium", "Drama coordinator"], ["Project gallery", "innovation", "Gallery steward"]],
-    "bank": [["Service lounge", "bank", "Finance adviser"], ["Financial literacy room", "education", "Peer tutor"], ["Customer support", "management", "Service adviser"]],
-    "transport": [["Transport desk", "transport", "Transport marshal"], ["Logistics studio", "computing", "Research assistant"], ["Driver rest lounge", "lounge", "Hall representative"]]
-}
+static var npc_data: Dictionary = {}
+static func data() -> Dictionary:
+    if npc_data.is_empty(): npc_data = JSON.parse_string(FileAccess.get_file_as_string("res://data/npc_life.json"))
+    return npc_data
+
 static func rooms(theme: String) -> Array:
-    if KITS.has(theme):
-        return KITS[theme].duplicate(true)
-    return [["Main activity room", theme, "Student adviser"], ["Seminar room", "education", "Peer tutor"], ["Community lounge", "lounge", "Club organiser"]]
+    var definitions: Dictionary = data()
+    if definitions.room_kits.has(theme): return definitions.room_kits[theme].duplicate(true)
+    var result: Array = definitions.default_rooms.duplicate(true)
+    result[0][1] = theme
+    return result
 
 static func for_site(site: String, designs: Dictionary) -> Array:
     return rooms(str(designs.get(site, {}).get("theme", "lecture")))

@@ -25,13 +25,21 @@ for key, directory in [("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache"
 version = subprocess.check_output(["godot", "--version"], env=env, text=True).strip()
 if not version.startswith("4.6.3.stable."):
     raise SystemExit("Godot 4.6.3 stable and matching web templates are required")
-for args in [["--headless", "--editor", "--path", str(ROOT), "--quit"],
-             ["--headless", "--path", str(ROOT), "--export-release", "Web", str(OUT / "play/index.html")]]:
-    result = subprocess.run(["godot", *args], env=env, cwd=ROOT, text=True,
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=180)
-    print(result.stdout, end="")
-    if result.returncode or re.search(r"(?m)^(SCRIPT ERROR:|ERROR:)", result.stdout):
-        raise SystemExit(result.returncode or 1)
+# Export compact JSON without changing authoring data or protected source hashes.
+original_json = {p: p.read_bytes() for p in (ROOT / "data").glob("*.json")}
+try:
+    for path, content in original_json.items():
+        path.write_text(json.dumps(json.loads(content), ensure_ascii=False, separators=(",", ":")) + "\n")
+    for args in [["--headless", "--editor", "--path", str(ROOT), "--quit"],
+                 ["--headless", "--path", str(ROOT), "--export-release", "Web", str(OUT / "play/index.html")]]:
+        result = subprocess.run(["godot", *args], env=env, cwd=ROOT, text=True,
+                                stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=180)
+        print(result.stdout, end="")
+        if result.returncode or re.search(r"(?m)^(SCRIPT ERROR:|ERROR:)", result.stdout):
+            raise SystemExit(result.returncode or 1)
+finally:
+    for path, content in original_json.items():
+        path.write_bytes(content)
 # A changed game pack gets a new URL, so returning phones do not reuse an old
 # cached keyboard-only pack. Keep index.pck for existing cached launch pages.
 pack = OUT / "play/index.pck"

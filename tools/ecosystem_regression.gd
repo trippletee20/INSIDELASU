@@ -22,6 +22,8 @@ func run() -> void:
         game.profile_name_input.text = "Campus ecosystem tester"
         game._create_student_profile()
     await process_frame
+    while not game.campus_npcs.ready_for_npcs: await process_frame
+    game.campus_npcs.hour_override = 12
     var phone = game.campus_phone
     check(not game.student_ui.hud_expanded and not game.student_ui.footer_panel.visible, "default HUD leaves the world clear")
     phone.open()
