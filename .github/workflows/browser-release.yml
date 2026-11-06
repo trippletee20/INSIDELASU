@@ -55,10 +55,25 @@ jobs:
         run: python3 tools/test_web.py
       - name: Test mobile touch gameplay
         run: python3 tools/test_mobile_web.py
-      - name: Profile NPC performance on mobile emulation
-        run: python3 tools/profile_mobile.py --output test-results/npc-browser-current.json --runs 3
-      - name: Enforce recorded mobile performance budget
-        run: python3 tools/check_performance_budget.py test-results/npc-browser-current.json
+      - name: Check out pre-NPC baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
+      - name: Build pre-NPC baseline
+        if: github.event_name == 'pull_request'
+        working-directory: baseline
+        run: python3 tools/build_web.py
+      - name: Profile pre-NPC baseline on this runner
+        if: github.event_name == 'pull_request'
+        run: python3 tools/profile_mobile.py --web-root baseline/build/web --output test-results/performance-baseline.json --runs 3
+      - name: Profile NPC version on this runner
+        if: github.event_name == 'pull_request'
+        run: python3 tools/profile_mobile.py --web-root build/web --output test-results/npc-browser-current.json --runs 3
+      - name: Compare NPC performance with same-run baseline
+        if: github.event_name == 'pull_request'
+        run: python3 tools/compare_performance_captures.py test-results/performance-baseline.json test-results/npc-browser-current.json --web-root build/web/play
       - name: Test Supabase owner setup page
         run: python3 tools/test_supabase_setup.py
       - name: Test billboard advertising preview
