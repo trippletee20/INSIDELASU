@@ -350,19 +350,8 @@ func show_campus_room(site: String, definition: Array, floor_index: int) -> Vect
     _label(current_floor, site + " · " + str(definition[0]), Vector3(0, 3.5, -10), 30)
     var staff: Node3D = _action_point(current_floor, "staff", str(definition[2]) + " · INTERACT", Vector3(-3.5, 0, 8))
     staff.set_meta("role", str(definition[2]))
-    var dialogue: String = "Welcome to " + str(definition[0]) + ". I can help you find the activities on this floor."
-    if theme in ["lecture", "education", "library"]:
-        dialogue += " Use the notebook point to take your own notes, and choose a practice activity below."
-    elif theme in ["food", "market", "bank", "laundry"]:
-        dialogue += " Prices and requirements are shown before each service. All purchases use game money."
-    elif theme == "clinic":
-        dialogue += " Visit the wellbeing activities below; these are fictional game services."
-    staff.set_meta("dialogue", dialogue)
-    _shape(staff, "StaffTorso", Vector3(0, 1.05, 0), Vector3(0.65, 0.8, 0.35), accent)
-    _shape(staff, "StaffHead", Vector3(0, 1.65, 0), Vector3(0.43, 0.46, 0.4), Color("865434"))
-    for xx in [-0.18, 0.18]:
-        _shape(staff, "StaffLeg", Vector3(xx, 0.38, 0), Vector3(0.24, 0.75, 0.27), Color("243345"))
-        _shape(staff, "StaffArm", Vector3(xx * 2.4, 1.0, 0), Vector3(0.18, 0.7, 0.25), accent.darkened(0.2))
+    staff.set_meta("npc_role", str(preload("res://scripts/campus_rooms.gd").data().room_role_map.get(theme,"adviser")))
+    staff.set_meta("dialogue", preload("res://scripts/campus_rooms.gd").data().roles[staff.get_meta("npc_role")].lines[0])
     var object_action: String = "notes" if theme in ["lecture", "education", "library", "computing", "science", "arts", "studio"] else "tasks"
     var object_name: String = "NOTEBOOK · INTERACT" if object_action == "notes" else "SERVICE COUNTER · INTERACT"
     var point: Node3D = _action_point(current_floor, object_action, object_name, Vector3(3.5, 0, 8))
