@@ -23,12 +23,14 @@ def summarise(capture):
     pss = [run["browser_pss_peak_bytes"] for run in runs]
     if any(value is None for value in pss):
         raise ValueError("Browser process memory could not be measured in every run")
+    # Compare the median of three per-run peaks. A single transient OS/browser
+    # allocation can inflate one peak without representing a repeatable game cost.
     return {
         "stages": stages,
         "cold_world_ready_ms": statistics.median(run["cold_world_ready_ms"] for run in runs),
         "cold_architecture_ready_ms": statistics.median(run["cold_boot"]["architectureReadyAt"] for run in runs),
         "warm_world_ready_ms": statistics.median(run["warm_boot"]["worldReadyAt"] for run in runs),
-        "browser_pss_peak_bytes": max(pss),
+        "browser_pss_peak_bytes": statistics.median(pss),
     }
 
 def main():
