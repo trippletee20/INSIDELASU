@@ -19,6 +19,7 @@ var ready_for_npcs: bool = false
 var draw_updates: int = 0
 var routes_requested: int = 0
 var render_owners: Array[String] = []
+var palette_owners: Array[String] = []
 
 func _ready() -> void:
     config = preload("res://scripts/campus_rooms.gd").data()
@@ -60,6 +61,7 @@ func _initialise() -> void:
     batch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
     batch.multimesh.visible_instance_count = 0
     render_owners.resize(mini(25, int(config.pool.maximum)))
+    palette_owners.resize(mini(25, int(config.pool.maximum)))
     for i in range(mini(25,int(config.pool.maximum))):
         pool.append({"id":"","position":Vector3.ZERO,"yaw":0.0,"route":PackedVector3Array(),"step":0,"role":"student","site":"","activity":"phone","destination":"","routine":-1,"special":false,"slot":0,"services":false,"phase":i*0.7,"color":Color.WHITE})
     ready_for_npcs = true
@@ -153,6 +155,9 @@ func _process(delta: float) -> void:
 
 func clear_pool() -> void:
     for npc in pool:npc.id=""
+    for i in render_owners.size():
+        render_owners[i] = ""
+        palette_owners[i] = ""
     talking_id=""
     if batch.multimesh!=null:batch.multimesh.visible_instance_count=0
 
@@ -251,30 +256,46 @@ func _route_to(npc: Dictionary, goal: int) -> bool:
     npc.step=0
     return true
 
-func _part(index: int, base: Transform3D, at: Vector3, size: Vector3, color: Color, tilt: float=0.0) -> void:
+func _part(index: int, base: Transform3D, at: Vector3, size: Vector3, tilt: float=0.0) -> void:
+    # Palette colours are written only when a pooled slot changes owner or pose.
     batch.multimesh.set_instance_transform(index,base*Transform3D(Basis(Vector3.RIGHT,tilt).scaled(size),at))
-    batch.multimesh.set_instance_color(index,color)
 
-func _draw(npc: Dictionary,index: int) -> void:
-    var moving: bool = npc.step<npc.route.size()
-    var pose: String = "walk" if moving else str(npc.activity)
-    var seated: bool = pose in ["sit","read"]
-    var y: float = -0.45 if seated else 0
-    var base := Transform3D(Basis(Vector3.UP,float(npc.yaw)),npc.position)
-    var color: Color = npc.color
+func _set_palette(offset: int, color: Color, pose: String) -> void:
     var dark := Color("273549")
-    var swing: float = sin(elapsed*6+npc.phase)*0.45 if moving and npc.position.distance_to(game.player.global_position)<20 else 0
-    var offset: int = index*PARTS
-    _part(offset,base,Vector3(0,1.12+y,0),Vector3(0.52,0.65,0.3),color)
-    _part(offset+1,base,Vector3(0,1.65+y,0),Vector3(0.32,0.38,0.32),Color("965e3a"))
+    batch.multimesh.set_instance_color(offset, color)
+    batch.multimesh.set_instance_color(offset + 1, Color("965e3a"))
+    batch.multimesh.set_instance_color(offset + 2, dark)
+    batch.multimesh.set_instance_color(offset + 3, dark)
+    batch.multimesh.set_instance_color(offset + 4, color)
+    batch.multimesh.set_instance_color(offset + 5, color)
+    batch.multimesh.set_instance_color(offset + 6, Color("dddac5") if pose == "read" else dark)
+    batch.multimesh.set_instance_color(offset + 7, Color("76583a"))
+    batch.multimesh.set_instance_color(offset + 8, dark)
+    batch.multimesh.set_instance_color(offset + 9, dark)
+
+func _draw(npc: Dictionary, index: int) -> void:
+    var moving: bool = npc.step < npc.route.size()
+    var pose: String = "walk" if moving else str(npc.activity)
+    var seated: bool = pose in ["sit", "read"]
+    var y: float = -0.45 if seated else 0.0
+    var base := Transform3D(Basis(Vector3.UP, float(npc.yaw)), npc.position)
+    var color: Color = npc.color
+    var swing: float = sin(elapsed * 6.0 + npc.phase) * 0.45 if moving and npc.position.distance_to(game.player.global_position) < 20.0 else 0.0
+    var offset: int = index * PARTS
+    var palette_key: String = str(npc.id) + "|" + pose
+    if palette_owners[index] != palette_key:
+        _set_palette(offset, color, pose)
+        palette_owners[index] = palette_key
+    _part(offset, base, Vector3(0, 1.12 + y, 0), Vector3(0.52, 0.65, 0.3))
+    _part(offset + 1, base, Vector3(0, 1.65 + y, 0), Vector3(0.32, 0.38, 0.32))
     for side in range(2):
-        var x: float = -1 if side==0 else 1
-        _part(offset+2+side,base,Vector3(x*0.15,0.38,-0.28 if seated else 0),Vector3(0.21,0.7,0.23),dark,PI/2 if seated else swing*x)
-        _part(offset+4+side,base,Vector3(x*0.35,1.05+y,-0.18 if pose in ["phone","read"] else 0),Vector3(0.16,0.6,0.18),color,-0.8 if pose in ["phone","read","chat"] else -swing*x)
-    _part(offset+6,base,Vector3(0,1.12+y,-0.4),Vector3(0.32,0.035,0.25) if pose=="read" else Vector3(0.12,0.2,0.025) if pose=="phone" else Vector3.ZERO,Color("dddac5") if pose=="read" else dark)
-    _part(offset+7,base,Vector3(0,0.45,0.1),Vector3(0.65,0.12,0.6) if seated else Vector3.ZERO,Color("76583a"))
-    _part(offset+8,base,Vector3(-0.25,0.22,0.1),Vector3(0.08,0.44,0.5) if seated else Vector3.ZERO,dark)
-    _part(offset+9,base,Vector3(0.25,0.22,0.1),Vector3(0.08,0.44,0.5) if seated else Vector3.ZERO,dark)
+        var x: float = -1.0 if side == 0 else 1.0
+        _part(offset + 2 + side, base, Vector3(x * 0.15, 0.38, -0.28 if seated else 0.0), Vector3(0.21, 0.7, 0.23), PI / 2.0 if seated else swing * x)
+        _part(offset + 4 + side, base, Vector3(x * 0.35, 1.05 + y, -0.18 if pose in ["phone", "read"] else 0.0), Vector3(0.16, 0.6, 0.18), -0.8 if pose in ["phone", "read", "chat"] else -swing * x)
+    _part(offset + 6, base, Vector3(0, 1.12 + y, -0.4), Vector3(0.32, 0.035, 0.25) if pose == "read" else Vector3(0.12, 0.2, 0.025) if pose == "phone" else Vector3.ZERO)
+    _part(offset + 7, base, Vector3(0, 0.45, 0.1), Vector3(0.65, 0.12, 0.6) if seated else Vector3.ZERO)
+    _part(offset + 8, base, Vector3(-0.25, 0.22, 0.1), Vector3(0.08, 0.44, 0.5) if seated else Vector3.ZERO)
+    _part(offset + 9, base, Vector3(0.25, 0.22, 0.1), Vector3(0.08, 0.44, 0.5) if seated else Vector3.ZERO)
 
 func nearest(walker: Node3D) -> int:
     var result: int = -1

@@ -4,7 +4,7 @@
     "maximum": 25,
     "quality_caps": {
       "low": 12,
-      "medium": 20,
+      "medium": 16,
       "high": 25
     },
     "radius": 48,
