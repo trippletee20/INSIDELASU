@@ -31,6 +31,7 @@ func _process(_delta: float) -> void:
     if elapsed < 1.0: return
     var sample: Dictionary = {
         "stage": stage,
+        "npc_count": get_parent().campus_npcs.batch.multimesh.visible_instance_count / 10 if get_parent().campus_npcs.ready_for_npcs else 0,
         "fps": frames / elapsed,
         "max_frame_ms": longest_ms,
         "draw_calls": Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
@@ -45,7 +46,7 @@ func _process(_delta: float) -> void:
 
 func _scenario(delta: float) -> void:
     var game: Node = get_parent()
-    if not game.architecture_queue.is_empty(): return
+    if not game.architecture_queue.is_empty() or not game.campus_npcs.ready_for_npcs: return
     if not started:
         # This is only used in an isolated benchmark browser context.
         if not game.profile_data.is_empty():

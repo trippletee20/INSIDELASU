@@ -8,8 +8,6 @@ var anchors: Array[Dictionary] = []
 var graph := AStar3D.new()
 var batch := MultiMeshInstance3D.new()
 var footprints: Array[Rect2] = []
-var lookup: Dictionary = {}
-var cells: Dictionary = {}
 var timer: float = 0
 var pose_timer: float = 0
 var elapsed: float = 0
@@ -20,26 +18,35 @@ var decisions: int = 0
 var ready_for_npcs: bool = false
 var draw_updates: int = 0
 var routes_requested: int = 0
+var render_owners: Array[String] = []
 
 func _ready() -> void:
     config = preload("res://scripts/campus_rooms.gd").data()
-    set_process(false)
+    add_child(batch)
     call_deferred("_initialise")
 
 func _initialise() -> void:
-    await _build_paths()
+    var rows: Array = JSON.parse_string(FileAccess.get_file_as_string("res://data/npc_paths.json"))
+    graph.reserve_space(rows.size())
+    for id in rows.size():
+        var row: Array = rows[id]
+        graph.add_point(id, Vector3(row[0] / 100.0, 0.13, row[1] / 100.0))
+        for j in range(2, row.size()):
+            graph.connect_points(id, int(row[j]))
     var layout: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(game.LAYOUT_PATH))
+    var positions := {}
+    for feature in layout.features:
+        var center := Vector2(feature.position[0], feature.position[1]) * float(game.WORLD_SCALE)
+        positions[int(feature.id)] = Vector3(center.x, 0, center.y)
+        if float(feature.height) > 0:
+            var size := Vector2(feature.size[0], feature.size[1]) * float(game.WORLD_SCALE)
+            footprints.append(Rect2(center - size / 2, size).grow(0.65))
     for record in config.locations:
-        for feature in layout.features:
-            if int(feature.id) != int(record.feature_id): continue
-            var p: Vector3 = Vector3(feature.position[0],0,feature.position[1])*game.WORLD_SCALE
-            var anchor: Dictionary = record.duplicate(true)
-            anchor["point"] = graph.get_closest_point(p)
-            if anchor.point < 0: continue
-            anchor["position"] = graph.get_point_position(anchor.point)
-            anchor["spots"] = _activity_spots(anchor)
-            anchors.append(anchor)
-        await get_tree().process_frame
+        var anchor: Dictionary = record.duplicate()
+        anchor["point"] = graph.get_closest_point(positions[int(record.feature_id)])
+        anchor["position"] = graph.get_point_position(anchor.point)
+        anchor["spots"] = _activity_spots(anchor)
+        anchors.append(anchor)
     var material := StandardMaterial3D.new()
     material.vertex_color_use_as_albedo = true
     material.roughness = 1.0
@@ -52,7 +59,7 @@ func _initialise() -> void:
     batch.multimesh.instance_count = mini(25,int(config.pool.maximum))*PARTS
     batch.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
     batch.multimesh.visible_instance_count = 0
-    add_child(batch)
+    render_owners.resize(mini(25, int(config.pool.maximum)))
     for i in range(mini(25,int(config.pool.maximum))):
         pool.append({"id":"","position":Vector3.ZERO,"yaw":0.0,"route":PackedVector3Array(),"step":0,"role":"student","site":"","activity":"phone","destination":"","routine":-1,"special":false,"slot":0,"services":false,"phase":i*0.7,"color":Color.WHITE})
     ready_for_npcs = true
@@ -62,65 +69,12 @@ func _path_clear(a: Vector3,b: Vector3) -> bool:
     var p := Vector2(a.x,a.z)
     var q := Vector2(b.x,b.z)
     for box in footprints:
+        if not box.intersects(Rect2(p, Vector2.ZERO).expand(q), true): continue
         if box.has_point(p) or box.has_point(q): return false
         var corners: Array[Vector2] = [box.position,Vector2(box.end.x,box.position.y),box.end,Vector2(box.position.x,box.end.y)]
         for i in range(4):
             if Geometry2D.segment_intersects_segment(p,q,corners[i],corners[(i+1)%4]) != null: return false
     return true
-
-func _point(p: Vector3) -> int:
-    var key := Vector2(snappedf(p.x,0.01),snappedf(p.z,0.01))
-    if lookup.has(key): return lookup[key]
-    var id: int = graph.get_point_count()
-    graph.add_point(id,Vector3(key.x,0.13,key.y))
-    lookup[key] = id
-    var cell := Vector2i(floori(key.x/10),floori(key.y/10))
-    if not cells.has(cell): cells[cell] = []
-    cells[cell].append(id)
-    return id
-
-func _build_paths() -> void:
-    var layout: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(game.LAYOUT_PATH))
-    for feature in layout.features:
-        if float(feature.height)<=0: continue
-        var center: Vector2 = Vector2(feature.position[0],feature.position[1])*game.WORLD_SCALE
-        var size: Vector2 = Vector2(feature.size[0],feature.size[1])*game.WORLD_SCALE
-        footprints.append(Rect2(center-size/2,size).grow(0.65))
-    var roads: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(game.ROAD_NETWORK_PATH))
-    # Slice initial graph work over frames. No duplicate map is shipped in the pack.
-    for road in roads.road_routes:
-        for i in range(road.points.size()-1):
-            var a: Vector3 = Vector3(road.points[i][0],0,road.points[i][1])*game.WORLD_SCALE
-            var b: Vector3 = Vector3(road.points[i+1][0],0,road.points[i+1][1])*game.WORLD_SCALE
-            var offset: Vector3 = (b-a).normalized().cross(Vector3.UP)*4.7
-            for side in [-1,1]:
-                var start: Vector3 = a+offset*side
-                var end: Vector3 = b+offset*side
-                if not _path_clear(start,end): continue
-                var count: int = maxi(1,ceili(start.distance_to(end)/16))
-                var previous: int = -1
-                for j in range(count+1):
-                    var id: int = _point(start.lerp(end,float(j)/count))
-                    if previous>=0 and previous!=id: graph.connect_points(previous,id)
-                    previous=id
-            if i%8==0: await get_tree().process_frame
-        await get_tree().process_frame
-    for id in graph.get_point_ids():
-        var p: Vector3 = graph.get_point_position(id)
-        var cell := Vector2i(floori(p.x/10),floori(p.z/10))
-        var nearby: Array = []
-        for x in range(-1,2):
-            for z in range(-1,2):
-                for other in cells.get(cell+Vector2i(x,z),[]):
-                    var d: float = p.distance_squared_to(graph.get_point_position(other))
-                    if other!=id and d<100: nearby.append([d,other])
-        nearby.sort_custom(func(a,b):return a[0]<b[0])
-        for entry in nearby.slice(0,3):
-            if not graph.are_points_connected(id,entry[1]) and _path_clear(p,graph.get_point_position(entry[1])):
-                graph.connect_points(id,entry[1])
-        if id%24==0: await get_tree().process_frame
-    lookup.clear()
-    cells.clear()
 
 func _activity_spots(anchor: Dictionary) -> Array:
     var result: Array = []
@@ -188,7 +142,11 @@ func _process(delta: float) -> void:
             npc.yaw=lerp_angle(npc.yaw,atan2(-direction.x,-direction.z),minf(1,step_delta*8))
             npc.position=npc.position.move_toward(target,step_delta*float(config.pool.speed))
             if npc.position.distance_to(target)<0.05: npc.step+=1
-        _draw(npc,count)
+        if npc.step < npc.route.size() or render_owners[count] != npc.id or npc.get("draw_activity", "") != npc.activity or npc.get("draw_position") != npc.position:
+            _draw(npc,count)
+            render_owners[count] = npc.id
+            npc.draw_activity = npc.activity
+            npc.draw_position = npc.position
         count+=1
     batch.multimesh.visible_instance_count=count*PARTS
     draw_updates+=1
