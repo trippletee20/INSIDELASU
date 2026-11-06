@@ -66,7 +66,33 @@ func run() -> void:
         check(not game.task_status_label.text.is_empty(), "chat")
         buttons[2].pressed.emit()
         check(game.task_title_label.text == "AJ MARKET", "vendor opens site tasks and shop")
+        # Services respect the existing rule that purchases happen inside.
+        game._enter_interior("AJ Market")
+        game._enter_campus_room(0)
+        await process_frame
+        crowd.clear_pool()
+        crowd._refresh()
+        var bought := false
+        for staff in crowd.pool:
+            if staff.id == "" or staff.role != "vendor": continue
+            game.player.global_position = staff.position
+            check(game.try_campus_interaction(game.player), "indoor vendor interaction")
+            game.task_buttons_container.get_child(2).pressed.emit()
+            for button in game.task_buttons_container.get_children():
+                if button.get_child_count() == 0 or not button.get_child(0) is Label: continue
+                var caption: String = button.get_child(0).text
+                for entry in game.task_catalog["AJ Market"]:
+                    if entry.kind != "purchase" or not caption.begins_with(entry.title): continue
+                    var balance: int = game.wallet_balance
+                    var count: int = game.task_inventory.size()
+                    button.pressed.emit()
+                    bought = game.task_inventory.size() == count + 1 and game.wallet_balance == balance - game._activity_price(entry)
+                    break
+                if bought: break
+            break
+        check(bought, "vendor purchase records receipt and deducts listed price")
         game._close_task_panel()
+        game._leave_interior()
     crowd.talking_id = ""
     crowd.hour_override = 23
     crowd._refresh()

@@ -1,1 +1,947 @@
-{"version":1,"pool":{"maximum":25,"quality_caps":{"low":12,"medium":20,"high":25},"radius":48,"release_radius":60,"decision_seconds":1.0,"speed":1.25},"dialogue":{"greet":"Greet","talk":"Chat","services":"Location tasks & shop","goodbye":"Goodbye","greeting":"Hello! Good to see you.","closed":"Off duty. Service hours: {start}:00–{end}:00.","closed_short":"Staff are off duty. Check back during service hours.","nearby":"Interact · {role}"},"roles":{"student":{"title":"Student","hours":[0,24],"lines":["Hello! How is campus treating you?","See you around {site}.","I am heading to {destination}."],"activity":"phone"},"lecturer":{"title":"Lecturer","hours":[8,17],"lines":["Welcome to {site}. Ready for today’s learning?","Review your notes before starting a practice task.","Ask questions and take one topic at a time."],"activity":"phone"},"security":{"title":"Security officer","hours":[0,24],"lines":["Welcome to {site}. Keep the entrance clear.","Need directions? The campus map can help.","Look after your belongings and use marked routes."],"activity":"phone"},"vendor":{"title":"Vendor","hours":[7,21],"lines":["Welcome to {site}. Have a look at the available items.","Check the price before choosing. Purchases use fictional game money.","Take your place in the queue; everyone will get a turn."],"activity":"phone"},"librarian":{"title":"Librarian","hours":[8,20],"lines":["Welcome to {site}. Please keep your voice low.","Use your notebook to summarise what you read.","The study activities are available at the service desk."],"activity":"read"},"bus_driver":{"title":"Bus driver","hours":[6,22],"lines":["This is the stop for {site}. Use the shuttle menu to board.","Please queue clear of the road.","Check your destination and fare before boarding."],"activity":"phone"},"clinic":{"title":"Clinic staff","hours":[8,20],"lines":["Welcome to {site}. Please wait your turn.","The wellbeing activities here are fictional game services.","Visit the counter for this location’s activities."],"activity":"phone"},"warden":{"title":"Hostel warden","hours":[0,24],"lines":["Welcome to {site}. Respect your neighbours.","Quiet evenings help everyone rest.","Your assigned room remains private."],"activity":"read"},"coach":{"title":"Campus coach","hours":[7,19],"lines":["Welcome to {site}. Warm up before training.","Choose an activity that suits your energy.","Teamwork starts with listening."],"activity":"phone"},"adviser":{"title":"Campus adviser","hours":[8,18],"lines":["Welcome to {site}. How can I help?","Choose one of this location’s activities to get started.","Take time to read the task requirements."],"activity":"phone"}},"routine":[{"start":0,"end":6,"category":"hostel","activity":"sit"},{"start":6,"end":8,"category":"food","activity":"queue"},{"start":8,"end":12,"category":"class","activity":"read"},{"start":12,"end":14,"category":"food","activity":"chat"},{"start":14,"end":18,"category":"class","activity":"phone"},{"start":18,"end":21,"category":"food","activity":"chat"},{"start":21,"end":24,"category":"hostel","activity":"sit"}],"locations":[{"site":"CBT Centre","role":"lecturer","category":"class","feature_id":1,"services":true},{"site":"Student waiting / shuttle area","role":"bus_driver","category":"class","feature_id":2,"services":true},{"site":"Main Gate","role":"security","category":"class","feature_id":3,"services":true},{"site":"Penafort Gate (GP)","role":"security","category":"class","feature_id":4,"services":true},{"site":"LASU International School","role":"lecturer","category":"class","feature_id":5,"services":true},{"site":"Penafort-side Staff Quarters","role":"warden","category":"hostel","feature_id":6,"services":true},{"site":"Faculty of Management Sciences","role":"lecturer","category":"class","feature_id":7,"services":true},{"site":"Registration / cybercafé row","role":"lecturer","category":"class","feature_id":8,"services":true},{"site":"Girls-only Hostel","role":"warden","category":"hostel","feature_id":10,"services":true},{"site":"Hostel 5","role":"warden","category":"hostel","feature_id":11,"services":true},{"site":"Hostel 4","role":"warden","category":"hostel","feature_id":16,"services":true},{"site":"Hostel 3","role":"warden","category":"hostel","feature_id":17,"services":true},{"site":"Hostel 2","role":"warden","category":"hostel","feature_id":18,"services":true},{"site":"Hostel 1","role":"warden","category":"hostel","feature_id":19,"services":true},{"site":"Hostel Farm","role":"adviser","category":"class","feature_id":20,"services":true},{"site":"Open Field","role":"adviser","category":"class","feature_id":21,"services":true},{"site":"FSS Kitchen","role":"vendor","category":"food","feature_id":22,"services":true},{"site":"FSS Hut","role":"vendor","category":"food","feature_id":23,"services":true},{"site":"Faculty of Social Sciences","role":"lecturer","category":"class","feature_id":24,"services":true},{"site":"TETFund — FSS-side building","role":"lecturer","category":"class","feature_id":26,"services":true},{"site":"STEM Building","role":"lecturer","category":"class","feature_id":27,"services":true},{"site":"Femi Gbajabiamila Hall","role":"lecturer","category":"class","feature_id":28,"services":true},{"site":"Laundromat","role":"vendor","category":"food","feature_id":29,"services":true},{"site":"School of Transport","role":"bus_driver","category":"class","feature_id":30,"services":true},{"site":"Entrepreneurship Centre (ENT)","role":"lecturer","category":"class","feature_id":31,"services":true},{"site":"Additional Staff Quarters","role":"warden","category":"hostel","feature_id":32,"services":true},{"site":"Julian Hostel Gate","role":"security","category":"class","feature_id":33,"services":true},{"site":"Zoology Garden","role":"adviser","category":"class","feature_id":34,"services":true},{"site":"Staff Quarters (southern route)","role":"warden","category":"hostel","feature_id":35,"services":true},{"site":"Staff Quarters (southern route, second block)","role":"warden","category":"hostel","feature_id":36,"services":true},{"site":"Gate on southern road (label MG)","role":"security","category":"class","feature_id":37,"services":true},{"site":"Buba Marwa Auditorium","role":"lecturer","category":"class","feature_id":38,"services":true},{"site":"New Library","role":"librarian","category":"class","feature_id":39,"services":true},{"site":"School of Part-Time Studies","role":"lecturer","category":"class","feature_id":40,"services":true},{"site":"AJ Market","role":"vendor","category":"food","feature_id":42,"services":true},{"site":"School of Postgraduate Studies","role":"lecturer","category":"class","feature_id":43,"services":true},{"site":"Faculty of Law","role":"lecturer","category":"class","feature_id":44,"services":true},{"site":"LASU Healthcare Centre","role":"clinic","category":"class","feature_id":47,"services":true},{"site":"Makanjuola","role":"lecturer","category":"class","feature_id":48,"services":true},{"site":"Sports Centre","role":"coach","category":"class","feature_id":49,"services":true},{"site":"Arcade","role":"vendor","category":"food","feature_id":50,"services":true},{"site":"Eco Market (Art Market)","role":"vendor","category":"food","feature_id":52,"services":true},{"site":"Banking Area","role":"vendor","category":"food","feature_id":53,"services":true},{"site":"AP Gate","role":"security","category":"class","feature_id":54,"services":true},{"site":"Faculty of Arts","role":"lecturer","category":"class","feature_id":55,"services":true},{"site":"Main Gate 2 (Franklas Gate)","role":"security","category":"class","feature_id":56,"services":true},{"site":"Faculty of Education","role":"lecturer","category":"class","feature_id":58,"services":true},{"site":"LASU Radio","role":"lecturer","category":"class","feature_id":59,"services":true},{"site":"Senate Building","role":"lecturer","category":"class","feature_id":61,"services":true},{"site":"Mass Communication","role":"lecturer","category":"class","feature_id":62,"services":true},{"site":"Staff Club","role":"lecturer","category":"class","feature_id":63,"services":true},{"site":"Love Garden","role":"adviser","category":"class","feature_id":64,"services":true},{"site":"MBA Auditorium","role":"lecturer","category":"class","feature_id":65,"services":true},{"site":"Science Halls","role":"lecturer","category":"class","feature_id":66,"services":true},{"site":"Science Shops (west)","role":"vendor","category":"food","feature_id":67,"services":true},{"site":"Science Shops (west 2)","role":"vendor","category":"food","feature_id":68,"services":true},{"site":"Science Shops (east)","role":"vendor","category":"food","feature_id":69,"services":true},{"site":"Science Shops (east 2)","role":"vendor","category":"food","feature_id":70,"services":true},{"site":"Science Classroom Hall","role":"lecturer","category":"class","feature_id":71,"services":true},{"site":"Bola Ahmed Tinubu Science Complex","role":"lecturer","category":"class","feature_id":73,"services":true},{"site":"Innovation Hub","role":"lecturer","category":"class","feature_id":74,"services":true},{"site":"Old Library","role":"librarian","category":"class","feature_id":76,"services":true},{"site":"Administrative Area","role":"lecturer","category":"class","feature_id":77,"services":true},{"site":"LASU Chapel","role":"adviser","category":"class","feature_id":78,"services":true},{"site":"LASU Staff School","role":"warden","category":"hostel","feature_id":80,"services":true},{"site":"Staff Quarters (east/south route)","role":"warden","category":"hostel","feature_id":81,"services":true},{"site":"Additional campus building (labelled BUILDING)","role":"lecturer","category":"class","feature_id":82,"services":true},{"site":"AP Gate connecting road","role":"security","category":"class","feature_id":84,"services":true}],"ambient_slots":["walk","chat","chat","chat","sit","read","phone","queue","queue","queue","read","walk"],"room_role_map":{"library":"librarian","food":"vendor","market":"vendor","laundry":"vendor","clinic":"clinic","hostel":"warden","sports":"coach","transport":"bus_driver","lecture":"lecturer","education":"lecturer","science":"lecturer","computing":"lecturer"},"room_kits":{"lecture":[["Lecture theatre","lecture","Course rep"],["Seminar room","education","Peer tutor"],["Staff office","management","Academic adviser"]],"science":[["Teaching laboratory","science","Lab technologist"],["Research room","computing","Research assistant"],["Seminar theatre","lecture","Peer tutor"]],"library":[["Silent reading room","library","Librarian"],["Digital research suite","computing","Research assistant"],["Study group room","education","Peer tutor"]],"hostel":[["Residents lounge","lounge","Hall representative"],["Shared kitchen","food","Kitchen steward"],["Laundry room","laundry","Laundry attendant"]],"law":[["Moot courtroom","law","Moot coordinator"],["Law reading room","library","Librarian"],["Legal clinic","management","Student adviser"]],"clinic":[["Consultation room","clinic","Campus nurse"],["Pharmacy","market","Pharmacist"],["Wellbeing lounge","lounge","Wellbeing adviser"]],"market":[["Campus essentials shop","market","Shopkeeper"],["Print and copy studio","computing","Print attendant"],["Snack corner","food","Food vendor"]],"food":[["Dining room","food","Food vendor"],["Kitchen counter","food","Kitchen steward"],["Student hangout","lounge","Hall representative"]],"studio":[["Recording booth","studio","Studio producer"],["Editing suite","computing","Media tutor"],["Interview lounge","lounge","Student journalist"]],"sports":[["Training court","sports","Campus coach"],["Team changing room","hostel","Team captain"],["Club meeting room","education","Club organiser"]],"arts":[["Creative studio","arts","Studio tutor"],["Rehearsal room","auditorium","Drama coordinator"],["Project gallery","innovation","Gallery steward"]],"bank":[["Service lounge","bank","Finance adviser"],["Financial literacy room","education","Peer tutor"],["Customer support","management","Service adviser"]],"transport":[["Transport desk","transport","Transport marshal"],["Logistics studio","computing","Research assistant"],["Driver rest lounge","lounge","Hall representative"]]},"default_rooms":[["Main activity room","{theme}","Student adviser"],["Seminar room","education","Peer tutor"],["Community lounge","lounge","Club organiser"]]}
+{
+  "version": 1,
+  "pool": {
+    "maximum": 25,
+    "quality_caps": {
+      "low": 12,
+      "medium": 20,
+      "high": 25
+    },
+    "radius": 48,
+    "release_radius": 60,
+    "decision_seconds": 1.0,
+    "speed": 1.25
+  },
+  "dialogue": {
+    "greet": "Greet",
+    "talk": "Chat",
+    "services": "Location tasks & shop",
+    "goodbye": "Goodbye",
+    "greeting": "Hello! Good to see you.",
+    "closed": "Off duty. Service hours: {start}:00–{end}:00.",
+    "closed_short": "Staff are off duty. Check back during service hours.",
+    "nearby": "Interact · {role}"
+  },
+  "roles": {
+    "student": {
+      "title": "Student",
+      "hours": [
+        0,
+        24
+      ],
+      "lines": [
+        "Hello! How is campus treating you?",
+        "See you around {site}.",
+        "I am heading to {destination}."
+      ],
+      "activity": "phone"
+    },
+    "lecturer": {
+      "title": "Lecturer",
+      "hours": [
+        8,
+        17
+      ],
+      "lines": [
+        "Welcome to {site}. Ready for today’s learning?",
+        "Review your notes before starting a practice task.",
+        "Ask questions and take one topic at a time."
+      ],
+      "activity": "phone"
+    },
+    "security": {
+      "title": "Security officer",
+      "hours": [
+        0,
+        24
+      ],
+      "lines": [
+        "Welcome to {site}. Keep the entrance clear.",
+        "Need directions? The campus map can help.",
+        "Look after your belongings and use marked routes."
+      ],
+      "activity": "phone"
+    },
+    "vendor": {
+      "title": "Vendor",
+      "hours": [
+        7,
+        21
+      ],
+      "lines": [
+        "Welcome to {site}. Have a look at the available items.",
+        "Check the price before choosing. Purchases use fictional game money.",
+        "Take your place in the queue; everyone will get a turn."
+      ],
+      "activity": "phone"
+    },
+    "librarian": {
+      "title": "Librarian",
+      "hours": [
+        8,
+        20
+      ],
+      "lines": [
+        "Welcome to {site}. Please keep your voice low.",
+        "Use your notebook to summarise what you read.",
+        "The study activities are available at the service desk."
+      ],
+      "activity": "read"
+    },
+    "bus_driver": {
+      "title": "Bus driver",
+      "hours": [
+        6,
+        22
+      ],
+      "lines": [
+        "This is the stop for {site}. Use the shuttle menu to board.",
+        "Please queue clear of the road.",
+        "Check your destination and fare before boarding."
+      ],
+      "activity": "phone"
+    },
+    "clinic": {
+      "title": "Clinic staff",
+      "hours": [
+        8,
+        20
+      ],
+      "lines": [
+        "Welcome to {site}. Please wait your turn.",
+        "The wellbeing activities here are fictional game services.",
+        "Visit the counter for this location’s activities."
+      ],
+      "activity": "phone"
+    },
+    "warden": {
+      "title": "Hostel warden",
+      "hours": [
+        0,
+        24
+      ],
+      "lines": [
+        "Welcome to {site}. Respect your neighbours.",
+        "Quiet evenings help everyone rest.",
+        "Your assigned room remains private."
+      ],
+      "activity": "read"
+    },
+    "coach": {
+      "title": "Campus coach",
+      "hours": [
+        7,
+        19
+      ],
+      "lines": [
+        "Welcome to {site}. Warm up before training.",
+        "Choose an activity that suits your energy.",
+        "Teamwork starts with listening."
+      ],
+      "activity": "phone"
+    },
+    "adviser": {
+      "title": "Campus adviser",
+      "hours": [
+        8,
+        18
+      ],
+      "lines": [
+        "Welcome to {site}. How can I help?",
+        "Choose one of this location’s activities to get started.",
+        "Take time to read the task requirements."
+      ],
+      "activity": "phone"
+    }
+  },
+  "routine": [
+    {
+      "start": 0,
+      "end": 6,
+      "category": "hostel",
+      "activity": "sit"
+    },
+    {
+      "start": 6,
+      "end": 8,
+      "category": "food",
+      "activity": "queue"
+    },
+    {
+      "start": 8,
+      "end": 12,
+      "category": "class",
+      "activity": "read"
+    },
+    {
+      "start": 12,
+      "end": 14,
+      "category": "food",
+      "activity": "chat"
+    },
+    {
+      "start": 14,
+      "end": 18,
+      "category": "class",
+      "activity": "phone"
+    },
+    {
+      "start": 18,
+      "end": 21,
+      "category": "food",
+      "activity": "chat"
+    },
+    {
+      "start": 21,
+      "end": 24,
+      "category": "hostel",
+      "activity": "sit"
+    }
+  ],
+  "locations": [
+    {
+      "site": "CBT Centre",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 1,
+      "services": true
+    },
+    {
+      "site": "Student waiting / shuttle area",
+      "role": "bus_driver",
+      "category": "class",
+      "feature_id": 2,
+      "services": true
+    },
+    {
+      "site": "Main Gate",
+      "role": "security",
+      "category": "class",
+      "feature_id": 3,
+      "services": true
+    },
+    {
+      "site": "Penafort Gate (GP)",
+      "role": "security",
+      "category": "class",
+      "feature_id": 4,
+      "services": true
+    },
+    {
+      "site": "LASU International School",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 5,
+      "services": true
+    },
+    {
+      "site": "Penafort-side Staff Quarters",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 6,
+      "services": true
+    },
+    {
+      "site": "Faculty of Management Sciences",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 7,
+      "services": true
+    },
+    {
+      "site": "Registration / cybercafé row",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 8,
+      "services": true
+    },
+    {
+      "site": "Girls-only Hostel",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 10,
+      "services": true
+    },
+    {
+      "site": "Hostel 5",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 11,
+      "services": true
+    },
+    {
+      "site": "Hostel 4",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 16,
+      "services": true
+    },
+    {
+      "site": "Hostel 3",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 17,
+      "services": true
+    },
+    {
+      "site": "Hostel 2",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 18,
+      "services": true
+    },
+    {
+      "site": "Hostel 1",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 19,
+      "services": true
+    },
+    {
+      "site": "Hostel Farm",
+      "role": "adviser",
+      "category": "class",
+      "feature_id": 20,
+      "services": true
+    },
+    {
+      "site": "Open Field",
+      "role": "adviser",
+      "category": "class",
+      "feature_id": 21,
+      "services": true
+    },
+    {
+      "site": "FSS Kitchen",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 22,
+      "services": true
+    },
+    {
+      "site": "FSS Hut",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 23,
+      "services": true
+    },
+    {
+      "site": "Faculty of Social Sciences",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 24,
+      "services": true
+    },
+    {
+      "site": "TETFund — FSS-side building",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 26,
+      "services": true
+    },
+    {
+      "site": "STEM Building",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 27,
+      "services": true
+    },
+    {
+      "site": "Femi Gbajabiamila Hall",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 28,
+      "services": true
+    },
+    {
+      "site": "Laundromat",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 29,
+      "services": true
+    },
+    {
+      "site": "School of Transport",
+      "role": "bus_driver",
+      "category": "class",
+      "feature_id": 30,
+      "services": true
+    },
+    {
+      "site": "Entrepreneurship Centre (ENT)",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 31,
+      "services": true
+    },
+    {
+      "site": "Additional Staff Quarters",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 32,
+      "services": true
+    },
+    {
+      "site": "Julian Hostel Gate",
+      "role": "security",
+      "category": "class",
+      "feature_id": 33,
+      "services": true
+    },
+    {
+      "site": "Zoology Garden",
+      "role": "adviser",
+      "category": "class",
+      "feature_id": 34,
+      "services": true
+    },
+    {
+      "site": "Staff Quarters (southern route)",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 35,
+      "services": true
+    },
+    {
+      "site": "Staff Quarters (southern route, second block)",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 36,
+      "services": true
+    },
+    {
+      "site": "Gate on southern road (label MG)",
+      "role": "security",
+      "category": "class",
+      "feature_id": 37,
+      "services": true
+    },
+    {
+      "site": "Buba Marwa Auditorium",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 38,
+      "services": true
+    },
+    {
+      "site": "New Library",
+      "role": "librarian",
+      "category": "class",
+      "feature_id": 39,
+      "services": true
+    },
+    {
+      "site": "School of Part-Time Studies",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 40,
+      "services": true
+    },
+    {
+      "site": "AJ Market",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 42,
+      "services": true
+    },
+    {
+      "site": "School of Postgraduate Studies",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 43,
+      "services": true
+    },
+    {
+      "site": "Faculty of Law",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 44,
+      "services": true
+    },
+    {
+      "site": "LASU Healthcare Centre",
+      "role": "clinic",
+      "category": "class",
+      "feature_id": 47,
+      "services": true
+    },
+    {
+      "site": "Makanjuola",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 48,
+      "services": true
+    },
+    {
+      "site": "Sports Centre",
+      "role": "coach",
+      "category": "class",
+      "feature_id": 49,
+      "services": true
+    },
+    {
+      "site": "Arcade",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 50,
+      "services": true
+    },
+    {
+      "site": "Eco Market (Art Market)",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 52,
+      "services": true
+    },
+    {
+      "site": "Banking Area",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 53,
+      "services": true
+    },
+    {
+      "site": "AP Gate",
+      "role": "security",
+      "category": "class",
+      "feature_id": 54,
+      "services": true
+    },
+    {
+      "site": "Faculty of Arts",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 55,
+      "services": true
+    },
+    {
+      "site": "Main Gate 2 (Franklas Gate)",
+      "role": "security",
+      "category": "class",
+      "feature_id": 56,
+      "services": true
+    },
+    {
+      "site": "Faculty of Education",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 58,
+      "services": true
+    },
+    {
+      "site": "LASU Radio",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 59,
+      "services": true
+    },
+    {
+      "site": "Senate Building",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 61,
+      "services": true
+    },
+    {
+      "site": "Mass Communication",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 62,
+      "services": true
+    },
+    {
+      "site": "Staff Club",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 63,
+      "services": true
+    },
+    {
+      "site": "Love Garden",
+      "role": "adviser",
+      "category": "class",
+      "feature_id": 64,
+      "services": true
+    },
+    {
+      "site": "MBA Auditorium",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 65,
+      "services": true
+    },
+    {
+      "site": "Science Halls",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 66,
+      "services": true
+    },
+    {
+      "site": "Science Shops (west)",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 67,
+      "services": true
+    },
+    {
+      "site": "Science Shops (west 2)",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 68,
+      "services": true
+    },
+    {
+      "site": "Science Shops (east)",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 69,
+      "services": true
+    },
+    {
+      "site": "Science Shops (east 2)",
+      "role": "vendor",
+      "category": "food",
+      "feature_id": 70,
+      "services": true
+    },
+    {
+      "site": "Science Classroom Hall",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 71,
+      "services": true
+    },
+    {
+      "site": "Bola Ahmed Tinubu Science Complex",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 73,
+      "services": true
+    },
+    {
+      "site": "Innovation Hub",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 74,
+      "services": true
+    },
+    {
+      "site": "Old Library",
+      "role": "librarian",
+      "category": "class",
+      "feature_id": 76,
+      "services": true
+    },
+    {
+      "site": "Administrative Area",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 77,
+      "services": true
+    },
+    {
+      "site": "LASU Chapel",
+      "role": "adviser",
+      "category": "class",
+      "feature_id": 78,
+      "services": true
+    },
+    {
+      "site": "LASU Staff School",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 80,
+      "services": true
+    },
+    {
+      "site": "Staff Quarters (east/south route)",
+      "role": "warden",
+      "category": "hostel",
+      "feature_id": 81,
+      "services": true
+    },
+    {
+      "site": "Additional campus building (labelled BUILDING)",
+      "role": "lecturer",
+      "category": "class",
+      "feature_id": 82,
+      "services": true
+    },
+    {
+      "site": "AP Gate connecting road",
+      "role": "security",
+      "category": "class",
+      "feature_id": 84,
+      "services": true
+    }
+  ],
+  "ambient_slots": [
+    "walk",
+    "chat",
+    "chat",
+    "chat",
+    "sit",
+    "read",
+    "phone",
+    "queue",
+    "queue",
+    "queue",
+    "read",
+    "walk"
+  ],
+  "room_role_map": {
+    "library": "librarian",
+    "food": "vendor",
+    "market": "vendor",
+    "laundry": "vendor",
+    "clinic": "clinic",
+    "hostel": "warden",
+    "sports": "coach",
+    "transport": "bus_driver",
+    "lecture": "lecturer",
+    "education": "lecturer",
+    "science": "lecturer",
+    "computing": "lecturer"
+  },
+  "room_kits": {
+    "lecture": [
+      [
+        "Lecture theatre",
+        "lecture",
+        "Course rep"
+      ],
+      [
+        "Seminar room",
+        "education",
+        "Peer tutor"
+      ],
+      [
+        "Staff office",
+        "management",
+        "Academic adviser"
+      ]
+    ],
+    "science": [
+      [
+        "Teaching laboratory",
+        "science",
+        "Lab technologist"
+      ],
+      [
+        "Research room",
+        "computing",
+        "Research assistant"
+      ],
+      [
+        "Seminar theatre",
+        "lecture",
+        "Peer tutor"
+      ]
+    ],
+    "library": [
+      [
+        "Silent reading room",
+        "library",
+        "Librarian"
+      ],
+      [
+        "Digital research suite",
+        "computing",
+        "Research assistant"
+      ],
+      [
+        "Study group room",
+        "education",
+        "Peer tutor"
+      ]
+    ],
+    "hostel": [
+      [
+        "Residents lounge",
+        "lounge",
+        "Hall representative"
+      ],
+      [
+        "Shared kitchen",
+        "food",
+        "Kitchen steward"
+      ],
+      [
+        "Laundry room",
+        "laundry",
+        "Laundry attendant"
+      ]
+    ],
+    "law": [
+      [
+        "Moot courtroom",
+        "law",
+        "Moot coordinator"
+      ],
+      [
+        "Law reading room",
+        "library",
+        "Librarian"
+      ],
+      [
+        "Legal clinic",
+        "management",
+        "Student adviser"
+      ]
+    ],
+    "clinic": [
+      [
+        "Consultation room",
+        "clinic",
+        "Campus nurse"
+      ],
+      [
+        "Pharmacy",
+        "market",
+        "Pharmacist"
+      ],
+      [
+        "Wellbeing lounge",
+        "lounge",
+        "Wellbeing adviser"
+      ]
+    ],
+    "market": [
+      [
+        "Campus essentials shop",
+        "market",
+        "Shopkeeper"
+      ],
+      [
+        "Print and copy studio",
+        "computing",
+        "Print attendant"
+      ],
+      [
+        "Snack corner",
+        "food",
+        "Food vendor"
+      ]
+    ],
+    "food": [
+      [
+        "Dining room",
+        "food",
+        "Food vendor"
+      ],
+      [
+        "Kitchen counter",
+        "food",
+        "Kitchen steward"
+      ],
+      [
+        "Student hangout",
+        "lounge",
+        "Hall representative"
+      ]
+    ],
+    "studio": [
+      [
+        "Recording booth",
+        "studio",
+        "Studio producer"
+      ],
+      [
+        "Editing suite",
+        "computing",
+        "Media tutor"
+      ],
+      [
+        "Interview lounge",
+        "lounge",
+        "Student journalist"
+      ]
+    ],
+    "sports": [
+      [
+        "Training court",
+        "sports",
+        "Campus coach"
+      ],
+      [
+        "Team changing room",
+        "hostel",
+        "Team captain"
+      ],
+      [
+        "Club meeting room",
+        "education",
+        "Club organiser"
+      ]
+    ],
+    "arts": [
+      [
+        "Creative studio",
+        "arts",
+        "Studio tutor"
+      ],
+      [
+        "Rehearsal room",
+        "auditorium",
+        "Drama coordinator"
+      ],
+      [
+        "Project gallery",
+        "innovation",
+        "Gallery steward"
+      ]
+    ],
+    "bank": [
+      [
+        "Service lounge",
+        "bank",
+        "Finance adviser"
+      ],
+      [
+        "Financial literacy room",
+        "education",
+        "Peer tutor"
+      ],
+      [
+        "Customer support",
+        "management",
+        "Service adviser"
+      ]
+    ],
+    "transport": [
+      [
+        "Transport desk",
+        "transport",
+        "Transport marshal"
+      ],
+      [
+        "Logistics studio",
+        "computing",
+        "Research assistant"
+      ],
+      [
+        "Driver rest lounge",
+        "lounge",
+        "Hall representative"
+      ]
+    ]
+  },
+  "default_rooms": [
+    [
+      "Main activity room",
+      "{theme}",
+      "Student adviser"
+    ],
+    [
+      "Seminar room",
+      "education",
+      "Peer tutor"
+    ],
+    [
+      "Community lounge",
+      "lounge",
+      "Club organiser"
+    ]
+  ]
+}
