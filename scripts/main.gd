@@ -2075,6 +2075,7 @@ func _leave_interior() -> void:
 func _enter_private_room() -> void:
     if active_interior_site.is_empty() or active_interior_site != str(profile_data.get("hostel_name", "")):
         return
+    if campus_npcs != null: campus_npcs.clear_pool()
     if player.is_sitting: player.stand_up_from_seat()
     active_private_room = true
     active_campus_room = -1
