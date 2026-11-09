@@ -6,6 +6,8 @@ import os
 from pathlib import Path
 import shutil
 import urllib.request
+import urllib.error
+import time
 import zipfile
 
 parser = argparse.ArgumentParser()
@@ -27,8 +29,22 @@ for name, expected in ASSETS.items():
     if not path.exists():
         partial = path.with_suffix(path.suffix + ".partial")
         print("Downloading official", name, flush=True)
-        with urllib.request.urlopen("https://github.com/godotengine/godot/releases/download/4.6.3-stable/" + name, timeout=180) as response, partial.open("wb") as file:
-            shutil.copyfileobj(response, file)
+        url = "https://github.com/godotengine/godot/releases/download/4.6.3-stable/" + name
+        for attempt in range(3):
+            try:
+                partial.unlink(missing_ok=True)
+                with urllib.request.urlopen(url, timeout=180) as response, partial.open("wb") as file:
+                    shutil.copyfileobj(response, file)
+                break
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError) as error:
+                # Retry temporary release-CDN failures, never an invalid checksum.
+                if isinstance(error, urllib.error.HTTPError) and error.code < 500:
+                    raise
+                if attempt == 2:
+                    raise
+                delay = (5, 15)[attempt]
+                print(f"Download attempt {attempt + 1} failed: {error}; retrying in {delay}s", flush=True)
+                time.sleep(delay)
         if digest(partial) != expected:
             raise SystemExit("Official SHA512 verification failed: " + name)
         partial.rename(path)
