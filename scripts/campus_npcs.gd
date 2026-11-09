@@ -150,7 +150,9 @@ func _process(delta: float) -> void:
             npc.draw_activity = npc.activity
             npc.draw_position = npc.position
         count+=1
-    batch.multimesh.visible_instance_count=count*PARTS
+    # Do not reconfigure the render batch every 20 Hz when occupancy is unchanged.
+    if batch.multimesh.visible_instance_count != count*PARTS:
+        batch.multimesh.visible_instance_count=count*PARTS
     draw_updates+=1
 
 func clear_pool() -> void:
@@ -159,7 +161,8 @@ func clear_pool() -> void:
         render_owners[i] = ""
         palette_owners[i] = ""
     talking_id=""
-    if batch.multimesh!=null:batch.multimesh.visible_instance_count=0
+    if batch.multimesh!=null and batch.multimesh.visible_instance_count!=0:
+        batch.multimesh.visible_instance_count=0
 
 func role_for_site(site: String) -> String:
     for anchor in anchors:
@@ -180,8 +183,10 @@ func _refresh() -> void:
             if on_duty(role):candidates.append({"id":"room_staff","position":point.global_position,"yaw":0.0,"role":role,"site":game.active_interior_site,"special":true,"services":true,"activity":config.roles[role].activity,"slot":0})
     else:
         var nearby: Array[Dictionary] = []
+        var radius_squared: float = pow(float(config.pool.radius), 2.0)
+        var player_position: Vector3 = game.player.global_position
         for anchor in anchors:
-            if anchor.position.distance_squared_to(game.player.global_position)<pow(float(config.pool.radius),2):nearby.append(anchor)
+            if anchor.position.distance_squared_to(player_position)<radius_squared:nearby.append(anchor)
         nearby.sort_custom(func(a,b):return a.position.distance_squared_to(game.player.global_position)<b.position.distance_squared_to(game.player.global_position))
         for anchor in nearby:
             if on_duty(anchor.role):candidates.append({"id":"staff_"+anchor.site,"position":anchor.position,"yaw":0.0,"site":anchor.site,"role":anchor.role,"special":true,"services":anchor.services,"activity":config.roles[anchor.role].activity,"slot":0})
