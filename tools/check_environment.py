@@ -63,6 +63,8 @@ for relative, expected in protected.items():
         raise SystemExit(f"Protected baseline file changed: {relative}")
 print(f"PASS: {len(protected)} protected baseline files unchanged", flush=True)
 run("import", ["godot", "--headless", "--editor", "--path", str(ROOT), "--quit"])
+run("npc-paths", ["godot", "--headless", "--script", "tools/bake_npc_paths.gd", "--", "--check"])
+run("npc-gameplay", ["godot", "--headless", "--script", "tools/npc_regression.gd"], "NPC REGRESSION:", fresh_save=True)
 run("road-safety", [sys.executable, "tools/validate_road_safety.py"], "PASS: checked 336 road segments")
 run("gameplay", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/gameplay_regression.gd"], "GAMEPLAY REGRESSION:")
 run("traffic", ["godot", "--headless", "--path", str(ROOT), "--script", "tools/traffic_regression.gd"],

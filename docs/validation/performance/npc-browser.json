@@ -1,0 +1,2530 @@
+{
+  "status": "captured",
+  "profile": {
+    "kind": "desktop Chromium emulation; NOT Android certification",
+    "viewport": [
+      393,
+      873
+    ],
+    "cpu_slowdown": 4,
+    "download_bps": 4000000,
+    "latency_ms": 150,
+    "network_shaping": "aggregate HTTP-server downlink; includes service-worker fetches; local upload unthrottled",
+    "memory_note": "Chrome process PSS is sampled every 2s on Linux and includes renderer/WASM and software GPU. JS heap and renderer video counters are also reported separately; do not add them to PSS."
+  },
+  "runs": [
+    {
+      "cold_boot": {
+        "startedAt": 989.5,
+        "downloadsFinishedAt": 21753.600000000093,
+        "worldReadyAt": 33158.60000000009,
+        "engineStartedAt": 36168.30000000005,
+        "architectureReadyAt": 44138.80000000005
+      },
+      "cold_world_ready_ms": 33158.60000000009,
+      "stages": {
+        "building": {
+          "fps_median": 7.714117232419415,
+          "fps_min_1s": 0.827403607479729,
+          "draw_calls_peak": 569,
+          "video_memory_peak_bytes": 95605873,
+          "max_frame_ms": 1208.6
+        },
+        "campus_idle": {
+          "fps_median": 7.82744825186989,
+          "fps_min_1s": 7.27735831893023,
+          "draw_calls_peak": 555,
+          "video_memory_peak_bytes": 95661657,
+          "max_frame_ms": 219.1
+        },
+        "campus_walk": {
+          "fps_median": 9.118567600399125,
+          "fps_min_1s": 7.99857803057234,
+          "draw_calls_peak": 543,
+          "video_memory_peak_bytes": 95647425,
+          "max_frame_ms": 225.6
+        },
+        "interior": {
+          "fps_median": 17.67403590501495,
+          "fps_min_1s": 8.74056416368693,
+          "draw_calls_peak": 503,
+          "video_memory_peak_bytes": 96655819,
+          "max_frame_ms": 400.7
+        },
+        "phone": {
+          "fps_median": 11.2422709387296,
+          "fps_min_1s": 7.92044354483851,
+          "draw_calls_peak": 318,
+          "video_memory_peak_bytes": 95952329,
+          "max_frame_ms": 312
+        }
+      },
+      "js_heap": {
+        "usedSize": 12916684,
+        "totalSize": 14090240,
+        "embedderHeapUsedSize": 6126960,
+        "backingStorageSize": 175929925
+      },
+      "samples": [
+        {
+          "at": 36346.700000000186,
+          "draw_calls": 479,
+          "fps": 0.827403607479729,
+          "max_frame_ms": 1208.6,
+          "nodes": 5582,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 49864505
+        },
+        {
+          "at": 37465.60000000009,
+          "draw_calls": 475,
+          "fps": 3.5644270183568,
+          "max_frame_ms": 526.3,
+          "nodes": 5650,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 69122937
+        },
+        {
+          "at": 38504.10000000009,
+          "draw_calls": 476,
+          "fps": 6.74373795761079,
+          "max_frame_ms": 211.6,
+          "nodes": 5751,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 69230121
+        },
+        {
+          "at": 39598,
+          "draw_calls": 518,
+          "fps": 11.8829981718464,
+          "max_frame_ms": 116.5,
+          "nodes": 5985,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95044345
+        },
+        {
+          "at": 40681.30000000005,
+          "draw_calls": 559,
+          "fps": 10.1522842639594,
+          "max_frame_ms": 176.1,
+          "nodes": 6127,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95191785
+        },
+        {
+          "at": 41791.200000000186,
+          "draw_calls": 569,
+          "fps": 8.10956929176428,
+          "max_frame_ms": 174.1,
+          "nodes": 6278,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95350873
+        },
+        {
+          "at": 42813.90000000014,
+          "draw_calls": 569,
+          "fps": 7.81860828772478,
+          "max_frame_ms": 158.5,
+          "nodes": 6396,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95473129
+        },
+        {
+          "at": 43866.700000000186,
+          "draw_calls": 569,
+          "fps": 7.60962617711405,
+          "max_frame_ms": 159.3,
+          "nodes": 6518,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95605873
+        },
+        {
+          "at": 45018.80000000005,
+          "draw_calls": 555,
+          "fps": 7.52799473040369,
+          "max_frame_ms": 219.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 46080.200000000186,
+          "draw_calls": 555,
+          "fps": 7.55786490316486,
+          "max_frame_ms": 165.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 47146.200000000186,
+          "draw_calls": 555,
+          "fps": 8.43091334894613,
+          "max_frame_ms": 139.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 48272.80000000005,
+          "draw_calls": 555,
+          "fps": 7.9850944902848,
+          "max_frame_ms": 140.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 49376.10000000009,
+          "draw_calls": 555,
+          "fps": 7.27735831893023,
+          "max_frame_ms": 172.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 50414.30000000005,
+          "draw_calls": 555,
+          "fps": 7.68196658344536,
+          "max_frame_ms": 168.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 51514.5,
+          "draw_calls": 555,
+          "fps": 9.08677873693775,
+          "max_frame_ms": 157.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 52566.700000000186,
+          "draw_calls": 555,
+          "fps": 8.55025650769523,
+          "max_frame_ms": 142.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 53716.90000000014,
+          "draw_calls": 555,
+          "fps": 7.82744825186989,
+          "max_frame_ms": 165.3,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 54745.200000000186,
+          "draw_calls": 543,
+          "fps": 8.7497569511958,
+          "max_frame_ms": 212.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 55831.40000000014,
+          "draw_calls": 495,
+          "fps": 8.28652978547095,
+          "max_frame_ms": 225.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 56956.700000000186,
+          "draw_calls": 460,
+          "fps": 7.99857803057234,
+          "max_frame_ms": 150.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 58018.5,
+          "draw_calls": 423,
+          "fps": 10.347098109303,
+          "max_frame_ms": 140.9,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 59151.200000000186,
+          "draw_calls": 386,
+          "fps": 8.8339222614841,
+          "max_frame_ms": 155.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 60233.200000000186,
+          "draw_calls": 368,
+          "fps": 11.0967264656926,
+          "max_frame_ms": 130.3,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 61285,
+          "draw_calls": 363,
+          "fps": 10.4463437796771,
+          "max_frame_ms": 137.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 62302.80000000005,
+          "draw_calls": 378,
+          "fps": 8.8539104771274,
+          "max_frame_ms": 194.3,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 63372.30000000005,
+          "draw_calls": 381,
+          "fps": 10.279413138959,
+          "max_frame_ms": 130.3,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 64422.60000000009,
+          "draw_calls": 372,
+          "fps": 8.56327307326356,
+          "max_frame_ms": 173.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 65551.5,
+          "draw_calls": 339,
+          "fps": 8.86682035821954,
+          "max_frame_ms": 137.4,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 66619.40000000014,
+          "draw_calls": 318,
+          "fps": 9.37031484257871,
+          "max_frame_ms": 165.9,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 67632.5,
+          "draw_calls": 303,
+          "fps": 11.8308192842354,
+          "max_frame_ms": 105.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 68644.80000000005,
+          "draw_calls": 281,
+          "fps": 9.88435306909163,
+          "max_frame_ms": 158.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 69781.6000000001,
+          "draw_calls": 318,
+          "fps": 7.92044354483851,
+          "max_frame_ms": 312,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 70870.5,
+          "draw_calls": 318,
+          "fps": 8.26294528094014,
+          "max_frame_ms": 204.5,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 71953.6000000001,
+          "draw_calls": 318,
+          "fps": 16.6189640845721,
+          "max_frame_ms": 92.3,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 72997.90000000014,
+          "draw_calls": 318,
+          "fps": 15.2992924077261,
+          "max_frame_ms": 98.7,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 74066.90000000014,
+          "draw_calls": 318,
+          "fps": 11.2422709387296,
+          "max_frame_ms": 163.6,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 75080.90000000014,
+          "draw_calls": 318,
+          "fps": 11.8296529968454,
+          "max_frame_ms": 100.3,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 76081.1000000001,
+          "draw_calls": 318,
+          "fps": 10.9868158210148,
+          "max_frame_ms": 112.7,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 77085.30000000005,
+          "draw_calls": 318,
+          "fps": 12.9520773139384,
+          "max_frame_ms": 93.2,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 78088.40000000014,
+          "draw_calls": 318,
+          "fps": 10.9791396346941,
+          "max_frame_ms": 137,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 79345,
+          "draw_calls": 52,
+          "fps": 8.74056416368693,
+          "max_frame_ms": 356.3,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96594379
+        },
+        {
+          "at": 80381.90000000014,
+          "draw_calls": 91,
+          "fps": 14.4689881354297,
+          "max_frame_ms": 400.7,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 81394.80000000005,
+          "draw_calls": 91,
+          "fps": 17.7935943060498,
+          "max_frame_ms": 75.9,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 82438.90000000014,
+          "draw_calls": 91,
+          "fps": 18.1731229076997,
+          "max_frame_ms": 79.6,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 83454.5,
+          "draw_calls": 91,
+          "fps": 17.7514792899408,
+          "max_frame_ms": 81.2,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 84491.30000000005,
+          "draw_calls": 91,
+          "fps": 15.420200462606,
+          "max_frame_ms": 100.6,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 85511.5,
+          "draw_calls": 89,
+          "fps": 20.5862170375453,
+          "max_frame_ms": 91.8,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 86532.5,
+          "draw_calls": 89,
+          "fps": 17.6280481833317,
+          "max_frame_ms": 91.8,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 87582.1000000001,
+          "draw_calls": 89,
+          "fps": 17.1559283263439,
+          "max_frame_ms": 78.4,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 88657.20000000019,
+          "draw_calls": 89,
+          "fps": 15.8080714152873,
+          "max_frame_ms": 91.9,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 89683.5,
+          "draw_calls": 89,
+          "fps": 16.5498442367601,
+          "max_frame_ms": 81,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 90717.90000000014,
+          "draw_calls": 89,
+          "fps": 20.3016241299304,
+          "max_frame_ms": 83.1,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 91733.70000000019,
+          "draw_calls": 89,
+          "fps": 17.7200236266982,
+          "max_frame_ms": 84,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 92752,
+          "draw_calls": 89,
+          "fps": 18.6732186732187,
+          "max_frame_ms": 91.5,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 93771.5,
+          "draw_calls": 89,
+          "fps": 18.6201489611917,
+          "max_frame_ms": 74.4,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 94829.20000000019,
+          "draw_calls": 503,
+          "fps": 12.3117719481011,
+          "max_frame_ms": 121.4,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96531707
+        }
+      ],
+      "browser_pss_samples": [
+        {
+          "pss_bytes": 179202048,
+          "at": 1048.1000000000931
+        },
+        {
+          "pss_bytes": 236161024,
+          "at": 3066.9000000001397
+        },
+        {
+          "pss_bytes": 287681536,
+          "at": 5079.5
+        },
+        {
+          "pss_bytes": 333505536,
+          "at": 7092.300000000047
+        },
+        {
+          "pss_bytes": 387822592,
+          "at": 9105.200000000186
+        },
+        {
+          "pss_bytes": 432452608,
+          "at": 11129.600000000093
+        },
+        {
+          "pss_bytes": 429974528,
+          "at": 13146.700000000186
+        },
+        {
+          "pss_bytes": 472863744,
+          "at": 15159.90000000014
+        },
+        {
+          "pss_bytes": 410482688,
+          "at": 17180.90000000014
+        },
+        {
+          "pss_bytes": 433321984,
+          "at": 19207
+        },
+        {
+          "pss_bytes": 451877888,
+          "at": 21219.90000000014
+        },
+        {
+          "pss_bytes": 709561344,
+          "at": 36909.40000000014
+        },
+        {
+          "pss_bytes": 781162496,
+          "at": 39036.90000000014
+        },
+        {
+          "pss_bytes": 817690624,
+          "at": 41238.30000000005
+        },
+        {
+          "pss_bytes": 832860160,
+          "at": 43403.60000000009
+        },
+        {
+          "pss_bytes": 843300864,
+          "at": 45612.60000000009
+        },
+        {
+          "pss_bytes": 849924096,
+          "at": 47871.30000000005
+        },
+        {
+          "pss_bytes": 847859712,
+          "at": 50012.5
+        },
+        {
+          "pss_bytes": 856428544,
+          "at": 52171.90000000014
+        },
+        {
+          "pss_bytes": 863854592,
+          "at": 54390.5
+        },
+        {
+          "pss_bytes": 881426432,
+          "at": 56542.5
+        },
+        {
+          "pss_bytes": 887771136,
+          "at": 58674.10000000009
+        },
+        {
+          "pss_bytes": 890781696,
+          "at": 60784.30000000005
+        },
+        {
+          "pss_bytes": 897224704,
+          "at": 62914.200000000186
+        },
+        {
+          "pss_bytes": 883968000,
+          "at": 65161.80000000005
+        },
+        {
+          "pss_bytes": 835696640,
+          "at": 67318.6000000001
+        },
+        {
+          "pss_bytes": 840218624,
+          "at": 69450.80000000005
+        },
+        {
+          "pss_bytes": 846522368,
+          "at": 71588.40000000014
+        },
+        {
+          "pss_bytes": 863305728,
+          "at": 73741.1000000001
+        },
+        {
+          "pss_bytes": 871251968,
+          "at": 75857.6000000001
+        },
+        {
+          "pss_bytes": 879992832,
+          "at": 77989.1000000001
+        },
+        {
+          "pss_bytes": 895176704,
+          "at": 80056.70000000019
+        },
+        {
+          "pss_bytes": 910389248,
+          "at": 82182.6000000001
+        },
+        {
+          "pss_bytes": 847144960,
+          "at": 84271.80000000005
+        },
+        {
+          "pss_bytes": 861100032,
+          "at": 86392.6000000001
+        },
+        {
+          "pss_bytes": 873469952,
+          "at": 88506.1000000001
+        },
+        {
+          "pss_bytes": 886454272,
+          "at": 90608.90000000014
+        },
+        {
+          "pss_bytes": 899295232,
+          "at": 92710.70000000019
+        }
+      ],
+      "browser_pss_peak_bytes": 910389248,
+      "warm_boot": {
+        "startedAt": 1503.6999999999534,
+        "downloadsFinishedAt": 2409,
+        "worldReadyAt": 10459.5,
+        "engineStartedAt": 12921.399999999907,
+        "architectureReadyAt": 20947.899999999907
+      }
+    },
+    {
+      "cold_boot": {
+        "startedAt": 973.1000000000931,
+        "downloadsFinishedAt": 21325.5,
+        "worldReadyAt": 33324.5,
+        "engineStartedAt": 36541.10000000009,
+        "architectureReadyAt": 44792.700000000186
+      },
+      "cold_world_ready_ms": 33324.5,
+      "stages": {
+        "building": {
+          "fps_median": 7.7913659743043056,
+          "fps_min_1s": 0.83049580599618,
+          "draw_calls_peak": 569,
+          "video_memory_peak_bytes": 95555297,
+          "max_frame_ms": 1204.1
+        },
+        "campus_idle": {
+          "fps_median": 8.25991189427313,
+          "fps_min_1s": 7.690828686791,
+          "draw_calls_peak": 555,
+          "video_memory_peak_bytes": 95661657,
+          "max_frame_ms": 213.7
+        },
+        "campus_walk": {
+          "fps_median": 9.509120040730386,
+          "fps_min_1s": 7.55073147711184,
+          "draw_calls_peak": 550,
+          "video_memory_peak_bytes": 95647425,
+          "max_frame_ms": 238.1
+        },
+        "interior": {
+          "fps_median": 17.7567327611719,
+          "fps_min_1s": 7.94202323041795,
+          "draw_calls_peak": 502,
+          "video_memory_peak_bytes": 96655819,
+          "max_frame_ms": 298.3
+        },
+        "phone": {
+          "fps_median": 11.807509026831,
+          "fps_min_1s": 7.00280112044818,
+          "draw_calls_peak": 327,
+          "video_memory_peak_bytes": 95956841,
+          "max_frame_ms": 359.7
+        }
+      },
+      "js_heap": {
+        "usedSize": 12353908,
+        "totalSize": 14352384,
+        "embedderHeapUsedSize": 6214056,
+        "backingStorageSize": 175929942
+      },
+      "samples": [
+        {
+          "at": 36780.30000000005,
+          "draw_calls": 479,
+          "fps": 0.83049580599618,
+          "max_frame_ms": 1204.1,
+          "nodes": 5582,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 49864505
+        },
+        {
+          "at": 37887.5,
+          "draw_calls": 475,
+          "fps": 3.6006841299847,
+          "max_frame_ms": 497.8,
+          "nodes": 5650,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 69122937
+        },
+        {
+          "at": 38897.89999999991,
+          "draw_calls": 476,
+          "fps": 6.9293209265492,
+          "max_frame_ms": 199.1,
+          "nodes": 5751,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 69230121
+        },
+        {
+          "at": 39905.89999999991,
+          "draw_calls": 499,
+          "fps": 8.92768574546176,
+          "max_frame_ms": 166.1,
+          "nodes": 5925,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 94988681
+        },
+        {
+          "at": 40959,
+          "draw_calls": 555,
+          "fps": 10.4592564419511,
+          "max_frame_ms": 131,
+          "nodes": 6081,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95146097
+        },
+        {
+          "at": 42009.60000000009,
+          "draw_calls": 569,
+          "fps": 7.60745530620008,
+          "max_frame_ms": 175.1,
+          "nodes": 6222,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95281289
+        },
+        {
+          "at": 43015.299999999814,
+          "draw_calls": 569,
+          "fps": 9.94134605825629,
+          "max_frame_ms": 137.9,
+          "nodes": 6353,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95425025
+        },
+        {
+          "at": 44020.60000000009,
+          "draw_calls": 569,
+          "fps": 7.97527664240853,
+          "max_frame_ms": 149.2,
+          "nodes": 6473,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95555297
+        },
+        {
+          "at": 45635,
+          "draw_calls": 555,
+          "fps": 7.86704690726718,
+          "max_frame_ms": 213.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 46636.799999999814,
+          "draw_calls": 555,
+          "fps": 7.98881565807869,
+          "max_frame_ms": 147.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 47702.10000000009,
+          "draw_calls": 555,
+          "fps": 8.45229151014275,
+          "max_frame_ms": 145.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 48747.60000000009,
+          "draw_calls": 555,
+          "fps": 8.60256165169184,
+          "max_frame_ms": 189.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 49788.5,
+          "draw_calls": 555,
+          "fps": 7.690828686791,
+          "max_frame_ms": 167.9,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 50799.89999999991,
+          "draw_calls": 555,
+          "fps": 7.89655512782549,
+          "max_frame_ms": 165.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 51845.200000000186,
+          "draw_calls": 555,
+          "fps": 8.61738797395634,
+          "max_frame_ms": 146.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 52906.60000000009,
+          "draw_calls": 555,
+          "fps": 8.47697089573326,
+          "max_frame_ms": 141.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 53996.10000000009,
+          "draw_calls": 555,
+          "fps": 8.25991189427313,
+          "max_frame_ms": 153.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95661657
+        },
+        {
+          "at": 55007.299999999814,
+          "draw_calls": 550,
+          "fps": 8.91000891000891,
+          "max_frame_ms": 151.4,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 56104.200000000186,
+          "draw_calls": 504,
+          "fps": 10.0255195041925,
+          "max_frame_ms": 153.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 57157.39999999991,
+          "draw_calls": 475,
+          "fps": 7.58653390232338,
+          "max_frame_ms": 187.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 58230.700000000186,
+          "draw_calls": 433,
+          "fps": 9.33445346774946,
+          "max_frame_ms": 163.4,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 59288.200000000186,
+          "draw_calls": 404,
+          "fps": 7.55073147711184,
+          "max_frame_ms": 163.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 60360.799999999814,
+          "draw_calls": 356,
+          "fps": 9.33706816059757,
+          "max_frame_ms": 151.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 61410.89999999991,
+          "draw_calls": 359,
+          "fps": 10.4672185745551,
+          "max_frame_ms": 133.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 62480.60000000009,
+          "draw_calls": 370,
+          "fps": 9.35453695042095,
+          "max_frame_ms": 166.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 63503.700000000186,
+          "draw_calls": 385,
+          "fps": 9.77135040062537,
+          "max_frame_ms": 238.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 64538.200000000186,
+          "draw_calls": 385,
+          "fps": 9.66370313103982,
+          "max_frame_ms": 141.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 65624.79999999981,
+          "draw_calls": 344,
+          "fps": 8.28500414250207,
+          "max_frame_ms": 170.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 66714,
+          "draw_calls": 330,
+          "fps": 10.0991553433713,
+          "max_frame_ms": 151,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95647425
+        },
+        {
+          "at": 67776.6000000001,
+          "draw_calls": 305,
+          "fps": 11.3132836805883,
+          "max_frame_ms": 143.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 68870.6000000001,
+          "draw_calls": 303,
+          "fps": 10.0392443187004,
+          "max_frame_ms": 136.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95633193
+        },
+        {
+          "at": 70012.20000000019,
+          "draw_calls": 327,
+          "fps": 7.00280112044818,
+          "max_frame_ms": 359.7,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95956841
+        },
+        {
+          "at": 71072.5,
+          "draw_calls": 318,
+          "fps": 9.44019635608421,
+          "max_frame_ms": 142.5,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 72120.6000000001,
+          "draw_calls": 318,
+          "fps": 11.4329268292683,
+          "max_frame_ms": 128.9,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 73135.29999999981,
+          "draw_calls": 318,
+          "fps": 13.8176075799447,
+          "max_frame_ms": 96,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 74148.70000000019,
+          "draw_calls": 318,
+          "fps": 11.8214954191705,
+          "max_frame_ms": 124.1,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 75209.20000000019,
+          "draw_calls": 318,
+          "fps": 16.9827342202095,
+          "max_frame_ms": 79.7,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 76220.20000000019,
+          "draw_calls": 318,
+          "fps": 11.8623962040332,
+          "max_frame_ms": 122.2,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 77323.3999999999,
+          "draw_calls": 318,
+          "fps": 11.7935226344915,
+          "max_frame_ms": 107.9,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 78405.8999999999,
+          "draw_calls": 318,
+          "fps": 12.0158979572973,
+          "max_frame_ms": 107.4,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 79447.3999999999,
+          "draw_calls": 318,
+          "fps": 11.5052732502397,
+          "max_frame_ms": 110.3,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 95952329
+        },
+        {
+          "at": 80456.1000000001,
+          "draw_calls": 91,
+          "fps": 7.94202323041795,
+          "max_frame_ms": 298.3,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 81499.70000000019,
+          "draw_calls": 91,
+          "fps": 18.2044648845454,
+          "max_frame_ms": 109.9,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 82554.29999999981,
+          "draw_calls": 91,
+          "fps": 16.1412837067983,
+          "max_frame_ms": 102.4,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 83568.79999999981,
+          "draw_calls": 91,
+          "fps": 18.704469383737,
+          "max_frame_ms": 77,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 84611.20000000019,
+          "draw_calls": 91,
+          "fps": 17.2695001439125,
+          "max_frame_ms": 137.5,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96655819
+        },
+        {
+          "at": 85613.79999999981,
+          "draw_calls": 89,
+          "fps": 21.925453458242,
+          "max_frame_ms": 88.2,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 86621.6000000001,
+          "draw_calls": 89,
+          "fps": 17.8482895389192,
+          "max_frame_ms": 119.4,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 87688.79999999981,
+          "draw_calls": 89,
+          "fps": 15.9459712972517,
+          "max_frame_ms": 117.3,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 88774.8999999999,
+          "draw_calls": 89,
+          "fps": 10.1261161741692,
+          "max_frame_ms": 126.3,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 89784,
+          "draw_calls": 89,
+          "fps": 16.8634064080944,
+          "max_frame_ms": 104,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 90802.6000000001,
+          "draw_calls": 89,
+          "fps": 22.5401803214426,
+          "max_frame_ms": 61.8,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 91832.20000000019,
+          "draw_calls": 89,
+          "fps": 19.4836824159766,
+          "max_frame_ms": 86.6,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 92843.70000000019,
+          "draw_calls": 89,
+          "fps": 17.7567327611719,
+          "max_frame_ms": 92.2,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 93862.79999999981,
+          "draw_calls": 89,
+          "fps": 18.6274509803922,
+          "max_frame_ms": 80.8,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96641587
+        },
+        {
+          "at": 94959.8999999999,
+          "draw_calls": 502,
+          "fps": 13.6724090784796,
+          "max_frame_ms": 175.1,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 96517475
+        }
+      ],
+      "browser_pss_samples": [
+        {
+          "pss_bytes": 250989568,
+          "at": 1030.6000000000931
+        },
+        {
+          "pss_bytes": 300892160,
+          "at": 3053.6999999999534
+        },
+        {
+          "pss_bytes": 345859072,
+          "at": 5068.600000000093
+        },
+        {
+          "pss_bytes": 389666816,
+          "at": 7092.399999999907
+        },
+        {
+          "pss_bytes": 443068416,
+          "at": 9112.199999999953
+        },
+        {
+          "pss_bytes": 484130816,
+          "at": 11127.699999999953
+        },
+        {
+          "pss_bytes": 482025472,
+          "at": 13142.199999999953
+        },
+        {
+          "pss_bytes": 524992512,
+          "at": 15176.199999999953
+        },
+        {
+          "pss_bytes": 461605888,
+          "at": 17201.300000000047
+        },
+        {
+          "pss_bytes": 483073024,
+          "at": 19221.699999999953
+        },
+        {
+          "pss_bytes": 503217152,
+          "at": 21243.899999999907
+        },
+        {
+          "pss_bytes": 724320256,
+          "at": 37330.39999999991
+        },
+        {
+          "pss_bytes": 786382848,
+          "at": 39526.200000000186
+        },
+        {
+          "pss_bytes": 808894464,
+          "at": 41710.10000000009
+        },
+        {
+          "pss_bytes": 832032768,
+          "at": 43974.799999999814
+        },
+        {
+          "pss_bytes": 843083776,
+          "at": 46201.89999999991
+        },
+        {
+          "pss_bytes": 849965056,
+          "at": 48333.5
+        },
+        {
+          "pss_bytes": 856317952,
+          "at": 50502.799999999814
+        },
+        {
+          "pss_bytes": 863625216,
+          "at": 52738.200000000186
+        },
+        {
+          "pss_bytes": 862912512,
+          "at": 54960.299999999814
+        },
+        {
+          "pss_bytes": 879089664,
+          "at": 57099.89999999991
+        },
+        {
+          "pss_bytes": 884820992,
+          "at": 59316.39999999991
+        },
+        {
+          "pss_bytes": 891386880,
+          "at": 61475.200000000186
+        },
+        {
+          "pss_bytes": 897906688,
+          "at": 63634.60000000009
+        },
+        {
+          "pss_bytes": 903366656,
+          "at": 65802.6000000001
+        },
+        {
+          "pss_bytes": 836646912,
+          "at": 67906.8999999999
+        },
+        {
+          "pss_bytes": 839612416,
+          "at": 70040.3999999999
+        },
+        {
+          "pss_bytes": 845228032,
+          "at": 72158.8999999999
+        },
+        {
+          "pss_bytes": 855083008,
+          "at": 74243.3999999999
+        },
+        {
+          "pss_bytes": 873175040,
+          "at": 76427
+        },
+        {
+          "pss_bytes": 882149376,
+          "at": 78606.6000000001
+        },
+        {
+          "pss_bytes": 896047104,
+          "at": 80703.79999999981
+        },
+        {
+          "pss_bytes": 845686784,
+          "at": 82816.5
+        },
+        {
+          "pss_bytes": 859211776,
+          "at": 84904.1000000001
+        },
+        {
+          "pss_bytes": 874080256,
+          "at": 86993.79999999981
+        },
+        {
+          "pss_bytes": 883996672,
+          "at": 89116.1000000001
+        },
+        {
+          "pss_bytes": 850913280,
+          "at": 91230
+        },
+        {
+          "pss_bytes": 864598016,
+          "at": 93355.29999999981
+        }
+      ],
+      "browser_pss_peak_bytes": 903366656,
+      "warm_boot": {
+        "startedAt": 765.7999999998137,
+        "downloadsFinishedAt": 1690.7999999998137,
+        "worldReadyAt": 9619.299999999814,
+        "engineStartedAt": 11980.700000000186,
+        "architectureReadyAt": 19447.299999999814
+      }
+    },
+    {
+      "cold_boot": {
+        "startedAt": 978.2000000001863,
+        "downloadsFinishedAt": 21279.700000000186,
+        "worldReadyAt": 32518.899999999907,
+        "engineStartedAt": 35598.200000000186,
+        "architectureReadyAt": 43146.89999999991
+      },
+      "cold_world_ready_ms": 32518.899999999907,
+      "stages": {
+        "building": {
+          "fps_median": 8.05080955362734,
+          "fps_min_1s": 0.916422287390029,
+          "draw_calls_peak": 569,
+          "video_memory_peak_bytes": 78478801,
+          "max_frame_ms": 1091.2
+        },
+        "campus_idle": {
+          "fps_median": 8.49457291175083,
+          "fps_min_1s": 8.15734614338802,
+          "draw_calls_peak": 555,
+          "video_memory_peak_bytes": 78620121,
+          "max_frame_ms": 235.8
+        },
+        "campus_walk": {
+          "fps_median": 9.69795627480578,
+          "fps_min_1s": 7.35902860822371,
+          "draw_calls_peak": 541,
+          "video_memory_peak_bytes": 78605889,
+          "max_frame_ms": 212.5
+        },
+        "interior": {
+          "fps_median": 16.59454939964825,
+          "fps_min_1s": 6.94100148735746,
+          "draw_calls_peak": 503,
+          "video_memory_peak_bytes": 79614283,
+          "max_frame_ms": 330.3
+        },
+        "phone": {
+          "fps_median": 11.90045104931825,
+          "fps_min_1s": 9.89902989507028,
+          "draw_calls_peak": 325,
+          "video_memory_peak_bytes": 78915305,
+          "max_frame_ms": 387.3
+        }
+      },
+      "js_heap": {
+        "usedSize": 13107152,
+        "totalSize": 14352384,
+        "embedderHeapUsedSize": 6163576,
+        "backingStorageSize": 175995049
+      },
+      "samples": [
+        {
+          "at": 35769.89999999991,
+          "draw_calls": 479,
+          "fps": 0.916422287390029,
+          "max_frame_ms": 1091.2,
+          "nodes": 5582,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 49864505
+        },
+        {
+          "at": 36872.60000000009,
+          "draw_calls": 473,
+          "fps": 4.53021654435082,
+          "max_frame_ms": 338.4,
+          "nodes": 5665,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 77661825
+        },
+        {
+          "at": 37930.299999999814,
+          "draw_calls": 485,
+          "fps": 10.3871576959396,
+          "max_frame_ms": 182.2,
+          "nodes": 5830,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 77842041
+        },
+        {
+          "at": 39042,
+          "draw_calls": 536,
+          "fps": 11.6948542641238,
+          "max_frame_ms": 123.9,
+          "nodes": 6057,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78078745
+        },
+        {
+          "at": 40048.89999999991,
+          "draw_calls": 566,
+          "fps": 7.94833581718828,
+          "max_frame_ms": 161.7,
+          "nodes": 6151,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78178145
+        },
+        {
+          "at": 41126.200000000186,
+          "draw_calls": 569,
+          "fps": 8.36586726157278,
+          "max_frame_ms": 151.5,
+          "nodes": 6308,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78342785
+        },
+        {
+          "at": 42242.10000000009,
+          "draw_calls": 569,
+          "fps": 8.05080955362734,
+          "max_frame_ms": 150,
+          "nodes": 6442,
+          "npc_count": 20,
+          "stage": "building",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78478801
+        },
+        {
+          "at": 44051.700000000186,
+          "draw_calls": 555,
+          "fps": 8.38769804287046,
+          "max_frame_ms": 235.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 45111.10000000009,
+          "draw_calls": 555,
+          "fps": 8.49457291175083,
+          "max_frame_ms": 147.9,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 46168.5,
+          "draw_calls": 555,
+          "fps": 8.51063829787234,
+          "max_frame_ms": 140.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 47284.39999999991,
+          "draw_calls": 555,
+          "fps": 8.96780557797507,
+          "max_frame_ms": 129.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 48372.60000000009,
+          "draw_calls": 555,
+          "fps": 8.26901874310915,
+          "max_frame_ms": 173.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 49453.200000000186,
+          "draw_calls": 555,
+          "fps": 9.24214417744917,
+          "max_frame_ms": 145.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 50558.89999999991,
+          "draw_calls": 555,
+          "fps": 8.15734614338802,
+          "max_frame_ms": 172.4,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 51591.299999999814,
+          "draw_calls": 555,
+          "fps": 8.70490376245285,
+          "max_frame_ms": 167.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 52667.5,
+          "draw_calls": 555,
+          "fps": 8.36664497536488,
+          "max_frame_ms": 146.3,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_idle",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78620121
+        },
+        {
+          "at": 53734.89999999991,
+          "draw_calls": 541,
+          "fps": 9.36417267534413,
+          "max_frame_ms": 125.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 54786.799999999814,
+          "draw_calls": 496,
+          "fps": 9.50660709192889,
+          "max_frame_ms": 122.2,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 55835.60000000009,
+          "draw_calls": 455,
+          "fps": 8.58532862730135,
+          "max_frame_ms": 143.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 56880.799999999814,
+          "draw_calls": 433,
+          "fps": 10.5263157894737,
+          "max_frame_ms": 118,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 57901.60000000009,
+          "draw_calls": 387,
+          "fps": 9.78760888714887,
+          "max_frame_ms": 122.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 58910,
+          "draw_calls": 358,
+          "fps": 9.92555831265509,
+          "max_frame_ms": 152.9,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 59942.700000000186,
+          "draw_calls": 358,
+          "fps": 9.67679504548094,
+          "max_frame_ms": 176.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 60981.60000000009,
+          "draw_calls": 365,
+          "fps": 9.62741888899586,
+          "max_frame_ms": 212.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78605889
+        },
+        {
+          "at": 62059.700000000186,
+          "draw_calls": 382,
+          "fps": 11.1379246333766,
+          "max_frame_ms": 104.5,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78605889
+        },
+        {
+          "at": 63113.60000000009,
+          "draw_calls": 371,
+          "fps": 9.48226815854352,
+          "max_frame_ms": 143.6,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78605889
+        },
+        {
+          "at": 64200.799999999814,
+          "draw_calls": 342,
+          "fps": 7.35902860822371,
+          "max_frame_ms": 183.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78605889
+        },
+        {
+          "at": 65265.799999999814,
+          "draw_calls": 321,
+          "fps": 10.3412616339193,
+          "max_frame_ms": 153.7,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78605889
+        },
+        {
+          "at": 66322.5,
+          "draw_calls": 306,
+          "fps": 12.2838514598885,
+          "max_frame_ms": 107.1,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 67351.70000000019,
+          "draw_calls": 295,
+          "fps": 9.71911750413062,
+          "max_frame_ms": 157.8,
+          "nodes": 6484,
+          "npc_count": 20,
+          "stage": "campus_walk",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78591657
+        },
+        {
+          "at": 68420.70000000019,
+          "draw_calls": 325,
+          "fps": 10.2784526256774,
+          "max_frame_ms": 387.3,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78915305
+        },
+        {
+          "at": 69455.1000000001,
+          "draw_calls": 317,
+          "fps": 13.5435813098578,
+          "max_frame_ms": 115.8,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 70497.70000000019,
+          "draw_calls": 317,
+          "fps": 13.4395699337621,
+          "max_frame_ms": 106.7,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 71507.79999999981,
+          "draw_calls": 317,
+          "fps": 9.89902989507028,
+          "max_frame_ms": 171.8,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 72549.1000000001,
+          "draw_calls": 317,
+          "fps": 11.5207373271889,
+          "max_frame_ms": 106.9,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 73627.29999999981,
+          "draw_calls": 317,
+          "fps": 10.2069221490211,
+          "max_frame_ms": 128,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 74717.3999999999,
+          "draw_calls": 317,
+          "fps": 11.9244175380664,
+          "max_frame_ms": 100.2,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 75769.5,
+          "draw_calls": 317,
+          "fps": 13.3003990119704,
+          "max_frame_ms": 106.7,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 76814,
+          "draw_calls": 317,
+          "fps": 13.3907221425155,
+          "max_frame_ms": 93.3,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 77826,
+          "draw_calls": 317,
+          "fps": 11.8764845605701,
+          "max_frame_ms": 97.4,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "phone",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 78910793
+        },
+        {
+          "at": 78834.70000000019,
+          "draw_calls": 91,
+          "fps": 6.94100148735746,
+          "max_frame_ms": 330.3,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79614283
+        },
+        {
+          "at": 79913.79999999981,
+          "draw_calls": 91,
+          "fps": 17.6007410838351,
+          "max_frame_ms": 100.7,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79614283
+        },
+        {
+          "at": 80929.70000000019,
+          "draw_calls": 91,
+          "fps": 17.7078209542548,
+          "max_frame_ms": 92.2,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79614283
+        },
+        {
+          "at": 82119.70000000019,
+          "draw_calls": 91,
+          "fps": 13.4714153405742,
+          "max_frame_ms": 211.8,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79614283
+        },
+        {
+          "at": 83150.6000000001,
+          "draw_calls": 91,
+          "fps": 16.4601084430674,
+          "max_frame_ms": 176.7,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79614283
+        },
+        {
+          "at": 84153.70000000019,
+          "draw_calls": 89,
+          "fps": 20.9100866275017,
+          "max_frame_ms": 117.4,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 85221.70000000019,
+          "draw_calls": 89,
+          "fps": 18.756447528838,
+          "max_frame_ms": 81.1,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 86263.8999999999,
+          "draw_calls": 89,
+          "fps": 15.3388936822932,
+          "max_frame_ms": 141.7,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 87316.79999999981,
+          "draw_calls": 89,
+          "fps": 11.397093741096,
+          "max_frame_ms": 168.1,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 88355.29999999981,
+          "draw_calls": 89,
+          "fps": 14.4314027323456,
+          "max_frame_ms": 94.5,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 89356.29999999981,
+          "draw_calls": 89,
+          "fps": 21.978021978022,
+          "max_frame_ms": 71.4,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 90415.20000000019,
+          "draw_calls": 89,
+          "fps": 20.8077177716826,
+          "max_frame_ms": 110.9,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 91424.3999999999,
+          "draw_calls": 89,
+          "fps": 16.818361693708,
+          "max_frame_ms": 81.6,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 92440.8999999999,
+          "draw_calls": 89,
+          "fps": 16.7289903562291,
+          "max_frame_ms": 168,
+          "nodes": 6604,
+          "npc_count": 0,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79600051
+        },
+        {
+          "at": 93491.70000000019,
+          "draw_calls": 503,
+          "fps": 14.2911585365854,
+          "max_frame_ms": 124.9,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79490171
+        },
+        {
+          "at": 94547.20000000019,
+          "draw_calls": 503,
+          "fps": 8.52514919011083,
+          "max_frame_ms": 212,
+          "nodes": 6505,
+          "npc_count": 20,
+          "stage": "interior",
+          "static_memory_bytes": null,
+          "video_memory_bytes": 79490171
+        }
+      ],
+      "browser_pss_samples": [
+        {
+          "pss_bytes": 254534656,
+          "at": 1034.3999999999069
+        },
+        {
+          "pss_bytes": 304742400,
+          "at": 3050.399999999907
+        },
+        {
+          "pss_bytes": 350154752,
+          "at": 5064.100000000093
+        },
+        {
+          "pss_bytes": 393570304,
+          "at": 7078.399999999907
+        },
+        {
+          "pss_bytes": 447301632,
+          "at": 9092.399999999907
+        },
+        {
+          "pss_bytes": 490358784,
+          "at": 11110.600000000093
+        },
+        {
+          "pss_bytes": 486533120,
+          "at": 13127.299999999814
+        },
+        {
+          "pss_bytes": 530417664,
+          "at": 15143.299999999814
+        },
+        {
+          "pss_bytes": 468121600,
+          "at": 17165.899999999907
+        },
+        {
+          "pss_bytes": 488802304,
+          "at": 19233.700000000186
+        },
+        {
+          "pss_bytes": 506942464,
+          "at": 21255.299999999814
+        },
+        {
+          "pss_bytes": 742197248,
+          "at": 36149.200000000186
+        },
+        {
+          "pss_bytes": 781455360,
+          "at": 38331
+        },
+        {
+          "pss_bytes": 810536960,
+          "at": 40573.799999999814
+        },
+        {
+          "pss_bytes": 819884032,
+          "at": 42804.39999999991
+        },
+        {
+          "pss_bytes": 830234624,
+          "at": 44970.89999999991
+        },
+        {
+          "pss_bytes": 835985408,
+          "at": 47126.700000000186
+        },
+        {
+          "pss_bytes": 838651904,
+          "at": 49301.89999999991
+        },
+        {
+          "pss_bytes": 844042240,
+          "at": 51525.700000000186
+        },
+        {
+          "pss_bytes": 846123008,
+          "at": 53687.700000000186
+        },
+        {
+          "pss_bytes": 862867456,
+          "at": 55895.39999999991
+        },
+        {
+          "pss_bytes": 869134336,
+          "at": 58084.60000000009
+        },
+        {
+          "pss_bytes": 875233280,
+          "at": 60227
+        },
+        {
+          "pss_bytes": 882487296,
+          "at": 62501
+        },
+        {
+          "pss_bytes": 811556864,
+          "at": 64716.5
+        },
+        {
+          "pss_bytes": 821379072,
+          "at": 66953.79999999981
+        },
+        {
+          "pss_bytes": 826982400,
+          "at": 69053.29999999981
+        },
+        {
+          "pss_bytes": 842027008,
+          "at": 71255.79999999981
+        },
+        {
+          "pss_bytes": 849498112,
+          "at": 73454.8999999999
+        },
+        {
+          "pss_bytes": 856748032,
+          "at": 75524.6000000001
+        },
+        {
+          "pss_bytes": 868204544,
+          "at": 77690.70000000019
+        },
+        {
+          "pss_bytes": 822226944,
+          "at": 79827.5
+        },
+        {
+          "pss_bytes": 834150400,
+          "at": 81987.1000000001
+        },
+        {
+          "pss_bytes": 847454208,
+          "at": 84120.20000000019
+        },
+        {
+          "pss_bytes": 860102656,
+          "at": 86280.3999999999
+        },
+        {
+          "pss_bytes": 869695488,
+          "at": 88366.29999999981
+        },
+        {
+          "pss_bytes": 842973184,
+          "at": 90434.79999999981
+        },
+        {
+          "pss_bytes": 853689344,
+          "at": 92535.79999999981
+        }
+      ],
+      "browser_pss_peak_bytes": 882487296,
+      "warm_boot": {
+        "startedAt": 1452.5,
+        "downloadsFinishedAt": 2733.7999999998137,
+        "worldReadyAt": 11770.5,
+        "engineStartedAt": 14564.299999999814,
+        "architectureReadyAt": 22298.600000000093
+      }
+    }
+  ],
+  "environment": {
+    "browser": "145.0.7632.6",
+    "host": "Linux-6.18.57-x86_64-with-glibc2.39",
+    "gpu": [
+      {
+        "vendorId": 65535,
+        "deviceId": 65535,
+        "vendorString": "Google Inc. (Google)",
+        "deviceString": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0)",
+        "driverVendor": "SwANGLE",
+        "driverVersion": "5.0.0"
+      }
+    ]
+  }
+}

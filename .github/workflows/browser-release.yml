@@ -2,6 +2,8 @@ name: Build and publish browser beta
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -11,12 +13,14 @@ permissions:
 
 concurrency:
   group: browser-release
-  cancel-in-progress: false
+  # Superseded PR commits should not consume 25+ minutes of profiling.
+  # Never cancel an in-flight main-branch release.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
     env:
       XDG_CONFIG_HOME: /tmp/inside-lasu/config
       XDG_CACHE_HOME: /tmp/inside-lasu/cache
@@ -32,6 +36,10 @@ jobs:
       - name: Verify free Supabase database rules
         run: python3 tools/test_supabase_database.py
       - name: Verify public Supabase connection
+        # Keep PR gameplay/performance validation running when the external
+        # Supabase project is paused or its DNS is temporarily unavailable.
+        # Main-branch releases must still pass this live integration check.
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: python3 tools/check_supabase_connection.py
       - name: Verify social server container and persistent storage
         run: |
@@ -53,6 +61,25 @@ jobs:
         run: python3 tools/test_web.py
       - name: Test mobile touch gameplay
         run: python3 tools/test_mobile_web.py
+      - name: Check out pre-NPC baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: baseline
+      - name: Build pre-NPC baseline
+        if: github.event_name == 'pull_request'
+        working-directory: baseline
+        run: python3 tools/build_web.py
+      - name: Profile pre-NPC baseline on this runner
+        if: github.event_name == 'pull_request'
+        run: python3 tools/profile_mobile.py --web-root baseline/build/web --output test-results/performance-baseline.json --runs 3
+      - name: Profile NPC version on this runner
+        if: github.event_name == 'pull_request'
+        run: python3 tools/profile_mobile.py --web-root build/web --output test-results/npc-browser-current.json --runs 3
+      - name: Compare NPC performance with same-run baseline
+        if: github.event_name == 'pull_request'
+        run: python3 tools/compare_performance_captures.py test-results/performance-baseline.json test-results/npc-browser-current.json --web-root build/web/play
       - name: Test Supabase owner setup page
         run: python3 tools/test_supabase_setup.py
       - name: Test billboard advertising preview
@@ -68,6 +95,7 @@ jobs:
         with:
           path: build/web
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:
