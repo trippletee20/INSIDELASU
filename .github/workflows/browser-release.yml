@@ -34,6 +34,10 @@ jobs:
       - name: Verify free Supabase database rules
         run: python3 tools/test_supabase_database.py
       - name: Verify public Supabase connection
+        # Keep PR gameplay/performance validation running when the external
+        # Supabase project is paused or its DNS is temporarily unavailable.
+        # Main-branch releases must still pass this live integration check.
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
         run: python3 tools/check_supabase_connection.py
       - name: Verify social server container and persistent storage
         run: |
