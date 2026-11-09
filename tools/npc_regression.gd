@@ -9,6 +9,11 @@ func check(ok: bool, label: String) -> void:
         failures += 1
         print("FAIL: ", label)
 
+func _pool_empty(crowd: Node3D) -> bool:
+    for actor in crowd.pool:
+        if actor.id != "": return false
+    return true
+
 func _initialize() -> void:
     if OS.get_environment("INSIDE_LASU_TEST") != "1":
         quit(2)
@@ -68,7 +73,10 @@ func run() -> void:
         check(game.task_title_label.text == "AJ MARKET", "vendor opens site tasks and shop")
         # Services respect the existing rule that purchases happen inside.
         game._enter_interior("AJ Market")
+        check(crowd.batch.multimesh.visible_instance_count == 0, "outdoor NPC batch hidden on interior entry")
+        check(_pool_empty(crowd), "outdoor NPC pool cleared on interior entry")
         game._enter_campus_room(0)
+        check(_pool_empty(crowd), "NPC pool cleared on room transition")
         await process_frame
         crowd.clear_pool()
         crowd._refresh()
