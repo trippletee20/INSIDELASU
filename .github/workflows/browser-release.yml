@@ -13,7 +13,9 @@ permissions:
 
 concurrency:
   group: browser-release
-  cancel-in-progress: false
+  # Superseded PR commits should not consume 25+ minutes of profiling.
+  # Never cancel an in-flight main-branch release.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
