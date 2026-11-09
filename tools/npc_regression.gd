@@ -9,7 +9,7 @@ func check(ok: bool, label: String) -> void:
         failures += 1
         print("FAIL: ", label)
 
-func _pool_empty(crowd: Node3D) -> bool:
+func _pool_empty(crowd) -> bool:
     for actor in crowd.pool:
         if actor.id != "": return false
     return true
