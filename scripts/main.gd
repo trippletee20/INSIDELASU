@@ -2032,6 +2032,9 @@ func _go_to_interior_floor(index: int) -> void:
     if index < 0 or index >= floors.size():
         return
     if player.is_sitting: player.stand_up_from_seat()
+    # Drop the outdoor NPC draw batch before constructing a heavy interior.
+    # The next NPC tick will repopulate only nearby on-duty indoor staff.
+    if campus_npcs != null: campus_npcs.clear_pool()
     active_interior_floor = index
     active_campus_room = -1
     if campus_social != null: campus_social.clear_peers()
@@ -2049,6 +2052,8 @@ func _go_to_interior_floor(index: int) -> void:
 func _leave_interior() -> void:
     if active_interior_site.is_empty():
         return
+    # Avoid drawing indoor staff while the outdoor world is restored.
+    if campus_npcs != null: campus_npcs.clear_pool()
     if player.is_sitting: player.stand_up_from_seat()
     _close_task_panel()
     if interior_builder != null:
@@ -2484,6 +2489,7 @@ func _enter_campus_room(index: int) -> void:
     if active_interior_site.is_empty() or active_private_room: return
     var rooms: Array = CAMPUS_ROOMS.for_site(active_interior_site, building_experiences)
     if index < 0 or index >= rooms.size(): return
+    if campus_npcs != null: campus_npcs.clear_pool()
     if player.is_sitting: player.stand_up_from_seat()
     _close_task_panel()
     active_campus_room = index
